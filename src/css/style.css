@@ -1,0 +1,160 @@
+@keyframes heartbeat {
+    0%{
+         transform: scale(1);
+    }
+    50%{
+         transform: scale(1.25);
+    }
+    100%{
+         transform: scale(1);
+    }
+    
+}
+.row{
+    padding-top: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.column{
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.block{
+    margin: auto;
+    width: 90%;
+    border: 3px solid #000000;
+    padding: 10px;
+  
+}
+.asideStyle{
+   height: 400px;
+   margin: auto;
+   width: 90%;
+   border: 3px solid #000000;
+   padding: 10px;
+}
+.sousblock{
+    margin: 65px;
+  
+}
+.image{
+    width: 150px;
+    height: 150px;
+
+}
+.navbaritems1{
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    padding: 0 30px;
+    border: solid 2px;
+    border-color: #b1b6ba;
+    border-radius: 20px;
+    width: 95%;
+    height: 80px;
+}
+
+.logo1{
+    cursor: pointer;
+    font-weight: 600;
+    color: #707172;
+}
+
+
+.nav_menu1{ 
+    display: flex;
+    list-style: none;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.icon1{
+    font-size: 30px;
+    margin-bottom: 6px;
+}
+.icon1:hover{
+    animation: heartbeat 1s infinite;
+    opacity: 1;
+    transform: 500ms;
+        }
+
+.link1{
+    color: #707172;
+    text-decoration: none;
+}
+
+.fas1{
+    color: #707172;
+    font-size: 30px;
+    
+}
+.button
+ {border-radius: 60%;
+    padding: 15px;
+    margin : 20px;
+}
+ .button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  }
+.select {
+    height: 40px;
+    width: 300px;
+    margin: 10px;
+    background-color:cadetblue;
+    
+}
+
+
+.menu_icons1{
+    display: none;
+}
+
+@media screen and (max-width:700px){
+    .navbaritems1{
+        position: relative;
+        z-index: 99;
+    }
+
+    .nav_menu1{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        background-color:rgba(255, 255, 255, .25);
+        backdrop-filter: blur(4px);
+        border-radius: 20px;
+        width: 95%;
+        height: auto;
+        position:absolute;
+        top: 0;
+        left: -110%;
+        align-items: center;
+        gap: 0;
+        padding: 80px 0 30px 0;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135,.37);
+        z-index: 0;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    .link1{
+        display: block;
+        widows: 100%;
+        padding: 2rem 0;
+
+    }
+    .logo1{
+        z-index: 1;
+    }
+    
+    
+    .menu_icons1{
+        display: block;
+        z-index: 1;
+    }
+
+    .nav_menu1.active1{
+        left: 2.5%;
+    }
+
+}
