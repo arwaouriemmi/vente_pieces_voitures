@@ -1,6 +1,6 @@
 export interface CategoryProps{
     parent?: number;
-    id?: number;
-    label?: string;
+    id: number;
+    label: string;
     image?: string;
 }

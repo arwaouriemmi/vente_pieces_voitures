@@ -1,16 +1,24 @@
 import {
     Route,
   } from "react-router-dom";
-import AddCategory from "./components/CategoriesSection/addCategory";
 import CategoriesSection from "./components/CategoriesSection";
-import EditCategory from "./components/CategoriesSection/editCategory";
+import ProviderSection from "./components/ProviderSection";
+import EditProvider from "./components/ProviderSection/editProvider";
+import CarsSection from "./components/CarsSection";
+import EditCar from "./components/CarsSection/editCar";
 
 const Routes = (
     <Route path="admin">
         <Route path="categories" element={<CategoriesSection/>} />
-        <Route path="categories/add" element={<AddCategory/>} />
-        <Route path="categories/edit" element={<EditCategory/>} />
+        <Route path="providers" element={<ProviderSection pageNumber={5} />} />
+        <Route path="providers/add" element={<EditProvider newElement={true}/>} />
+        <Route path="providers/edit/:id" element={<EditProvider newElement={false}/>} />
+        <Route path="cars" element={<CarsSection pageNumber={5} />} />
+        <Route path="cars/add" element={<EditCar newElement={true}/>} />
+        <Route path="cars/edit/:id" element={<EditCar newElement={false}/>} />
     </Route>
+    
+
 )
 
 export default Routes;
