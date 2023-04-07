@@ -1,15 +1,11 @@
 import Label from "./label";
-import "./categories.css";
+import "../CategoriesSection/categories.css";
 import { useEffect, useState } from "react";
-import { GrAddCircle } from "react-icons/gr";
 import axios from "axios";
-import { Button, Col, Row } from "react-bootstrap";
-import EditCategory from "./editCategory";
-import { ToastContainer } from "react-toastify";
+import { Row } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import { Slide } from "react-slideshow-image";
 import 'react-slideshow-image/dist/styles.css'
-import { deleteData } from "../../utils";
 
 
 interface CategoryProps {
@@ -19,11 +15,9 @@ interface CategoryProps {
   image: string;
 }
 
-export default function CategoriesSection() {
+export default function CategoriesList() {
   const [categories, setCategories] = useState([] as CategoryProps[][]);
   const [selected, setSelected] = useState([] as number[]);
-  const [data, setData] = useState({});
-  const [isHidden, setIsHidden] = useState(true);
 
   const getCategories = async (id?: number, index?: number) => {
     let newCategories = [...categories];
@@ -44,18 +38,15 @@ export default function CategoriesSection() {
 
   useEffect(() => {
     getCategories();
+    console.log(categories);
   }, []);
 
   return (
-    <div className="custom-container">
-      <h1>Categories</h1>
-      
+    <div>
       {categories.length !== 0 &&
-      
         categories.map((catList, index) => (<Row>
-          <Col xs={10}  key={index}>
           <Slide
-          slidesToShow={3}>
+          slidesToShow={catList.length < 4? catList.length : 5}>
             {Object.values(catList).map((cat) => {
               return (
                 <div
@@ -65,7 +56,7 @@ export default function CategoriesSection() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     backgroundSize: 'cover',
-                    height: '200px'
+                    height: '100px'
                   }}
                   onClick={() => {
                     let newSelected = [...selected];
@@ -89,47 +80,8 @@ export default function CategoriesSection() {
             })}
           
           </Slide>
-          </Col>
-                    <Col size={1} key={index}
-                    className="icon"
-                    onClick={() => {
-                      setIsHidden(false);
-                      setData({ id: -1, parent: selected[index - 1] });
-                    } }
-                  >
-                      <GrAddCircle size={index === 0 ? 60 : 30} />
-                    </Col>
-                    </Row>
+        </Row>
         ))}
-        
-      <div className="container">
-        <Button
-          variant="primary"
-          disabled={selected.length === 0}
-          onClick={() => {
-            setIsHidden(false);
-            setData({ id: selected[selected.length - 1] });
-          }}
-        >
-          Modifier
-        </Button>
-
-        <Button
-          variant="primary"
-          disabled={selected.length === 0}
-          onClick={async () => {
-            deleteData("categories/delete/" , selected[selected.length - 1])
-          }}
-        >
-          Supprimer
-        </Button>
-      </div>
-      <EditCategory
-        isHidden={isHidden}
-        hide={() => setIsHidden(true)}
-        {...data}
-      />
-      <ToastContainer position="bottom-right" />
     </div>
   );
 }

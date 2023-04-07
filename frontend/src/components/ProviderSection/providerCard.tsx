@@ -1,5 +1,5 @@
 import { Card, Col, Row } from "react-bootstrap";
-import ProviderProps from "./ProviderProps";
+import ProviderProps from "../../types/ProviderProps";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { deleteData, getData } from "../../utils";

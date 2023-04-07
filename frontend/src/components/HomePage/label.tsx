@@ -1,4 +1,3 @@
-import "./categories.css"
 import { CategoryProps } from "../../types/categoryProps";
 
 
@@ -13,6 +12,7 @@ export default function Label({ label, image, parent, selected }: LabelProps) {
         {parent !== undefined && 
         <img
           src={image? image : "https://via.placeholder.com/150"}
+          style={{ width: 60, height: 60, margin: "auto" }}
           alt={label}
           className="label-image"
         />}

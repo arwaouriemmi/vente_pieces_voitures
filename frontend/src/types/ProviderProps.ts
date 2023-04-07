@@ -4,6 +4,7 @@ export default interface ProviderProps {
     logo?: string;
     city: string;
     address: string;
+    email?: string;
     phone: string;
     whatsapp?: string;
     facebook?: string;

@@ -1,5 +1,5 @@
 import { Nav, Card, Row, Pagination } from "react-bootstrap";
-import ProviderProps from "./ProviderProps";
+import ProviderProps from "../../types/ProviderProps";
 import ProviderCard from "./providerCard";
 import { useState } from "react";
 import axios from "axios";

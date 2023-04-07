@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
-import CarProps from "./carProps";
+import CarProps from "../../types/carProps";
 import CarCard from "./carCard";
 import { getData } from "../../utils";
 

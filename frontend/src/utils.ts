@@ -74,11 +74,11 @@ const patchData = async (uri: string, data: any) => {
   }
 };
 
-const deleteData = async (uri: string, id: string) => {
+const deleteData = async (uri: string, id: string | Number) => {
   const toastId = toast.loading("Votre message est en cours d'envoi!");
-  const link = "http://localhost:3001/" + uri + "/" + id;
+  const link = "http://localhost:3001/" + uri + id .toString();
   try {
-    await axios.delete(link);
+    await axios.delete(link, { data: { id }});
     toast.update(toastId, {
       ...toastOptions,
       render: "La donnée a été supprimée avec succées!",

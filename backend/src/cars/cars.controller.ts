@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
-@Controller('')
+@Controller('cars')
 export class CarsController {
-    @Get('cars')
+    @Get('')
     getCars() {
         return [
             {
@@ -22,17 +22,17 @@ export class CarsController {
         ];
     }
 
-    @Get('cars/brands')
+    @Get('brands')
     getBrands() {
         return ['test 1', 'test 2'];
     }
 
-    @Get('cars/models')
+    @Get('models')
     getModels(@Query('brand') brand: string) {
         return ['test 1', 'test 2'];
     }
 
-    @Get('cars/:id')
+    @Get(':id')
     getCar(@Param('id') id: string) {
         return {
             id: Math.floor(Math.random() * 100),
@@ -43,17 +43,23 @@ export class CarsController {
         };
     }
 
-    @Post('cars/add')
+    @Get('motorizations')
+    getMotorizations(@Query('brand') brand: string, @Query('model') model: string) {
+        console.log(brand, model);
+        return ['test 1', 'test 2'];
+    }
+
+    @Post('add')
     addCar(@Body() car: any) {
         console.log(car);
     }
 
-    @Patch('cars/edit/:id')
+    @Patch('edit/:id')
     updateCar(@Body() car: any) {
         console.log(car);
     }
 
-    @Delete('cars/delete/:id')
+    @Delete('delete/:id')
     deleteCar(@Param('id') id: string) {
         console.log(id);
     }
