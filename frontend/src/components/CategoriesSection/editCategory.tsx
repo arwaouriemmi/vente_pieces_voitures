@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, FormControl, FormLabel } from "react-bootstrap";
-import { CategoryProps } from "./categoryProps";
+import { CategoryProps } from "../../types/categoryProps";
 import "react-toastify/dist/ReactToastify.css";
 import { GrClose } from "react-icons/gr";
 import "../../custom.css";

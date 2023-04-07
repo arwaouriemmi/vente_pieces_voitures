@@ -7,7 +7,7 @@ import {
   FormLabel,
   NavLink,
 } from "react-bootstrap";
-import CarProps from "./carProps";
+import CarProps from "../../types/carProps";
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { getData, patchData, postData } from "../../utils";

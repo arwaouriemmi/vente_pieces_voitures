@@ -22,7 +22,6 @@ export class CategoriesController {
   
   @Get('subcategories/:id')
   getSubCategories(@Param('id') id: number) {
-    console.log(id);
     return [
       {
         label: 'test 1',

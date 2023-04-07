@@ -1,6 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import ProviderProps from "./ProviderProps";
-import axios from "axios";
+import ProviderProps from "../../types/ProviderProps";
 import { useParams } from "react-router-dom";
 import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
 import { cities } from "./cities";
@@ -16,7 +15,7 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
 
   useEffect(() => {
     if (!newElement && id) {
-      getData("providers/" + id, setFormData)
+      getData("providers/" + id, setFormData);
     }
   }, [id]);
 
@@ -40,6 +39,12 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
       errors.city = "⚠ Veuillez choisir une ville";
     }
     if (
+      values.email &&
+      values.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) === null
+    ) {
+      errors.email = "⚠ L'adresse email doit être sous la forme ...@...";
+    }
+    if (
       values.facebook &&
       values.facebook.match(
         /^(https?:\/\/)?(www\.)?facebook.com\/[a-zA-Z0-9(\.\?)?]/
@@ -50,23 +55,35 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
     }
     if (
       values.whatsapp &&
-      values.whatsapp.match(/^(https?:\/\/)?(www\.)?wa.me\/[a-zA-Z0-9(\.\?)?]/) === null
+      values.whatsapp.match(
+        /^(https?:\/\/)?(www\.)?wa.me\/[a-zA-Z0-9(\.\?)?]/
+      ) === null
     ) {
       errors.whatsapp = "⚠ Le lien doit être sous la forme https://wa.me/...";
     }
     if (
       values.messenger &&
-      values.messenger.match(/^(https?:\/\/)?(www\.)?m.me\/[a-zA-Z0-9(\.\?)?]/) === null
+      values.messenger.match(
+        /^(https?:\/\/)?(www\.)?m.me\/[a-zA-Z0-9(\.\?)?]/
+      ) === null
     ) {
       errors.messenger = "⚠ Le lien doit être sous la forme https://m.me/...";
     }
     console.log(errors);
-    if (errors.name || errors.address || errors.phone || errors.city || errors.facebook || errors.whatsapp || errors.messenger) {
+    if (
+      errors.name ||
+      errors.address ||
+      errors.phone ||
+      errors.city ||
+      errors.facebook ||
+      errors.whatsapp ||
+      errors.messenger
+    ) {
       console.log("invalid form");
       setIsValidate(false);
     } else {
       setIsValidate(true);
-      console.log ("valid form")
+      console.log("valid form");
     }
     return errors;
   };
@@ -79,13 +96,29 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
   const EditProvider = async (formData: ProviderFormProps) => {
     console.log(formData);
     patchData("providers/edit/" + id, formData);
-    setFormData({ name: "", address: "", phone: "", city: "", facebook: "", whatsapp: "", messenger: "" });
+    setFormData({
+      name: "",
+      address: "",
+      phone: "",
+      city: "",
+      facebook: "",
+      whatsapp: "",
+      messenger: "",
+    });
   };
 
   const AddProvider = async (formData: ProviderFormProps) => {
     console.log(formData);
     postData("providers/add", formData);
-    setFormData({ name: "", address: "", phone: "", city: "", facebook: "", whatsapp: "", messenger: "" });
+    setFormData({
+      name: "",
+      address: "",
+      phone: "",
+      city: "",
+      facebook: "",
+      whatsapp: "",
+      messenger: "",
+    });
   };
 
   const handleChange = (e: FormEvent<HTMLFormElement>) => {
@@ -142,6 +175,17 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
           onChange={(e: any) => handleChange(e)}
         />
         <p className="text-danger">{!isValidate && errors["phone"]}</p>
+      </div>
+
+      <div className="mb-3">
+        <FormLabel>E-mail: </FormLabel>
+        <FormControl
+          type={"text"}
+          value={formData.email}
+          name={"email"}
+          onChange={(e: any) => handleChange(e)}
+        />
+        <p className="text-danger">{!isValidate && errors["email"]}</p>
       </div>
 
       <div className="mb-3">

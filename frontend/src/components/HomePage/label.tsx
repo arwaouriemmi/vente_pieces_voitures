@@ -1,4 +1,4 @@
-import { CategoryProps } from "../CategoriesSection/categoryProps";
+import { CategoryProps } from "../../types/categoryProps";
 
 
 interface LabelProps extends CategoryProps {

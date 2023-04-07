@@ -1,5 +1,5 @@
 import "./categories.css"
-import { CategoryProps } from "./categoryProps";
+import { CategoryProps } from "../../types/categoryProps";
 
 
 interface LabelProps extends CategoryProps {

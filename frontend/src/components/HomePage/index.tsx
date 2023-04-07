@@ -4,8 +4,11 @@ import { Row } from "react-bootstrap";
 import CategoriesList from "./categoryList";
 import "bootstrap/dist/css/bootstrap.min.css"
 import SideBar from "./sideBar";
+import { useParams } from "react-router-dom";
 
 export function HomePage() {
+  let { id } = useParams<{ id: string }>();
+
   return (
     <div className="d-flex flex-row justify-items-between">
         <SideBar/>

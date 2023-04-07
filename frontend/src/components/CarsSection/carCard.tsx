@@ -1,7 +1,7 @@
 import { Card, Col, Row } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import CarProps from "./carProps";
+import CarProps from "../../types/carProps";
 
 export default function CarCard({
   id,
