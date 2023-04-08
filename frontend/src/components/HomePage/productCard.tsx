@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import {ProductProps} from "../../types/ProductProps";
 
 const piece = {
   id: 1,
@@ -12,20 +13,20 @@ const piece = {
   location: "Tunis",
 };
 
-export default function ProductCard() {
+export default function ProductCard({product}: {product: ProductProps}) {
   const [isClicked, setIsClicked] = useState(false);
-  
+
   return (
     <div className="product-card">
-      <img src={piece.image} alt={piece.title} className="product-image" />
+      <img src={product.image} alt={product.title} className="product-image" />
       <Card.Body style={{margin: "12px"}}>
         <Card.Title>
-          <Link to={"spare-parts/" + piece.id.toString()} style={{textDecoration: "none"}}>{piece.title}</Link>
+          <Link to={"spare-parts/" + piece.id.toString()} style={{textDecoration: "none"}}>{product.title}</Link>
         </Card.Title>
 
-        <Card.Text>{piece.price + " TND"}</Card.Text>
-        <Card.Text>{piece.location} </Card.Text>
-        <Card.Text style={{fontWeight: "bold"}}>{piece.provider}
+        <Card.Text>{product.price + " TND"}</Card.Text>
+        <Card.Text>{product.location} </Card.Text>
+        <Card.Text style={{fontWeight: "bold"}}>{product.provider}
         </Card.Text>
 
       </Card.Body>
