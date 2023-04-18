@@ -15,8 +15,9 @@
     "@types/react": "^18.0.31",
     "@types/react-dom": "^18.0.11",
     "axios": "^1.3.4",
-    "bootstrap": "^5.2.3",
+    "bootstrap": "^5.3.0-alpha3",
     "bootstrap-icons": "^1.10.3",
+    "css": "^3.0.0",
     "fab": "^1.0.0-rc.9",
     "fas": "^0.3.6",
     "fontawesome-free": "^1.0.4",
@@ -29,6 +30,7 @@
     "react-scripts": "5.0.1",
     "react-slideshow-image": "^4.2.1",
     "react-toastify": "^9.1.2",
+    "tailwind": "^4.0.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },

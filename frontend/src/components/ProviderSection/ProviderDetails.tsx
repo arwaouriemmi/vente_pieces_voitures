@@ -53,7 +53,7 @@ export default function ProviderDetails() {
           />
         ) : (
           <img
-            src="../images/placeholder.png"
+            src="../placeholder.png"
             className="img-fluid rounded-circle "
             style={{ width: "300px" }}
           />
@@ -82,7 +82,11 @@ export default function ProviderDetails() {
                 fontSize: "23px",
               }}
             ></i>
-            {provider?.whatsapp ? provider?.whatsapp : "Non Fourni"}
+            {provider.whatsapp ? (
+                <a href={provider.whatsapp}>Lien Whatsapp</a>
+            ) : (
+                "Non Fourni"
+            )}
           </li>
           <li style={{ paddingBottom: "30px" }}>
             <i
@@ -137,8 +141,8 @@ export default function ProviderDetails() {
               : "Aucune observation disponible"}
           </li>
           <li>
-            <Link to="/login" className="focus-visible:outline-none">
-              <button className="btn-sm btn-primary text-sm" type="submit">
+            <Link to="/providers/1/pieces" className="focus-visible:outline-none">
+              <button className="btn-sm btn-primary text-sm" style={{"width":'150px'}} type="submit">
                 <i className="fa-sharp fa-regular fa-eye"></i>Voir les piéces
               </button>
             </Link>

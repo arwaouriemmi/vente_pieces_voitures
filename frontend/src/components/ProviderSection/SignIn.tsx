@@ -6,10 +6,10 @@ export default function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    return (<section className="vh-100 bg-primary" style={{backgroundImage: 'url("../images/img.png")'}}>
-        <div className="container py-5 h-100">
-            <div className="row d-flex justify-content-center align-items-center h-100">
-                <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+
+    return (<section className="vh-100 gradient-custom" style={{backgroundImage:'url("../background.png")'}}>
+        <div className="container py-5 d-flex justify-content-center align-items-center h-100">
+            <div className="col-12 col-md-8 col-lg-6 col-xl-5">
                     <div className="card bg-light text-primary" style={{borderRadius: '1rem'}}>
                         <div className="card-body p-5 text-center">
 
@@ -38,7 +38,7 @@ export default function SignIn() {
 
                                 </div>
 
-                                <button className="btn btn-outline-primary btn-lg px-5" type="submit" onClick={(e) => {
+                                <button className="btn btn-outline-primary " style={{marginTop:'70px'}}type="submit" onClick={(e) => {
                                     axios.post('/fournisseur/login', {
                                         email,
                                         password
@@ -58,7 +58,6 @@ export default function SignIn() {
                     </div>
                 </div>
             </div>
-        </div>
     </section>)
 
 }
