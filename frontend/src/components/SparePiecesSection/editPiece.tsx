@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { FormDataProps } from "../../types/FormDataProps";
 import { useParams } from "react-router-dom";
-import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
+import { Button, Form, FormControl, FormLabel, Navbar } from "react-bootstrap";
 import { getData, handleChange, postData } from "../../utils";
 import CarsSearchForm from "../SearchForm/carsSearchForm";
 import { CategoryProps } from "../../types/categoryProps";
+import NavbarSection from "../navbarSection/Navbar";
 
 export default function EditPiece() {
   const [formData, setFormData] = useState<FormDataProps>({} as FormDataProps);
@@ -100,14 +101,15 @@ export default function EditPiece() {
 
   useEffect(() => {
     if (formData.subCategory !== "" && formData.subCategory !== undefined) {
-      //getData("pieces/" + formData.subCategory, setPieces);
-      setPieces([{id: 4, label: "piece1" }, {id: 5, label: "piece2" }, {id: 6, label: "piece3" }]);
+      getData("pieces/" + formData.subCategory, setPieces);
+      setPieces([{ id: 4, label: "piece1" }, { id: 5, label: "piece2" }, { id: 6, label: "piece3" }]);
     } else {
       setPieces([]);
     }
   }, [formData.subCategory]);
 
-  return (
+  return (<>
+    <NavbarSection isAuthentificated={true} id={id} role="provider" />
     <div
       className={`custom-container`}
       style={{
@@ -122,8 +124,8 @@ export default function EditPiece() {
       <fieldset
         style={{ border: "2px solid ", margin: "20px", padding: "20px" }}
       >
-        <CarsSearchForm formData={formData} setFormData={setFormData} 
-        errors= {errors} isValidate = {isValidate} />
+        <CarsSearchForm formData={formData} setFormData={setFormData}
+          errors={errors} isValidate={isValidate} />
       </fieldset>
 
       <fieldset
@@ -265,5 +267,6 @@ export default function EditPiece() {
         Enregistrer la piéce
       </Button>
     </div>
+  </>
   );
 }

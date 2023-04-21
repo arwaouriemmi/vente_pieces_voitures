@@ -5,8 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { GrClose } from "react-icons/gr";
 import "../../custom.css";
 import { getData, handleChange, patchData, postData } from "../../utils";
+import NavbarSection from "../navbarSection/Navbar";
 
-interface CategoryFormProps extends Partial<CategoryProps> {}
+interface CategoryFormProps extends Partial<CategoryProps> { }
 
 interface FormProps extends CategoryFormProps {
   isHidden: boolean;
@@ -69,6 +70,7 @@ export default function EditCategory({
   };
 
   return (
+
     <div className={`prompt ${isHidden && "d-none"}`}>
       <GrClose
         onClick={() => hide()}
@@ -115,5 +117,6 @@ export default function EditCategory({
         Enregistrer
       </Button>
     </div>
+
   );
 }

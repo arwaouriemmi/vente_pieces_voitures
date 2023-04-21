@@ -7,6 +7,7 @@ import SideBar from "./sideBar";
 import { useParams } from "react-router-dom";
 import {useState} from "react";
 import {ProductProps} from "../../types/ProductProps";
+import NavbarSection from "../navbarSection/Navbar";
 
 export function HomePage() {
   let { id } = useParams<{ id: string }>();
@@ -16,8 +17,10 @@ export function HomePage() {
     setProducts(products);
   };
 
-  return (
+  return (<>
+    <NavbarSection isAuthentificated={true} role="provider"  />
     <div className="d-flex flex-row justify-items-between">
+    
         <SideBar handleSearch={handleSearch}/>
     <div className="p-2 "
     style = {{
@@ -37,5 +40,6 @@ export function HomePage() {
       </Row>
     </div>
     </div>
+    </>
   );
 }

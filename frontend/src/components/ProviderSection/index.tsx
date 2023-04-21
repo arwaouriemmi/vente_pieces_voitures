@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
 import { getData } from "../../utils";
+import NavbarSection from "../navbarSection/Navbar";
 
 export default function ProviderSection({
   pageNumber,
@@ -24,7 +25,8 @@ export default function ProviderSection({
     getData("providers?active=" + active + "&page=" + page, setProviders);
   }, [active, page]);
 
-  return (
+  return (<>
+    <NavbarSection isAuthentificated={true} role="admin" />
     <div className="custom-container">
       <h1>Fournisseurs</h1>
       <Card>
@@ -51,7 +53,7 @@ export default function ProviderSection({
             >
               <Nav.Link active={active === "bloques"}>Bloqués</Nav.Link>
             </Nav.Item>
-            <Link to="/admin/providers/add" 
+            <Link to="/admin/providers/add"
               style={{ marginLeft: "auto", cursor: "pointer" }}
             >
               <GrAddCircle size={30} />
@@ -67,35 +69,36 @@ export default function ProviderSection({
         </Card.Body>
 
         <Card.Footer>
-        <Nav style={{marginLeft: "30%"}}>
-        <Pagination>
-          <Pagination.Prev
-            disabled={page === 1}
-            onClick={() => {
-              setPage(page - 1);
-            }}
-          />
-          {Array.from({ length: pageNumber }, (_, i) => (
-            <Pagination.Item
-              key={i}
-              active={i + 1 === page}
-              onClick={() => {
-                setPage(i + 1);
-              }}
-            >
-              {i + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next
-            disabled={page === pageNumber}
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          />
-        </Pagination>
-      </Nav>
+          <Nav style={{ marginLeft: "30%" }}>
+            <Pagination>
+              <Pagination.Prev
+                disabled={page === 1}
+                onClick={() => {
+                  setPage(page - 1);
+                }}
+              />
+              {Array.from({ length: pageNumber }, (_, i) => (
+                <Pagination.Item
+                  key={i}
+                  active={i + 1 === page}
+                  onClick={() => {
+                    setPage(i + 1);
+                  }}
+                >
+                  {i + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next
+                disabled={page === pageNumber}
+                onClick={() => {
+                  setPage(page + 1);
+                }}
+              />
+            </Pagination>
+          </Nav>
         </Card.Footer>
       </Card>
     </div>
+  </>
   );
 }

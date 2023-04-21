@@ -28,7 +28,7 @@ const Routes = (
     </Route>
     <Route path="providers">
       <Route path=":id" element={<ProviderDetails />} />
-      <Route path=":id/pieces" element={<HomePage/>}/>
+      <Route path=":id/pieces" element={<HomePage />} />
     </Route>
     <Route path="pieces">
       <Route path="add" element={<EditPiece />} />

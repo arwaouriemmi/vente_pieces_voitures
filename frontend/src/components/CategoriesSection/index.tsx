@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Slide } from "react-slideshow-image";
 import 'react-slideshow-image/dist/styles.css'
 import { deleteData } from "../../utils";
+import NavbarSection from "../navbarSection/Navbar";
 
 
 interface CategoryProps {
@@ -46,62 +47,63 @@ export default function CategoriesSection() {
     getCategories();
   }, []);
 
-  return (
+  return (<>
+    <NavbarSection isAuthentificated={true} role="admin" />
     <div className="custom-container">
-      <h1>Categories</h1>
-      
+      <h1>Catégories</h1>
+
       {categories.length !== 0 &&
-      
+
         categories.map((catList, index) => (<Row>
-          <Col xs={10}  key={index}>
-          <Slide
-          slidesToShow={3}>
-            {Object.values(catList).map((cat) => {
-              return (
-                <div
-                  key={cat.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundSize: 'cover',
-                    height: '200px'
-                  }}
-                  onClick={() => {
-                    let newSelected = [...selected];
-                    if (categories.length > index + 1) {
-                      newSelected.length = index + 1;
-                      categories.length = index + 1;
-                    }
-                    newSelected[index] = cat.id;
-                    setSelected(newSelected);
-                    setCategories(categories);
-                    if (newSelected.includes(cat.id))
-                      getCategories(cat.id, index);
-                  } }
-                >
-                  <Label
+          <Col xs={10} key={index}>
+            <Slide
+              slidesToShow={3}>
+              {Object.values(catList).map((cat) => {
+                return (
+                  <div
                     key={cat.id}
-                    selected={selected.includes(cat.id)}
-                    {...cat} />
-                </div>
-              );
-            })}
-          
-          </Slide>
-          </Col>
-                    <Col size={1} key={index}
-                    className="icon"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundSize: 'cover',
+                      height: '200px'
+                    }}
                     onClick={() => {
-                      setIsHidden(false);
-                      setData({ id: -1, parent: selected[index - 1] });
-                    } }
+                      let newSelected = [...selected];
+                      if (categories.length > index + 1) {
+                        newSelected.length = index + 1;
+                        categories.length = index + 1;
+                      }
+                      newSelected[index] = cat.id;
+                      setSelected(newSelected);
+                      setCategories(categories);
+                      if (newSelected.includes(cat.id))
+                        getCategories(cat.id, index);
+                    }}
                   >
-                      <GrAddCircle size={index === 0 ? 60 : 30} />
-                    </Col>
-                    </Row>
+                    <Label
+                      key={cat.id}
+                      selected={selected.includes(cat.id)}
+                      {...cat} />
+                  </div>
+                );
+              })}
+
+            </Slide>
+          </Col>
+          <Col size={1} key={index}
+            className="icon"
+            onClick={() => {
+              setIsHidden(false);
+              setData({ id: -1, parent: selected[index - 1] });
+            }}
+          >
+            <GrAddCircle size={index === 0 ? 60 : 30} />
+          </Col>
+        </Row>
         ))}
-        
+
       <div className="container">
         <Button
           variant="primary"
@@ -118,7 +120,7 @@ export default function CategoriesSection() {
           variant="primary"
           disabled={selected.length === 0}
           onClick={async () => {
-            deleteData("categories/delete/" , selected[selected.length - 1])
+            deleteData("categories/delete/", selected[selected.length - 1])
           }}
         >
           Supprimer
@@ -131,5 +133,6 @@ export default function CategoriesSection() {
       />
       <ToastContainer position="bottom-right" />
     </div>
+  </>
   );
 }
