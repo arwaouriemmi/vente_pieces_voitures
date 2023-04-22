@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProviderProps from "../../types/ProviderProps";
 import { getData } from "../../utils";
+import NavbarSection from "../navbarSection/Navbar";
 
 const provider1 = {
   id: "1",
@@ -38,10 +39,11 @@ export default function ProviderDetails() {
     getData("providers/" + id, setProvider);
   }, []);
 
-  return (
+  return (<>
+    <NavbarSection id={id} role="provider" isAuthentificated={true} />
     <div
       className="container"
-      style={{ display: "flex", flexDirection: "row", paddingTop: "100px" }}
+      style={{ display: "flex", flexDirection: "row", paddingTop: "50px" }}
     >
       <div className="image-profile" style={{ flex: 1 }}>
         {provider.logo ? (
@@ -53,14 +55,14 @@ export default function ProviderDetails() {
           />
         ) : (
           <img
-            src="../placeholder.png"
+            src="../placeholder.jpg"
             className="img-fluid rounded-circle "
             style={{ width: "300px" }}
           />
         )}
       </div>
       <div className="credentials" style={{ flex: 2, paddingLeft: "20px" }}>
-        <ul style={{ listStyle: "none", paddingTop: "70px" }}>
+        <ul style={{ listStyle: "none", paddingTop: "10px" }}>
           <li style={{ paddingBottom: "30px" }}>
             <h1 className="text-4xl font-bold">
               {provider.name.charAt(0).toUpperCase() + provider.name.slice(1)}{" "}
@@ -83,9 +85,9 @@ export default function ProviderDetails() {
               }}
             ></i>
             {provider.whatsapp ? (
-                <a href={provider.whatsapp}>Lien Whatsapp</a>
+              <a href={provider.whatsapp}>Lien Whatsapp</a>
             ) : (
-                "Non Fourni"
+              "Non Fourni"
             )}
           </li>
           <li style={{ paddingBottom: "30px" }}>
@@ -142,7 +144,7 @@ export default function ProviderDetails() {
           </li>
           <li>
             <Link to="/providers/1/pieces" className="focus-visible:outline-none">
-              <button className="btn-sm btn-primary text-sm" style={{"width":'150px'}} type="submit">
+              <button className="btn-sm btn-primary text-sm" style={{ "width": '150px' }} type="submit">
                 <i className="fa-sharp fa-regular fa-eye"></i>Voir les piéces
               </button>
             </Link>
@@ -150,5 +152,6 @@ export default function ProviderDetails() {
         </ul>
       </div>
     </div>
+  </>
   );
 }

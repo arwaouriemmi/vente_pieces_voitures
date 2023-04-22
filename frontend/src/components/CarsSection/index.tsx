@@ -7,6 +7,7 @@ import { GrAddCircle } from "react-icons/gr";
 import CarProps from "../../types/carProps";
 import CarCard from "./carCard";
 import { getData } from "../../utils";
+import NavbarSection from "../navbarSection/Navbar";
 
 export default function CarsSection({ pageNumber }: { pageNumber: number }) {
   const [searchParams] = useSearchParams();
@@ -19,7 +20,8 @@ export default function CarsSection({ pageNumber }: { pageNumber: number }) {
     getData("cars?page=" + page, setCars);
   }, [page]);
 
-  return (
+  return (<>
+    <NavbarSection isAuthentificated={true} role="admin" />
     <div className="custom-container">
       <h1>
         Voitures
@@ -64,5 +66,6 @@ export default function CarsSection({ pageNumber }: { pageNumber: number }) {
         </Pagination>
       </Nav>
     </div>
+  </>
   );
 }

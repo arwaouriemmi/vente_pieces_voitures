@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
 import { cities } from "./cities";
 import { getData, patchData, postData } from "../../utils";
+import NavbarSection from "../navbarSection/Navbar";
 
-interface ProviderFormProps extends Partial<ProviderProps> {}
+interface ProviderFormProps extends Partial<ProviderProps> { }
 
 export default function EditProvider({ newElement }: { newElement: boolean }) {
   const { id } = useParams<{ id: string }>();
@@ -126,7 +127,8 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  return (
+  return (<>
+    <NavbarSection isAuthentificated={true} role="admin" />
     <div className={`custom-container`}>
       <h4>{newElement ? "Ajouter " : "Modifier "}un fournisseur</h4>
       <div className="mb-3">
@@ -258,5 +260,6 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
         Enregistrer
       </Button>
     </div>
+  </>
   );
 }
