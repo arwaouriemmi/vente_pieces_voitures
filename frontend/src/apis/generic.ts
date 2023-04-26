@@ -24,7 +24,6 @@ const getData = async (
       .catch((err) => {
         throw Error(err);
       });
-
     setData && setData(response.data);
     return response.data;
   } catch (err) {

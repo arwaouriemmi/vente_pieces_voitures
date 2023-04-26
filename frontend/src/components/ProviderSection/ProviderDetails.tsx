@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProviderProps from "../../types/ProviderProps";
-import { getData } from "../../utils";
-import NavbarSection from "../navbarSection/Navbar";
+import { getData } from "../../apis/generic";
+import { getProviderByIdFromApi } from "../../apis/providerApis";
 
 const provider1 = {
   id: "1",
@@ -36,11 +36,12 @@ export default function ProviderDetails() {
   });
 
   useEffect(() => {
-    getData("providers/" + id, setProvider);
+    getProviderByIdFromApi(id ?? "-1").then((res) => {
+      setProvider(res.data);
+    });
   }, []);
 
   return (<>
-    <NavbarSection id={id} role="provider" isAuthentificated={true} />
     <div
       className="container"
       style={{ display: "flex", flexDirection: "row", paddingTop: "50px" }}

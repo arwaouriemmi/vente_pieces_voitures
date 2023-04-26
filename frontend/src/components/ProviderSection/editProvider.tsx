@@ -3,8 +3,7 @@ import ProviderProps from "../../types/ProviderProps";
 import { useParams } from "react-router-dom";
 import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
 import { cities } from "./cities";
-import { getData, patchData, postData } from "../../utils";
-import NavbarSection from "../navbarSection/Navbar";
+import { getProviderByIdFromApi, patchProvider, postProvider } from "../../apis/providerApis";
 
 interface ProviderFormProps extends Partial<ProviderProps> { }
 
@@ -16,7 +15,9 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
 
   useEffect(() => {
     if (!newElement && id) {
-      getData("providers/" + id, setFormData);
+      getProviderByIdFromApi(id).then((res) => {
+        setFormData(res.data);
+      });
     }
   }, [id]);
 
@@ -96,7 +97,7 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
 
   const EditProvider = async (formData: ProviderFormProps) => {
     console.log(formData);
-    patchData("providers/edit/" + id, formData);
+    patchProvider(id ?? "", formData);
     setFormData({
       name: "",
       address: "",
@@ -110,7 +111,7 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
 
   const AddProvider = async (formData: ProviderFormProps) => {
     console.log(formData);
-    postData("providers/add", formData);
+    postProvider(formData);
     setFormData({
       name: "",
       address: "",
@@ -128,7 +129,6 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
   };
 
   return (<>
-    <NavbarSection isAuthentificated={true} role="admin" />
     <div className={`custom-container`}>
       <h4>{newElement ? "Ajouter " : "Modifier "}un fournisseur</h4>
       <div className="mb-3">

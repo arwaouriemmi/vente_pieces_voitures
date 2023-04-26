@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { FormDataProps } from "../../types/FormDataProps";
-import { getData, handleChange } from "../../utils";
+import { getData, handleChange } from "../../apis/generic";
 import { FormLabel, Form } from "react-bootstrap";
 import CarProps from "../../types/carProps";
+import { getCarBrands, getCarModels, getCarMotorization } from "../../apis/carApis";
 
 interface CarsSearchFormProps {
   setFormData: React.Dispatch<React.SetStateAction<any>>;
@@ -22,12 +23,16 @@ export default function CarsSearchForm({
   const [motorizations, setMotorizations] = useState<string[]>([]);
 
   useEffect(() => {
-    getData("cars/brands/", setBrands);
+    getCarBrands().then((res) => {
+      setBrands(res.data);
+    });
   }, []);
 
   useEffect(() => {
     if (formData.brand !== "" && formData.brand !== undefined) {
-      getData("cars/models?brand=" + formData.brand, setModels);
+      getCarModels(formData.brand).then((res) => {
+        setModels(res.data);
+      });
     } else {
       setModels([]);
       setMotorizations([]);
@@ -36,14 +41,9 @@ export default function CarsSearchForm({
 
   useEffect(() => {
     if (formData.model !== "" && formData.brand !== "" && formData.model !== undefined && formData.brand !== undefined) {
-      /*getData(
-        "cars/motorizations?brand=" +
-          formData.brand +
-          "&model=" +
-          formData.model,
-        setMotorizations
-      );*/
-      setMotorizations(["1", "2", "3"]);
+      getCarMotorization(formData.brand, formData.model).then((res) => {
+        setMotorizations(res.data);
+      });
     } else {
       setMotorizations([]);
     }
@@ -62,7 +62,7 @@ export default function CarsSearchForm({
           onChange={(e: any) => handleChange(e, formData, setFormData)}
         >
           <option value="">Choisir une marque</option>
-          {brands.map((brand) => (
+          {brands && brands.map((brand) => (
             <option value={brand}>{brand}</option>
           ))}
         </Form.Select>

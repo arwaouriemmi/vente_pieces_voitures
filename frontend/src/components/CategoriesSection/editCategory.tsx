@@ -4,8 +4,8 @@ import { CategoryProps } from "../../types/categoryProps";
 import "react-toastify/dist/ReactToastify.css";
 import { GrClose } from "react-icons/gr";
 import "../../custom.css";
-import { getData, handleChange, patchData, postData } from "../../utils";
-import NavbarSection from "../navbarSection/Navbar";
+import {handleChange} from "../../apis/generic";
+import { getCategoriesFromApi, patchCategory, postCategory } from "../../apis/categoryApis";
 
 interface CategoryFormProps extends Partial<CategoryProps> { }
 
@@ -24,9 +24,10 @@ export default function EditCategory({
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isValidate, setIsValidate] = useState(false);
 
-  useEffect(() => {
+  const getFormData = async ()=>{
     if (id !== -1 && id !== undefined) {
-      getData("categories/" + id, setFormData);
+      const data = await getCategoriesFromApi(id);
+      setFormData(data);
     } else {
       const newFormData: CategoryFormProps = {
         id: id !== -1 ? id : undefined,
@@ -34,6 +35,11 @@ export default function EditCategory({
       };
       setFormData(newFormData);
     }
+  }
+  
+
+  useEffect(() => {
+    getFormData();
   }, [id]);
 
   const validateForm = (values: CategoryFormProps) => {
@@ -57,15 +63,15 @@ export default function EditCategory({
     setErrors(validateForm(formData));
   }, [formData]);
 
-  const EditCategory = async (formData: CategoryFormProps) => {
+  const EditCategory = async () => {
     console.log(formData);
-    patchData("categories/edit/" + id, formData);
+    patchCategory(id ?? 0, formData);
     setFormData({ label: "" });
   };
 
-  const AddCategory = async (formData: CategoryFormProps) => {
+  const AddCategory = async () => {
     console.log(formData);
-    postData("categories/add", formData);
+    postCategory(formData);
     setFormData({ label: "" });
   };
 
@@ -111,7 +117,7 @@ export default function EditCategory({
         disabled={!isValidate}
         className="m-3"
         onClick={() => {
-          id === -1 ? AddCategory(formData) : EditCategory(formData);
+          id === -1 ? AddCategory() : EditCategory();
         }}
       >
         Enregistrer

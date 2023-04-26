@@ -3,7 +3,7 @@ import { Link} from 'react-router-dom';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import NavbarProps from '../../types/NavbarProps';
 import ProviderProps from "../../types/ProviderProps";
-import { getData } from '../../utils';
+import { getData } from '../../apis/generic';
 import "./Navbar.css";
 
 const provider1 = {
