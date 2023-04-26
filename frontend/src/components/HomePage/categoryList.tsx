@@ -1,11 +1,11 @@
 import Label from "./label";
 import "../CategoriesSection/categories.css";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Row } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import { Slide } from "react-slideshow-image";
 import 'react-slideshow-image/dist/styles.css'
+import { getCategoriesFromApi } from "../../apis/categoryApis";
 
 
 interface CategoryProps {
@@ -22,15 +22,14 @@ export default function CategoriesList() {
   const getCategories = async (id?: number, index?: number) => {
     let newCategories = [...categories];
     try {
-      let response = id
-        ? await axios.get("http://localhost:3001/categories")
-        : await axios.get("http://localhost:3001/subcategories/" + id);
+      let data = await getCategoriesFromApi(id);
       if (index !== undefined) {
-        newCategories[index + 1] = response.data;
+        newCategories[index + 1] = data;
       } else {
-        newCategories[0] = response.data;
+        newCategories[0] = data;
       }
       setCategories(newCategories);
+      console.log(categories);
     } catch (err) {
       console.log(err);
     }

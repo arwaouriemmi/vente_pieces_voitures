@@ -2,7 +2,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import ProviderProps from "../../types/ProviderProps";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { deleteData, getData } from "../../utils";
+import { deleteData, getData } from "../../apis/generic";
 
 export default function ProviderCard({ 
     id,
@@ -15,11 +15,11 @@ export default function ProviderCard({
 }: ProviderProps) {
 
     const deleteProvider = (id: string) => {
-        deleteData("providers/delete/", id.toString())
+        deleteProvider(id);
     }
 
     const restoreProvider = (id: string) => {
-        getData("providers/restore/"+ id.toString())
+        restoreProvider(id);
     }
 
     return (

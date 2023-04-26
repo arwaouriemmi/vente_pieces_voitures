@@ -6,8 +6,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
-import { getData } from "../../utils";
-import NavbarSection from "../navbarSection/Navbar";
+import { getData } from "../../apis/generic";
+import { getProvidersFromApi } from "../../apis/providerApis";
 
 export default function ProviderSection({
   pageNumber,
@@ -22,11 +22,12 @@ export default function ProviderSection({
   );
 
   useEffect(() => {
-    getData("providers?active=" + active + "&page=" + page, setProviders);
+    getProvidersFromApi(active, page).then((res) => {
+      setProviders(res.data);
+    });
   }, [active, page]);
 
   return (<>
-    <NavbarSection isAuthentificated={true} role="admin" />
     <div className="custom-container">
       <h1>Fournisseurs</h1>
       <Card>

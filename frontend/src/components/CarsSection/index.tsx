@@ -6,8 +6,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
 import CarProps from "../../types/carProps";
 import CarCard from "./carCard";
-import { getData } from "../../utils";
-import NavbarSection from "../navbarSection/Navbar";
+import { getData } from "../../apis/generic";
+import { getCarsFromApi } from "../../apis/carApis";
 
 export default function CarsSection({ pageNumber }: { pageNumber: number }) {
   const [searchParams] = useSearchParams();
@@ -17,11 +17,12 @@ export default function CarsSection({ pageNumber }: { pageNumber: number }) {
   );
 
   useEffect(() => {
-    getData("cars?page=" + page, setCars);
+    getCarsFromApi(page).then((res) => {
+      setCars(res.data);
+    });
   }, [page]);
 
   return (<>
-    <NavbarSection isAuthentificated={true} role="admin" />
     <div className="custom-container">
       <h1>
         Voitures

@@ -3,8 +3,9 @@ import {useState} from "react";
 import {Button, Form} from "react-bootstrap";
 import CarsSearchForm from "../SearchForm/carsSearchForm";
 import CarProps from "../../types/carProps";
-import {getData} from "../../utils";
+import {getData} from "../../apis/generic";
 import {ProductProps} from "../../types/ProductProps";
+import { searchPieces } from "../../apis/piecesApis";
 
 export default function SideBar({handleSearch}: { handleSearch: (products: ProductProps[]) => void }) {
     const [formData, setFormData] = useState({
@@ -14,8 +15,9 @@ export default function SideBar({handleSearch}: { handleSearch: (products: Produ
     } as CarProps);
     const [sortBy, setSortBy] = useState<string>("");
     const handleClick = () => {
-        getData('searchby?brand=' + formData.brand + '&model=' + formData.model + '&motorization=' + formData.motorization + '&sortby=' + sortBy,
-            handleSearch)
+        searchPieces(formData, sortBy).then((res) => {
+            handleSearch(res.data);
+        });
     }
 
     return (

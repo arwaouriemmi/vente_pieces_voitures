@@ -2,15 +2,13 @@ import Label from "./label";
 import "./categories.css";
 import { useEffect, useState } from "react";
 import { GrAddCircle } from "react-icons/gr";
-import axios from "axios";
 import { Button, Col, Row } from "react-bootstrap";
 import EditCategory from "./editCategory";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Slide } from "react-slideshow-image";
-import 'react-slideshow-image/dist/styles.css'
-import { deleteData } from "../../utils";
-import NavbarSection from "../navbarSection/Navbar";
+import 'react-slideshow-image/dist/styles.css';
+import { deleteCategory, getCategoriesFromApi } from "../../apis/categoryApis";
 
 
 interface CategoryProps {
@@ -29,15 +27,14 @@ export default function CategoriesSection() {
   const getCategories = async (id?: number, index?: number) => {
     let newCategories = [...categories];
     try {
-      let response = id
-        ? await axios.get("http://localhost:3001/categories")
-        : await axios.get("http://localhost:3001/subcategories/" + id);
+      let data = await getCategoriesFromApi(id);
       if (index !== undefined) {
-        newCategories[index + 1] = response.data;
+        newCategories[index + 1] = data;
       } else {
-        newCategories[0] = response.data;
+        newCategories[0] = data;
       }
       setCategories(newCategories);
+      console.log(categories);
     } catch (err) {
       console.log(err);
     }
@@ -48,16 +45,19 @@ export default function CategoriesSection() {
   }, []);
 
   return (<>
-    <NavbarSection isAuthentificated={true} role="admin" />
-    <div className="custom-container">
+    <div className="custom-container"
+    style={{position: "relative"}}>
       <h1>Catégories</h1>
 
       {categories.length !== 0 &&
 
-        categories.map((catList, index) => (<Row>
+        categories.map((catList, index) => (
+        <Row>
           <Col xs={10} key={index}>
             <Slide
-              slidesToShow={3}>
+              autoplay={false}
+              infinite={true}
+              slidesToShow={index==0? 3: 5}>
               {Object.values(catList).map((cat) => {
                 return (
                   <div
@@ -120,7 +120,7 @@ export default function CategoriesSection() {
           variant="primary"
           disabled={selected.length === 0}
           onClick={async () => {
-            deleteData("categories/delete/", selected[selected.length - 1])
+            deleteCategory(selected[selected.length - 1]);
           }}
         >
           Supprimer

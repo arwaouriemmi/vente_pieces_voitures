@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { FormDataProps } from "../../types/FormDataProps";
 import { useParams } from "react-router-dom";
 import { Button, Form, FormControl, FormLabel, Navbar } from "react-bootstrap";
-import { getData, handleChange, postData } from "../../utils";
+import { getData, handleChange, postData } from "../../apis/generic";
 import CarsSearchForm from "../SearchForm/carsSearchForm";
 import { CategoryProps } from "../../types/categoryProps";
-import NavbarSection from "../navbarSection/Navbar";
+import { postPiece } from "../../apis/piecesApis";
+import { getCategoriesFromApi } from "../../apis/categoryApis";
 
 export default function EditPiece() {
   const [formData, setFormData] = useState<FormDataProps>({} as FormDataProps);
@@ -73,18 +74,14 @@ export default function EditPiece() {
 
   const handleSubmit = async () => {
     console.log(formData);
-    try {
-      postData("pieces/add", {
-        ...formData,
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    postPiece(formData);
   };
 
   useEffect(() => {
     try {
-      getData("categories", setCategories);
+      getCategoriesFromApi().then((res) => {
+        setCategories(res.data);
+      });
     } catch (err) {
       console.log(err);
     }
@@ -109,7 +106,6 @@ export default function EditPiece() {
   }, [formData.subCategory]);
 
   return (<>
-    <NavbarSection isAuthentificated={true} id={id} role="provider" />
     <div
       className={`custom-container`}
       style={{

@@ -10,9 +10,9 @@ import {
 import CarProps from "../../types/carProps";
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
-import { getData, patchData, postData } from "../../utils";
+import { getData, patchData, postData } from "../../apis/generic";
 import { ToastContainer } from "react-toastify";
-import NavbarSection from "../navbarSection/Navbar";
+import { getCarBrands, getCarByIdFromApi, patchCar, postCar } from "../../apis/carApis";
 
 interface CarFormProps extends Partial<CarProps> { }
 
@@ -28,7 +28,9 @@ export default function EditCar({ newElement }: { newElement: boolean }) {
 
   useEffect(() => {
     if (!newElement && id) {
-      getData("cars/" + id, setFormData);
+      getCarByIdFromApi(id).then((res) => {
+        setFormData(res.data);
+      });
     }
   }, [id]);
 
@@ -58,24 +60,28 @@ export default function EditCar({ newElement }: { newElement: boolean }) {
   }, [formData]);
 
   useEffect(() => {
-    getData("cars/brands/", setBrands);
+    getCarBrands().then((res) => {
+      setBrands(res.data);
+    });
   }, []);
 
   useEffect(() => {
     if (formData.brand !== "" && !newBrand) {
-      getData("cars/models?brand=" + formData.brand, setModels);
+      getData(`cars/models/${formData.brand}`).then((res) => {
+        setModels(res.data);
+      });
     } else {
       setModels([]);
     }
   }, [formData.brand]);
 
   const EditCar = async (formData: CarFormProps) => {
-    patchData("cars/edit/" + id, formData as CarProps);
+    patchCar(id ?? "", formData as CarProps);
     setFormData({ brand: "", model: "", motorization: "" });
   };
 
   const AddCar = async (formData: CarFormProps) => {
-    postData("cars/add/", formData as CarProps);
+    postCar(formData as CarProps);
     setFormData({ brand: "", model: "", motorization: "" });
   };
 
@@ -92,7 +98,6 @@ export default function EditCar({ newElement }: { newElement: boolean }) {
 
   return (
     <>
-      <NavbarSection isAuthentificated={true} role="admin" />
       <div className={`custom-container`}>
         <h4>{newElement ? "Ajouter " : "Modifier "}une voiture</h4>
         <div className="mb-3">

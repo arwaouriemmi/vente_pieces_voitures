@@ -7,7 +7,6 @@ interface LabelProps extends CategoryProps {
 }
 
 export default function Label({ label, image, parent, selected }: LabelProps) {
-    
     return(
         <div className={`label-container ${selected && "label-selected"}`} >
         {parent !== undefined && 
