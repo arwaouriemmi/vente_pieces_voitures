@@ -36,6 +36,7 @@ const postData = async (uri: string, data: any) => {
   const link = "http://localhost:3001/" + uri;
   try {
     await axios.post(link, data);
+    console.log(toastId)
     toast.update(toastId, {
       ...toastOptions,
       render: "Une nouvelle donnée a été ajoutée!",

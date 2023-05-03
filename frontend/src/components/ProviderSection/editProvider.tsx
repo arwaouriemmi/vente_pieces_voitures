@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
 import { cities } from "./cities";
 import { getProviderByIdFromApi, patchProvider, postProvider } from "../../apis/providerApis";
+import { ToastContainer } from "react-toastify";
 
 interface ProviderFormProps extends Partial<ProviderProps> { }
 
@@ -260,6 +261,7 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
         Enregistrer
       </Button>
     </div>
+    <ToastContainer position="bottom-right" />
   </>
   );
 }
