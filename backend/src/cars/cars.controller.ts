@@ -1,8 +1,41 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { CrudController } from 'src/generic/Crud.controller';
+import { Cars } from './entities/cars.entity';
+import { CreatecarsDto } from './dto/create-cars.dto';
+import { UpdatecarsDto } from './dto/update-cars.dto';
+import { CarsService } from './cars.service';
 
-@Controller('cars')
-export class CarsController {
-    @Get('')
+@Controller('admin/cars')
+export class CarsController extends CrudController<Cars ,CreatecarsDto,UpdatecarsDto> {
+    constructor(private readonly carsService:CarsService){
+        super(carsService);
+    }
+    
+   /* @Get('/brand/:brand')
+  async getCarsByBrand(@Param('brand') brand: string): Promise<Cars[]> {
+    return this.carsService.getCarsByBrand(brand);
+  }
+
+  @Get('/model/:model')
+  async getCarsByModel(@Param('model') model: string): Promise<Cars[]> {
+    return this.carsService.getCarsByModel(model);
+  }
+
+  @Get('/motorization/:motorization')
+  async getCarsByMotorization(@Param('motorization') motorization: string): Promise<Cars[]> {
+    return this.carsService.getCarsByMotorization(motorization);
+  }
+  @Get('/search')
+async searchCars(
+  @Query('brand') brand: string,
+  @Query('model') model: string,
+  @Query('motorization') motorization: string,
+): Promise<Cars[]> {
+  return this.carsService.getCarsByCriteria(brand, model, motorization);
+}*/
+
+
+    /*@Get('')
     getCars() {
         return [
             {
@@ -63,5 +96,5 @@ export class CarsController {
     deleteCar(@Param('id') id: string) {
         console.log(id);
     }
-
+*/
 }
