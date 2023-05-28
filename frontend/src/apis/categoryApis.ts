@@ -1,5 +1,7 @@
 import { deleteData, getData, patchData, postData } from "./generic"
 
+// route (/categories) : get all categories
+// route (/subcategories/:id) : get all subcategories by category id
 const getCategoriesFromApi = async (id?: number) => {
     try {
       let data = id

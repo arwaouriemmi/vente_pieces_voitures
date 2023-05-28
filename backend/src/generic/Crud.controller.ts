@@ -1,13 +1,13 @@
-import { Body, Delete, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
+import { Body, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from "@nestjs/common";
 import { CrudService } from "./Crud.Service";
 
 export class CrudController<T ,createDto,UpdateDto>{
 
 	constructor(private readonly service: CrudService<T ,createDto,UpdateDto>) {}
   
-  @Get('getall')
-  async findAll(): Promise<T[]> {
-    return this.service.findAll();
+  @Get('')
+  async findAll(@Query('page') page: number): Promise<T[]> {
+    return this.service.findAll(page, 5);
   }
     @Get(':id')
     async findOne(@Param('id',ParseIntPipe) id: number): Promise<T> {
@@ -30,14 +30,6 @@ export class CrudController<T ,createDto,UpdateDto>{
     async delete(@Param('id',ParseIntPipe) id: number){
       return this.service.delete(id);
     }
-    @Delete('/softDelete/:id')
-async DeleteTodoByIdv2(@Param('id', ParseIntPipe) id: number){
- return await this.service.DeleteTodoByIdv2(id);
-}
-
-@Get('/restore/:id')
-async RestoreTodoByIdv2(@Param('id', ParseIntPipe) id: number){
-    return await this.service.RestoreTodoByIdv2(id);
-}
+    
   }
 
