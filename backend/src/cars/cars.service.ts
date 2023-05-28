@@ -16,7 +16,31 @@ export class CarsService extends CrudService<Cars,CreatecarsDto,UpdatecarsDto> {
     async getCarsByBrand(brand: string): Promise<Cars[]> {
         return this.carRepository.find({ where: { brand } });
       }
-    
+
+    async getCarBrands(): Promise<String[]> {
+        const queryBuilder = this.carRepository.createQueryBuilder('car');
+        queryBuilder.select('DISTINCT car.brand');
+        const cars = await queryBuilder.getMany();
+        return cars.map((car) => car.brand);
+      }
+
+    async getCarModels(brand: String): Promise<String[]> {
+        const queryBuilder = this.carRepository.createQueryBuilder('car');
+        queryBuilder.select('DISTINCT car.model');
+        queryBuilder.where('car.brand = :brand', { brand });
+        const cars = await queryBuilder.getMany();
+        return cars.map((car) => car.model);
+      }
+
+    async getCarMotorizations(brand: String, model: String): Promise<String[]> {
+        const queryBuilder = this.carRepository.createQueryBuilder('car');
+        queryBuilder.select('DISTINCT car.motorization');
+        queryBuilder.where('car.brand = :brand', { brand });
+        queryBuilder.andWhere('car.model = :model', { model });
+        const cars = await queryBuilder.getMany();
+        return cars.map((car) => car.motorization);
+      }
+
       async getCarsByModel(model: string): Promise<Cars[]> {
         return this.carRepository.find({ where: { model } });
       }
@@ -24,6 +48,7 @@ export class CarsService extends CrudService<Cars,CreatecarsDto,UpdatecarsDto> {
       async getCarsByMotorization(motorization: string): Promise<Cars[]> {
         return this.carRepository.find({ where: { motorization } });
       }
+
       async getCarsByCriteria(
         brand: string,
         model: string,
@@ -46,6 +71,5 @@ export class CarsService extends CrudService<Cars,CreatecarsDto,UpdatecarsDto> {
         }
     
         return queryBuilder.getMany();
-      }
-    
+      }    
 }

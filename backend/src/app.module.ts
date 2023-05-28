@@ -10,6 +10,9 @@ import { User } from './auth/entities/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { MailingModule } from './mailing/mailing.module';
 import * as dotenv from 'dotenv';
+import { Cars } from './cars/entities/cars.entity';
+import { Piece } from './piece/entities/piece.entity';
+import { Providers } from './providers/entities/providers.entity';
 dotenv.config();
 
 @Module({
@@ -28,7 +31,7 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User],
+      entities: [User, Cars, Piece, Providers],
       synchronize: true,
     }),
     MailingModule,

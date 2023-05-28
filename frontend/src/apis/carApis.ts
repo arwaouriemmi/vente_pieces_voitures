@@ -1,5 +1,6 @@
 import { deleteData, getData, patchData, postData } from "./generic"
 
+//Get all cars
 const getCarsFromApi = async (page?: number) => {
     try {
       let data = await getData("cars?page=" + page)
@@ -9,6 +10,7 @@ const getCarsFromApi = async (page?: number) => {
     }
 };
 
+//Get car by id
 const getCarByIdFromApi = async (id: string) => {
     try {
         let data = await getData("cars/" + id)
@@ -18,6 +20,7 @@ const getCarByIdFromApi = async (id: string) => {
     }
 };
 
+//Get the available brands for cars
 const getCarBrands = async () => {
     try {
         let data = await getData("cars/brands")
@@ -27,15 +30,18 @@ const getCarBrands = async () => {
     }
 };
 
+
+//Get the available models for a brand
 const getCarModels = async (brand: string) => {
     try {
-        let data = await getData("cars/models/" + brand)
+        let data = await getData("cars/models?brand=" + brand)
         return data
     } catch (error) {
         console.log(error);
     }
 };
 
+//Get the available motorizations for a brand and model
 const getCarMotorization = async (brand: string, model: string) => {
     try {
         let data = await getData("cars/motorization?brand=" + brand + "&model=" + model)

@@ -7,22 +7,17 @@ export abstract class CrudService<T ,createDto,UpdateDto> {
   ) {}
   
 
-  async findAll(): Promise<T[]> {
+  async findAll(page: number, take: number): Promise<T[]> {
     try {
-    return this.repository.find();
+    return this.repository.find({
+      skip: (page - 1) * take,
+      take: take,
+    });
   }catch (error) {
     throw new BadGatewayException(error);
 }
 }
 
-  /*async findOne(id: number): Promise<T> {
-    try {
-		  
-	} catch (error) {
-		throw new BadGatewayException(error);
-	}
-    return this.repository.findOne({where :{id}});
-  }*/
   async create(Dto :createDto ): Promise<T> {
     return await this.repository.save(Dto as DeepPartial<T>);
   }
@@ -53,10 +48,10 @@ export abstract class CrudService<T ,createDto,UpdateDto> {
 		throw new BadGatewayException(error);
 	}
   }
-  async DeleteTodoByIdv2(id: number){
+  async softDelete(id: number){
     return await this.repository.softDelete(id);
     }
-async RestoreTodoByIdv2(id: number) {
+async restore(id: number) {
     return await this.repository.restore(id);
     }
 }
