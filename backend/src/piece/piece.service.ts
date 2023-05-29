@@ -20,6 +20,7 @@ export class PieceService extends CrudService<
   private piecesRepository: Repository<Piece>, private readonly carService: CarsService, private readonly categoryService: CategoriesService, private readonly fileUploadService: FileUploadService) {
     super(piecesRepository);
   }
+
   async create(createPieceDto: CreatePieceDto): Promise<Piece> {
     const cars = await this.carService.getCarsByCriteria(createPieceDto.brand, createPieceDto.model, createPieceDto.motorization);
     const category = await this.categoryService.getCategoryByLabel(createPieceDto.category);
@@ -31,6 +32,7 @@ export class PieceService extends CrudService<
       ...createPieceDto
     })
   }
+  
   async searchPieces(brand: string, model: string, motorization: string, sortBy: string): Promise<Piece[]> {
     const query = this.piecesRepository.createQueryBuilder('pieces')
     .innerJoin('pieces.cars', 'cars');

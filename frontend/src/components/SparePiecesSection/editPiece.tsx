@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FormDataProps } from "../../types/FormDataProps";
 import { useParams } from "react-router-dom";
-import { Button, Form, FormControl, FormLabel, Navbar } from "react-bootstrap";
-import { getData, handleChange, postData } from "../../apis/generic";
+import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
+import { getData, handleChange } from "../../apis/generic";
 import CarsSearchForm from "../SearchForm/carsSearchForm";
 import { CategoryProps } from "../../types/categoryProps";
 import { postPiece } from "../../apis/piecesApis";

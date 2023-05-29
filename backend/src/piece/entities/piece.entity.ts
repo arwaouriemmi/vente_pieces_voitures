@@ -1,10 +1,10 @@
-import { TimestampEntities } from "src/TimestampEntities";
-import { Cars } from "src/cars/entities/cars.entity";
-import { Categories } from "src/categories/entities/categories.entity";
-import { Providers  } from "src/providers/entities/providers.entity";
+import { TimestampEntities } from "../../TimestampEntities";
+import { Cars } from "../../cars/entities/cars.entity";
+import { Categories } from "../../categories/entities/categories.entity";
+import { Providers  } from "../../providers/entities/providers.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+
 @Entity('piece')
-@Entity()
 export class Piece extends  TimestampEntities{
     @PrimaryGeneratedColumn()
     id: string;

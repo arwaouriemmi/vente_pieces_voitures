@@ -7,13 +7,12 @@ import {
   Query,
   Param,
   ParseIntPipe,
-  Patch,
 } from '@nestjs/common';
-import { CrudController } from 'src/generic/Crud.controller';
 import { Providers } from './entities/providers.entity';
 import { CreateprovidersDto } from './dto/create-providers.dto';
 import { UpdateprovidersDto } from './dto/update-providers.dto';
 import { ProvidersService } from './providers.service';
+import { CrudController } from 'src/generic/crud/Crud.controller';
 
 @Controller('providers')
 export class ProvidersController extends CrudController<

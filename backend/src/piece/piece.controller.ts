@@ -1,27 +1,51 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { PieceService } from './piece.service';
 import { CreatePieceDto } from './dto/create-piece.dto';
 import { UpdatePieceDto } from './dto/update-piece.dto';
-import { FileUploadService } from 'src/generic/upload/FileUpload.service';
 import { Piece } from './entities/piece.entity';
-
 import { CrudController } from 'src/generic/crud/Crud.controller';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { editFileName } from 'src/editFileName';
 
 @Controller('pieces')
-export class PieceController extends CrudController<Piece, CreatePieceDto, UpdatePieceDto> {
-
-  constructor(private readonly pieceService: PieceService, private readonly fileUploadService: FileUploadService) {
+export class PieceController extends CrudController<
+  Piece,
+  CreatePieceDto,
+  UpdatePieceDto
+> {
+  constructor(private readonly pieceService: PieceService) {
     super(pieceService);
   }
 
   @Post('add')
-  @UseInterceptors(FileInterceptor('image'))
-  async add(@Body() dto: CreatePieceDto,@UploadedFile()image:Express.Multer.File) {
-    await this.fileUploadService.uploadFile(image)
-    console.log(image);
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: editFileName,
+      }),
+    }),
+  )
+  async add(
+    @Body() dto: CreatePieceDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    dto.image = image.filename;
     return this.pieceService.create(dto);
   }
+
   @Get('search')
   async searchPieces(
     @Query('brand') brand: string,
@@ -29,9 +53,12 @@ export class PieceController extends CrudController<Piece, CreatePieceDto, Updat
     @Query('motorization') motorization: string,
     @Query('sortBy') sortBy: string,
   ): Promise<Piece[]> {
-    const results = await this.pieceService.searchPieces(brand, model, motorization, sortBy);
+    const results = await this.pieceService.searchPieces(
+      brand,
+      model,
+      motorization,
+      sortBy,
+    );
     return results;
   }
-
-
 }
