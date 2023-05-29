@@ -6,6 +6,7 @@ import { UpdateprovidersDto } from './dto/update-providers.dto';
 import { CreateprovidersDto } from './dto/create-providers.dto';
 import { Repository } from 'typeorm';
 import { MailingService } from 'src/mailing/mailing.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class ProvidersService extends CrudService<
@@ -18,13 +19,15 @@ export class ProvidersService extends CrudService<
     @InjectRepository(Providers)
     private ProviderRepository: Repository<Providers>,
     private Mailingservice: MailingService,
+    private AuthService: AuthService,
   ) {
     super(ProviderRepository);
   }
 
   async addProvider(provider: CreateprovidersDto): Promise<Providers> {
     const pro: Providers = await this.ProviderRepository.save(provider);
-    this.Mailingservice.sendUserConfirmation(pro);
+    const token = await this.AuthService.createUser(pro.id as unknown as number, pro.email)
+    this.Mailingservice.sendUserConfirmation(pro, token);
     return pro;
   }
 

@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(
 ).render(
   <React.StrictMode>
     <BrowserRouter>
-      <NavbarSection isAuthentificated={true} id={"5"} role="provider" />
+      <NavbarSection />
     </BrowserRouter>
     <RouterProvider router={router} />
   </React.StrictMode>

@@ -1,36 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { LoginProps } from "../../types/LoginProps";
 import { useNavigate } from "react-router-dom";
-import { TokenPayloadProps } from "../../types/TokenPayloadProps";
 import jwt_decode from "jwt-decode";
+import TokenSignUpProps from "../../types/tokenSignUP";
+import { getProviderByIdFromApi } from "../../apis/providerApis";
 
 export default function SignIn() {
-  const [user, setUser] = useState<LoginProps>({
-    login: "",
+  const [user, setUser] = useState<TokenSignUpProps>({
+    id: "",
+    email: "",
     password: "",
+    role: "",
+    username: "",
   });
-  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const [errorMessage] = useState<string>("");
   let navigate = useNavigate();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const t = searchParams.get("token");
+    if (t !== "") {
+      const u = jwt_decode<TokenSignUpProps>(t as string);
+      getProviderByIdFromApi(u.id)
+        .then((res) => {
+          setUser(u);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
   const handleSubmit = () => {
     console.log(user);
-    axios
-      .post("http://localhost:3001/auth/login", user)
-      .then((response) => {
-        console.log(response);
-        localStorage.setItem("token", response.data.token);
-        const decodedToken = jwt_decode<TokenPayloadProps>(response.data.token);
-        const { user } = decodedToken;
-        if (user.role === "admin") {
-          navigate("/admin/home");
-        } else if (user.role === "provider") {
-          navigate("/");
-        }
-      })
-      .catch((error) => {
-        setErrorMessage(error.response.data.message);
-      });
+    axios.post("http://localhost:3001/auth/register", user).then((response) => {
+      navigate("/login");
+    });
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,21 +60,23 @@ export default function SignIn() {
           >
             <div className="card-body p-5 text-center">
               <div className="mb-md-5 mt-md-4 pb-5">
-                <h2 className="fw-bold mb-2 text-uppercase">Connexion</h2>
+                <h2 className="fw-bold mb-2 text-uppercase">
+                  Confirmer votre Compte
+                </h2>
                 <p className="text-primary-50 mb-5">
                   Entrez votre login et votre mot de passe !
                 </p>
 
                 <div className="form-outline form-primary mb-4">
                   <label className="form-label" htmlFor="typeEmailX">
-                    Email
+                    Username
                   </label>
                   <input
                     type="text"
-                    name="login"
                     id="typeEmailX"
                     className="form-control form-control-lg"
-                    value={user.login}
+                    value={user.username}
+                    name="username"
                     onInput={handleInputChange}
                   />
                 </div>
@@ -94,7 +103,7 @@ export default function SignIn() {
                   type="submit"
                   onClick={() => handleSubmit()}
                 >
-                  Se connecter
+                  Confirmer
                 </button>
               </div>
             </div>

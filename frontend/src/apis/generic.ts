@@ -85,10 +85,10 @@ const deleteData = async (uri: string, id: string | Number) => {
       type: "success",
       isLoading: false,
     });
-  } catch (error) {
+  } catch (error : any ) {
     toast.update(toastId, {
       ...toastOptions,
-      render: 'Une erreur est survenue, veuillez réesséyer',
+      render: error,
       type: "error",
       isLoading: false,
     });

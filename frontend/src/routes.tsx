@@ -8,11 +8,13 @@ import { HomePage } from "./components/HomePage";
 import ProviderDetails from "./components/ProviderSection/ProviderDetails";
 import EditPiece from "./components/SparePiecesSection/editPiece";
 import SignIn from "./components/ProviderSection/SignIn";
+import SignUp from "./components/ProviderSection/SignUp";
 
 const Routes = (
   <Route>
     <Route path="/" element={<HomePage />} />
     <Route path="login" element={<SignIn />} />
+    <Route path="register" element={<SignUp />} />
     <Route path="admin">
       <Route path="categories" element={<CategoriesSection />} />
       <Route path="providers">

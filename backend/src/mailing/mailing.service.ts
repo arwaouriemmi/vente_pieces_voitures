@@ -1,23 +1,24 @@
 import { Injectable, Provider } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Providers } from 'src/providers/entities/providers.entity';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Injectable()
 export class MailingService {
-  constructor(private mailerService: MailerService) {}
+  constructor(private mailerService: MailerService,  private jwtService: JwtService,) {
+  }
 
-  async sendUserConfirmation(user: Providers) {
-    console.log(user.email);
+  async sendUserConfirmation(user: Providers, token?: string) {
     await this.mailerService.sendMail({
       to: user.email,
       subject: 'Votre compte est désormais activé',
       template: './confirmation', 
       context: { 
-        name: user.name
+        name: user.name,
+        url: 'http://localhost:3000/register?token=' + token,
       },
     });
-    console.log("mail sent");
   }
 
   async sendUserDeactivation(user: Providers) {

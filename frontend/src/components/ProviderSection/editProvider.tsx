@@ -107,16 +107,17 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
   };
 
   const AddProvider = async (formData: ProviderFormProps) => {
-    postProvider(formData);
-    setFormData({
-      name: "",
-      address: "",
-      phone: "",
-      city: "",
-      facebook: "",
-      whatsapp: "",
-      messenger: "",
-      email: "",
+    postProvider(formData).then(() => {
+      setFormData({
+        name: "",
+        address: "",
+        phone: "",
+        city: "",
+        facebook: "",
+        whatsapp: "",
+        messenger: "",
+        email: "",
+      });
     });
   };
 
