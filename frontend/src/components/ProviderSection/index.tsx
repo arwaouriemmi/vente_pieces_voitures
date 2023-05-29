@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
 import { getProvidersFromApi } from "../../apis/providerApis";
+import Paginate from "../pagination";
 
 export default function ProviderSection() {
   const [searchParams] = useSearchParams();
@@ -66,33 +67,7 @@ export default function ProviderSection() {
         </Card.Body>
 
         <Card.Footer>
-          <Nav style={{ marginLeft: "30%" }}>
-            <Pagination>
-              <Pagination.Prev
-                disabled={page === 1}
-                onClick={() => {
-                  setPage(page - 1);
-                }}
-              />
-              {Array.from({ length: pageNumber }, (_, i) => (
-                <Pagination.Item
-                  key={i}
-                  active={i + 1 === page}
-                  onClick={() => {
-                    setPage(i + 1);
-                  }}
-                >
-                  {i + 1}
-                </Pagination.Item>
-              ))}
-              <Pagination.Next
-                disabled={page === pageNumber}
-                onClick={() => {
-                  setPage(page + 1);
-                }}
-              />
-            </Pagination>
-          </Nav>
+          <Paginate page={page} setPage={setPage} pageNumber={pageNumber} />
         </Card.Footer>
       </Card>
     </div>

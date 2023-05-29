@@ -25,16 +25,17 @@ export default function EditCategory({
   const [isValidate, setIsValidate] = useState(false);
 
   const getFormData = async ()=>{
-    if (id !== -1 && id !== undefined) {
+    if (id !== -1 ) {
       const data = await getCategoriesFromApi(id);
       setFormData(data);
     } else {
       const newFormData: CategoryFormProps = {
-        id: id !== -1 ? id : undefined,
-        parent: parent !== -1 ? parent : undefined,
+        id: id,
+        parent: parent ?? -1,
       };
       setFormData(newFormData);
     }
+    console.log(formData);
   }
   
 
@@ -49,7 +50,6 @@ export default function EditCategory({
     } else if (values.label.length < 2) {
       errors.label = "⚠ Veuillez entrer au moins 2 caractères";
     }
-    console.log(errors);
     if (errors.label) {
       setIsValidate(false);
     } else {
@@ -76,7 +76,6 @@ export default function EditCategory({
   };
 
   return (
-
     <div className={`prompt ${isHidden && "d-none"}`}>
       <GrClose
         onClick={() => hide()}
@@ -94,19 +93,14 @@ export default function EditCategory({
         />
         <p className="text-danger">{!isValidate && errors.label}</p>
       </div>
-      {parent === -1 && (
+      {formData.parent === -1 && (
         <div className="mb-3">
           <FormLabel>Image: </FormLabel>
           <FormControl
             type={"file"}
             value={formData.image}
             name={"image"}
-            onChange={(e: any) => {
-              setFormData({
-                ...formData,
-                image: e.target.files ? e.target.files[0].name : undefined,
-              });
-            }}
+            onChange={(e: any) => {handleChange(e, formData, setFormData)}}
           />
         </div>
       )}

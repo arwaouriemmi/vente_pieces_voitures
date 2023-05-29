@@ -35,7 +35,6 @@ export default function NavbarSection() {
     const token = localStorage.getItem("token");
     if (token) {
       const user = jwt_decode<TokenProps>(token);
-      console.log(user);
       setRole(user.role);
       if (user.id && user.role === "provider") {
         getProviderByIdFromApi(user.id).then((res) => {

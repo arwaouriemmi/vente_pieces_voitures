@@ -10,4 +10,5 @@ export interface FormDataProps {
   brand: string;
   model: string;
   motorization: string;
+  provider: string;
 }

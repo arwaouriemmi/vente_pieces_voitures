@@ -36,13 +36,5 @@ export class CarsController extends CrudController<
   ): Promise<String[]> {
     return this.carsService.getCarMotorizations(brand, model);
   }
-  @Get('/search')
-  async searchCars(
-    @Query('brand') brand: string,
-    @Query('model') model: string,
-    @Query('motorization') motorization: string,
-  ): Promise<Cars[]> {
-    return this.carsService.getCarsByCriteria(brand, model, motorization);
-  }
 
 }

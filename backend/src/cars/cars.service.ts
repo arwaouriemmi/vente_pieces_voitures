@@ -7,69 +7,74 @@ import { CreatecarsDto } from './dto/create-cars.dto';
 import { UpdatecarsDto } from './dto/update-cars.dto';
 
 @Injectable()
-export class CarsService extends CrudService<Cars,CreatecarsDto,UpdatecarsDto> {
-   
-    constructor(@InjectRepository(Cars)
-          private carRepository:Repository<Cars>){
-        super(carRepository);
+export class CarsService extends CrudService<
+  Cars,
+  CreatecarsDto,
+  UpdatecarsDto
+> {
+  constructor(
+    @InjectRepository(Cars)
+    private carRepository: Repository<Cars>,
+  ) {
+    super(carRepository);
+  }
+  async getCarsByBrand(brand: string): Promise<Cars[]> {
+    return this.carRepository.find({ where: { brand } });
+  }
+
+  async getCarBrands(): Promise<String[]> {
+    const queryBuilder = this.carRepository.createQueryBuilder('car');
+    queryBuilder.select('DISTINCT brand');
+    const cars = await queryBuilder.getRawMany();
+    return cars.map((car) => car.brand);
+  }
+
+  async getCarModels(brand: String): Promise<String[]> {
+    const queryBuilder = this.carRepository.createQueryBuilder('car');
+    queryBuilder.select('DISTINCT model');
+    queryBuilder.where('car.brand = :brand', { brand });
+    const cars = await queryBuilder.getRawMany();
+    return cars.map((car) => car.model);
+  }
+
+  async getCarMotorizations(brand: String, model: String): Promise<String[]> {
+    const queryBuilder = this.carRepository.createQueryBuilder('car');
+    queryBuilder.select('DISTINCT motorization');
+    queryBuilder.where('car.brand = :brand', { brand });
+    queryBuilder.andWhere('car.model = :model', { model });
+    const cars = await queryBuilder.getRawMany();
+    return cars.map((car) => car.motorization);
+  }
+
+  async getCarsByModel(model: string): Promise<Cars[]> {
+    return this.carRepository.find({ where: { model } });
+  }
+
+  async getCarsByMotorization(motorization: string): Promise<Cars[]> {
+    return this.carRepository.find({ where: { motorization } });
+  }
+
+  async getCarsByCriteria(
+    brand: string,
+    model: string,
+    motorization: string,
+  ): Promise<Cars> {
+    const queryBuilder = this.carRepository.createQueryBuilder('car');
+
+    if (brand) {
+      queryBuilder.andWhere('car.brand = :brand', { brand });
     }
-    async getCarsByBrand(brand: string): Promise<Cars[]> {
-        return this.carRepository.find({ where: { brand } });
-      }
 
-    async getCarBrands(): Promise<String[]> {
-        const queryBuilder = this.carRepository.createQueryBuilder('car');
-        queryBuilder.select('DISTINCT brand');
-        const cars = await queryBuilder.getRawMany();
-        return cars.map((car) => car.brand);
-      }
+    if (model) {
+      queryBuilder.andWhere('car.model = :model', { model });
+    }
 
-    async getCarModels(brand: String): Promise<String[]> {
-        const queryBuilder = this.carRepository.createQueryBuilder('car');
-        queryBuilder.select('DISTINCT model');
-        queryBuilder.where('car.brand = :brand', { brand });
-        const cars = await queryBuilder.getRawMany();
-        return cars.map((car) => car.model);
-      }
+    if (motorization) {
+      queryBuilder.andWhere('car.motorization = :motorization', {
+        motorization,
+      });
+    }
 
-    async getCarMotorizations(brand: String, model: String): Promise<String[]> {
-        const queryBuilder = this.carRepository.createQueryBuilder('car');
-        queryBuilder.select('DISTINCT motorization');
-        queryBuilder.where('car.brand = :brand', { brand });
-        queryBuilder.andWhere('car.model = :model', { model });
-        const cars = await queryBuilder.getRawMany();
-        return cars.map((car) => car.motorization);
-      }
-
-      async getCarsByModel(model: string): Promise<Cars[]> {
-        return this.carRepository.find({ where: { model } });
-      }
-    
-      async getCarsByMotorization(motorization: string): Promise<Cars[]> {
-        return this.carRepository.find({ where: { motorization } });
-      }
-
-      async getCarsByCriteria(
-        brand: string,
-        model: string,
-        motorization: string,
-      ): Promise<Cars[]> {
-        const queryBuilder = this.carRepository.createQueryBuilder('car');
-    
-        if (brand) {
-          queryBuilder.andWhere('car.brand = :brand', { brand });
-        }
-    
-        if (model) {
-          queryBuilder.andWhere('car.model = :model', { model });
-        }
-    
-        if (motorization) {
-          queryBuilder.andWhere('car.motorization = :motorization', {
-            motorization,
-          });
-        }
-    
-        return queryBuilder.getMany();
-      }    
+    return queryBuilder.getOne();
+  }
 }

@@ -7,7 +7,7 @@ export class Categories {
   id: number;
   @Column()
   label: string;
-  @Column()
+  @Column({nullable:true})
   image: string;
   @Column({default:-1})
   parent: number;

@@ -56,14 +56,16 @@ export abstract class CrudService<T, createDto, UpdateDto> {
   async create(Dto: createDto): Promise<T> {
     return await this.repository.save(Dto as DeepPartial<T>);
   }
-  async findOne(id: number, deleted?: boolean): Promise<T> {
-    const entity = this.repository.createQueryBuilder();
-    if (deleted) {
-      entity.withDeleted();
-    }
-    entity.where('id = :id', { id });
 
-    const res = await entity.getOne();
+  async findOne(id: number, deleted?: boolean): Promise<T> {
+    let res: T;
+    deleted
+      ? (res = await this.repository.findOne({
+          where: { id: id },
+          withDeleted: true,
+        }))
+      : (res = await this.repository.findOne({where: { id: id }}));
+
     if (!res) {
       throw new NotFoundException(`Entity with ID ${id} is not found`);
     }

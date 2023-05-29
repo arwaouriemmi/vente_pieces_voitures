@@ -5,9 +5,9 @@ import { deleteData, getData, patchData, postData } from "./generic"
 const getCategoriesFromApi = async (id?: number) => {
     try {
       let data = id
-        ? await getData("categories")
-        : await getData("subcategories/" + id);
-        return data
+        ? await getData("categories/subcategories/" + id)
+        : await getData("categories")
+    return data
     } catch (error) {
         console.log(error);
     }

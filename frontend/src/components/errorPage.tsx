@@ -1,8 +1,12 @@
 
-function ErrorPage() {
+function ErrorPage({
+  message
+} : {
+  message: string
+}) {
   return (
-    <div>
-      <h1>Oops! An error occurred.</h1>
+    <div style={{marginTop: 100, color: "red"}}>
+      <h3>{ message }</h3>
     </div>
   );
 }

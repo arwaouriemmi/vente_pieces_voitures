@@ -6,8 +6,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
 import CarProps from "../../types/carProps";
 import CarCard from "./carCard";
-import { getData } from "../../apis/generic";
 import { getCarsFromApi } from "../../apis/carApis";
+import Paginate from "../pagination";
 
 export default function CarsSection() {
   const [searchParams] = useSearchParams();
@@ -41,33 +41,7 @@ export default function CarsSection() {
         })}
       </Row>
 
-      <Nav>
-        <Pagination style={{ margin: "auto" }}>
-          <Pagination.Prev
-            disabled={page === 1}
-            onClick={() => {
-              setPage(page - 1);
-            }}
-          />
-          {Array.from({ length: pageNumber }, (_, i) => (
-            <Pagination.Item
-              key={i}
-              active={i + 1 === page}
-              onClick={() => {
-                setPage(i + 1);
-              }}
-            >
-              {i + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next
-            disabled={page === pageNumber}
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          />
-        </Pagination>
-      </Nav>
+      <Paginate page={page} setPage={setPage} pageNumber={pageNumber} />
     </div>
   </>
   );

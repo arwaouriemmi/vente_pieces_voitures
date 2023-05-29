@@ -1,5 +1,23 @@
 import { getData, postData } from "./generic";
 
+const getPiecesFromApi = async (page?: number) => {
+  try {
+    let data = await getData("pieces?page=" + page);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getPieceByIdFromApi = async (id: string) => {
+  try {
+    let data = await getData("pieces/" + id);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 //Get all pieces if 
 const searchPieces = async (formData: any, sortBy: any) => {
   try {
@@ -27,4 +45,4 @@ const postPiece = async (data: any) => {
   }
 };  
 
-export { searchPieces, postPiece };
+export { searchPieces, postPiece, getPieceByIdFromApi, getPiecesFromApi };
