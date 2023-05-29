@@ -16,7 +16,7 @@ export default function ProductCard({product}: {product: ProductProps}) {
       <img src={product.image?? "https://placehold.co/500x400"} alt={product.id} className="product-image" />
       <Card.Body style={{margin: "12px"}}>
         <Card.Title>
-          <Link to={"spare-parts/" + product.id.toString()} style={{textDecoration: "none"}}>{product.piece}</Link>
+          <Link to={"pieces/" + product.id.toString()} style={{textDecoration: "none"}}>{product.piece}</Link>
         </Card.Title>
 
         <Card.Text>{product.price + " TND"}</Card.Text>

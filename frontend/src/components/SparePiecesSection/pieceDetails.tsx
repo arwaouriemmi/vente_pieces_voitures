@@ -8,6 +8,7 @@ import { IoConstructSharp } from "react-icons/io5";
 import { MdDescription, MdComment } from "react-icons/md";
 import { AiFillCar } from "react-icons/ai";
 import ErrorPage from "../errorPage";
+import { Button } from "react-bootstrap";
 
 
 export default function PieceDetails() {
@@ -37,6 +38,11 @@ export default function PieceDetails() {
             />
         </div>
         <div className="credentials" style={{ flex: 2, paddingLeft: "20px" }}>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+            <Button variant="outline-primary" style={{marginRight: "10px"}}>{piece.category.label}</Button>
+            {piece.subCategory && <Button variant="outline-danger">{piece.subCategory.label}</Button>}
+        </div>
+
           <ul style={{ listStyle: "none", paddingTop: "10px" }}>
             <li style={{ paddingBottom: "30px" }}>
               <h1 className="text-4xl font-bold">
@@ -65,6 +71,9 @@ export default function PieceDetails() {
                 {piece.cars && (<CarCard {...piece.cars} edit={false}/>)}
             </li>
            
+           <Link to={"/providers/" + piece.provider.id} style={{textDecoration: "none"}}>
+            <button className="btn btn-primary">Voir Fournisseur</button>
+              </Link>
           </ul>
         </div>
       </div>

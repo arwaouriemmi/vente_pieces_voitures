@@ -26,7 +26,7 @@ export class Providers extends TimestampEntities {
     messenger: string;
     @Column({nullable: true})
     observation: string;
-    @OneToMany(type => Piece,
+    @OneToMany(() => Piece,
         (piece) => piece.provider, {
          cascade: true,
         nullable: true,

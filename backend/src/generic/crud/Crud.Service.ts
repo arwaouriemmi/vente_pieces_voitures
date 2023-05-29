@@ -22,7 +22,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
     return await query.getCount();
   }
 
-  async findAll(page: number, take: number): Promise<T[]> {
+  async findAll(page: number = 1, take: number): Promise<T[]> {
     try {
       return this.repository.find({
         skip: ((page - 1) * take) as number,
@@ -57,19 +57,15 @@ export abstract class CrudService<T, createDto, UpdateDto> {
     return await this.repository.save(Dto as DeepPartial<T>);
   }
 
-  async findOne(id: number, deleted?: boolean): Promise<T> {
-    let res: T;
-    deleted
-      ? (res = await this.repository.findOne({
-          where: { id: id },
-          withDeleted: true,
-        }))
-      : (res = await this.repository.findOne({where: { id: id }}));
-
-    if (!res) {
-      throw new NotFoundException(`Entity with ID ${id} is not found`);
+  async findOne(id: number, deleted?: boolean){
+    try {
+      if (deleted) {
+        return await this.repository.findOne({ where: {id : id}, withDeleted: true });
+      }
+      return await this.repository.findOne({ where: {id : id}});
+    } catch (error) {
+      throw new NotFoundException();
     }
-    return res;
   }
 
   async update(id: number, updateDto: UpdateDto): Promise<T> {
@@ -77,7 +73,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
       id,
       ...(updateDto as DeepPartial<T>),
     });
-    return await this.repository.save(entity);
+    return await this.repository.save(entity as DeepPartial<T>);
   }
 
   async delete(id: number): Promise<void> {

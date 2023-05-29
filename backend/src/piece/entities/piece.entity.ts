@@ -20,7 +20,7 @@ export class Piece extends  TimestampEntities{
     constructorReference: string;
     @Column({nullable:true})
     comments: string; 
-    @ManyToOne(type => Providers , (provider) => provider.pieces)
+    @ManyToOne(() => Providers , (provider) => provider.pieces)
     provider: Providers ;
     @ManyToOne(() => Cars, (cars) => cars.pieces, { cascade: true, eager: true })
     cars: Cars;
