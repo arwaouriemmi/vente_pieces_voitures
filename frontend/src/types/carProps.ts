@@ -4,4 +4,5 @@ export default interface CarProps {
     model: string;
     motorization: string;
     createdAt: string;
+    edit? : boolean;
 }

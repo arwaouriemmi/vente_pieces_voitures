@@ -9,6 +9,7 @@ import ProviderDetails from "./components/ProviderSection/ProviderDetails";
 import EditPiece from "./components/SparePiecesSection/editPiece";
 import SignIn from "./components/ProviderSection/SignIn";
 import SignUp from "./components/ProviderSection/SignUp";
+import PieceDetails from "./components/SparePiecesSection/pieceDetails";
 
 const Routes = (
   <Route>
@@ -33,6 +34,7 @@ const Routes = (
       <Route path=":id/pieces" element={<HomePage />} />
     </Route>
     <Route path="pieces">
+      <Route path=":id" element={<PieceDetails/>} />
       <Route path="add" element={<EditPiece />} />
     </Route>
   </Route>

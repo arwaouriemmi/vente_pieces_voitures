@@ -1,7 +1,17 @@
+import ProviderProps from "./ProviderProps";
+import CarProps from "./carProps";
+import { CategoryProps } from "./categoryProps";
+
 export interface ProductProps{
-    title:string;
-    location:string;
-    price:string;
-    image:string;
-    provider:string;
+    id: string;
+    piece: string; 
+    image: string;
+    price: number;
+    description: string;
+    constructorReference: string;
+    comments: string; 
+    provider: ProviderProps ;
+    cars: CarProps;
+    category: CategoryProps;
+    subCategory: CategoryProps;
 }

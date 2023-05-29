@@ -10,7 +10,7 @@ export class Piece extends  TimestampEntities{
     id: string;
     @Column()
     piece: string; 
-    @Column()
+    @Column({nullable:true})
     image: string;
     @Column()
     price: number;
@@ -18,19 +18,14 @@ export class Piece extends  TimestampEntities{
     description: string;
     @Column()
     constructorReference: string;
-    @Column()
+    @Column({nullable:true})
     comments: string; 
-    @ManyToOne(type => Providers , (provider) => provider.pieces)
+    @ManyToOne(() => Providers , (provider) => provider.pieces)
     provider: Providers ;
-    @ManyToMany(() => Cars)
-    @JoinTable({
-     name: 'cars_piece',
-        joinColumn: { name: 'piece', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'cars', referencedColumnName: 'id' },
-    })
-    cars: Cars[];
-    @OneToOne(type => Categories)
-    pieceCategory: Categories;
-    @OneToOne(type=>Categories)
-    pieceSubCategory:Categories;
+    @ManyToOne(() => Cars, (cars) => cars.pieces, { cascade: true, eager: true })
+    cars: Cars;
+    @ManyToOne(() => Categories, { eager: true })
+    category: Categories;
+    @ManyToOne(() => Categories, { eager: true })
+    subCategory:Categories;
 }

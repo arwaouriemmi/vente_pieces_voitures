@@ -24,14 +24,14 @@ export default function CarsSearchForm({
 
   useEffect(() => {
     getCarBrands().then((res) => {
-      setBrands(res.data);
+      setBrands(res);
     });
   }, []);
 
   useEffect(() => {
     if (formData.brand !== "" && formData.brand !== undefined) {
       getCarModels(formData.brand).then((res) => {
-        setModels(res.data);
+        setModels(res);
       });
     } else {
       setModels([]);
@@ -42,7 +42,7 @@ export default function CarsSearchForm({
   useEffect(() => {
     if (formData.model !== "" && formData.brand !== "" && formData.model !== undefined && formData.brand !== undefined) {
       getCarMotorization(formData.brand, formData.model).then((res) => {
-        setMotorizations(res.data);
+        setMotorizations(res);
       });
     } else {
       setMotorizations([]);

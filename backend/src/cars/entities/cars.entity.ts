@@ -1,7 +1,7 @@
 
 import { TimestampEntities } from "src/TimestampEntities";
 import { Piece } from "src/piece/entities/piece.entity";
-import { BaseEntity, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm"
+import { BaseEntity, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm"
 //@Entity('Cars')
 @Entity()
 export class Cars extends TimestampEntities  {
@@ -13,13 +13,8 @@ export class Cars extends TimestampEntities  {
     model: string;
     @Column({ nullable: false })
     motorization: string;
-    //createdAt: string;
-    @ManyToMany(() => Piece, piece => piece.cars, { cascade: true })
-    @JoinTable({
-        name: 'cars_piece',
-        joinColumn: { name: 'cars', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'piece', referencedColumnName: 'id' },
-    })
+    
+    @OneToMany(() => Piece, piece => piece.cars)
     pieces: Piece[];
 }
 

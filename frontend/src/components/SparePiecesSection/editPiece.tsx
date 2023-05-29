@@ -7,12 +7,15 @@ import CarsSearchForm from "../SearchForm/carsSearchForm";
 import { CategoryProps } from "../../types/categoryProps";
 import { postPiece } from "../../apis/piecesApis";
 import { getCategoriesFromApi } from "../../apis/categoryApis";
+import { getUserId } from "../../getUserId";
+import { ToastContainer } from "react-toastify";
 
 export default function EditPiece() {
-  const [formData, setFormData] = useState<FormDataProps>({} as FormDataProps);
+  const [formData, setFormData] = useState<FormDataProps>({
+    provider: getUserId(),
+  } as FormDataProps);
   const [categories, setCategories] = useState<CategoryProps[]>([]);
   const [subCategories, setSubCategories] = useState<CategoryProps[]>([]);
-  const [pieces, setPieces] = useState<CategoryProps[]>([]);
   const { id } = useParams<{ id: string }>();
   const [isValidate, setIsValidate] = useState(true);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -80,7 +83,7 @@ export default function EditPiece() {
   useEffect(() => {
     try {
       getCategoriesFromApi().then((res) => {
-        setCategories(res.data);
+        setCategories(res);
       });
     } catch (err) {
       console.log(err);
@@ -89,21 +92,13 @@ export default function EditPiece() {
 
   useEffect(() => {
     if (formData.category !== "" && formData.category !== undefined) {
-      getData("subcategories/" + formData.category, setSubCategories);
+      getCategoriesFromApi(formData.category as unknown as number).then((res) => {
+        setSubCategories(res);
+      });
     } else {
       setSubCategories([]);
-      setPieces([]);
     }
   }, [formData.category]);
-
-  useEffect(() => {
-    if (formData.subCategory !== "" && formData.subCategory !== undefined) {
-      getData("pieces/" + formData.subCategory, setPieces);
-      setPieces([{ id: 4, label: "piece1" }, { id: 5, label: "piece2" }, { id: 6, label: "piece3" }]);
-    } else {
-      setPieces([]);
-    }
-  }, [formData.subCategory]);
 
   return (<>
     <div
@@ -160,16 +155,12 @@ export default function EditPiece() {
         </div>
         <div className="mb-3">
           <FormLabel>Piéce</FormLabel>
-          <Form.Select
-            value={formData.piece}
+          <FormControl
+            type={"text"}
+            value={formData.price}
             name={"piece"}
             onChange={(e: any) => handleChange(e, formData, setFormData)}
-          >
-            <option value="">Choisir une piéce</option>
-            {pieces.map((piece) => (
-              <option value={piece.id}>{piece.label}</option>
-            ))}
-          </Form.Select>
+          />
           <p className="text-danger">{!isValidate && errors["piece"]}</p>
         </div>
       </fieldset>
@@ -258,11 +249,11 @@ export default function EditPiece() {
         onClick={() => {
           handleSubmit();
         }}
-        style={{ marginRight: "900px", marginLeft: "20px" }}
       >
         Enregistrer la piéce
       </Button>
     </div>
+    <ToastContainer position="bottom-right"/>
   </>
   );
 }

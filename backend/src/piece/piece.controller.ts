@@ -3,9 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   Query,
   UploadedFile,
   UseInterceptors,
@@ -38,12 +35,12 @@ export class PieceController extends CrudController<
       }),
     }),
   )
-  async add(
+  async addPiece(
     @Body() dto: CreatePieceDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    dto.image = image.filename;
-    return this.pieceService.create(dto);
+    if (image) dto.image = image.filename;
+    return this.pieceService.add(dto);
   }
 
   @Get('search')

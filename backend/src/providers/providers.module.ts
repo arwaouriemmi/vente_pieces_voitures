@@ -12,6 +12,7 @@ import { AuthModule } from 'src/auth/auth.module';
     ),
 MailingModule, AuthModule],
   controllers: [ProvidersController],
-  providers: [ProvidersService]
+  providers: [ProvidersService],
+  exports:[ProvidersService]
 })
 export class ProvidersModule {}

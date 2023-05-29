@@ -1,26 +1,26 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateprovidersDto {
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: "name is required"})
+  @IsString({ message: "name must be a string"})
   name: string;
   @IsOptional()
-  @IsString()
+  @IsString({ message: "logo must be a string"})
   logo?: string;
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: "city is required"})
+  @IsString({ message: "city must be a string"})
   city: string;
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: "address is required"})
+  @IsString({ message: "address must be a string"})
   address: string;
-  @IsString()
+  @IsString({ message: "email must be a string"})
   email: string;
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: "phone is required"})
+  @IsString({ message: "phone must be a string"})
   phone: string;
 
-  @IsOptional()
-  @IsString()
+  @IsOptional({ message: "whatsapp is required"})
+  @IsString({ message: "whatsapp must be a string"})
   whatsapp?: string;
   @IsOptional()
   @IsString()
