@@ -1,6 +1,6 @@
 import ProductCard from "./productCard";
 import "./home.css";
-import { Row } from "react-bootstrap";
+import { Button, Row } from "react-bootstrap";
 import CategoriesList from "./categoryList";
 import "bootstrap/dist/css/bootstrap.min.css"
 import SideBar from "./sideBar";

@@ -1,14 +1,9 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
-  Param,
-  Patch,
-  Post,
   Query,
 } from '@nestjs/common';
-import { CrudController } from 'src/generic/Crud.controller';
+import { CrudController } from 'src/generic/crud/Crud.controller';
 import { Cars } from './entities/cars.entity';
 import { CreatecarsDto } from './dto/create-cars.dto';
 import { UpdatecarsDto } from './dto/update-cars.dto';

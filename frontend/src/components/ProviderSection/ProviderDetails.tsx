@@ -1,21 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProviderProps from "../../types/ProviderProps";
-import { getData } from "../../apis/generic";
-import { getProviderByIdFromApi } from "../../apis/providerApis";
-
-const provider1 = {
-  id: "1",
-  name: "eya raouine",
-  email: "eya.raouine@gmail.com",
-  phone: "98100686",
-  whatsapp: "98100686",
-  address: "lot n°184",
-  city: "ariana",
-  facebook: "https://eya/facebook.com",
-  logo: "https://picsum.photos/300",
-  createdAt: Date.now().toLocaleString(),
-};
+import { getProviderByIdFromApi, getProviderDeleted } from "../../apis/providerApis";
 
 export default function ProviderDetails() {
   const { id } = useParams<{ id: string }>();
@@ -36,8 +22,8 @@ export default function ProviderDetails() {
   });
 
   useEffect(() => {
-    getProviderByIdFromApi(id ?? "-1").then((res) => {
-      setProvider(res.data);
+    getProviderDeleted(id ?? "-1").then((res) => {
+      setProvider(res);
     });
   }, []);
 
@@ -47,20 +33,12 @@ export default function ProviderDetails() {
       style={{ display: "flex", flexDirection: "row", paddingTop: "50px" }}
     >
       <div className="image-profile" style={{ flex: 1 }}>
-        {provider.logo ? (
           <img
-            src={provider.logo}
+            src={provider.logo ?? "https://via.placeholder.com/150"}
             className="img-fluid rounded-circle "
             style={{ width: "300px" }}
             alt=""
           />
-        ) : (
-          <img
-            src="../placeholder.jpg"
-            className="img-fluid rounded-circle "
-            style={{ width: "300px" }}
-          />
-        )}
       </div>
       <div className="credentials" style={{ flex: 2, paddingLeft: "20px" }}>
         <ul style={{ listStyle: "none", paddingTop: "10px" }}>

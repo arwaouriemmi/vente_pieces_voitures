@@ -2,19 +2,14 @@ import { Nav, Card, Row, Pagination } from "react-bootstrap";
 import ProviderProps from "../../types/ProviderProps";
 import ProviderCard from "./providerCard";
 import { useState } from "react";
-import axios from "axios";
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
-import { getData } from "../../apis/generic";
 import { getProvidersFromApi } from "../../apis/providerApis";
 
-export default function ProviderSection({
-  pageNumber,
-}: {
-  pageNumber: number;
-}) {
+export default function ProviderSection() {
   const [searchParams] = useSearchParams();
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const [providers, setProviders] = useState<ProviderProps[]>([]);
   const [active, setActive] = useState(searchParams.get("active") ?? "all");
   const [page, setPage] = useState(
@@ -24,6 +19,7 @@ export default function ProviderSection({
   useEffect(() => {
     getProvidersFromApi(active, page).then((res) => {
       setProviders(res.data);
+      setPageNumber(res.count)
     });
   }, [active, page]);
 

@@ -78,17 +78,17 @@ const deleteData = async (uri: string, id: string | Number) => {
   const toastId = toast.loading("Votre message est en cours d'envoi!");
   const link = "http://localhost:3001/" + uri + id .toString();
   try {
-    await axios.delete(link, { data: { id }});
+    await axios.delete(link);
     toast.update(toastId, {
       ...toastOptions,
       render: "La donnée a été supprimée avec succées!",
       type: "success",
       isLoading: false,
     });
-  } catch (error) {
+  } catch (error : any ) {
     toast.update(toastId, {
       ...toastOptions,
-      render: 'Une erreur est survenue, veuillez réesséyer',
+      render: error,
       type: "error",
       isLoading: false,
     });

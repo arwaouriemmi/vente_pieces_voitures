@@ -9,8 +9,9 @@ import CarCard from "./carCard";
 import { getData } from "../../apis/generic";
 import { getCarsFromApi } from "../../apis/carApis";
 
-export default function CarsSection({ pageNumber }: { pageNumber: number }) {
+export default function CarsSection() {
   const [searchParams] = useSearchParams();
+  const [pageNumber, setPageNumber] = useState(0);
   const [cars, setCars] = useState<CarProps[]>([]);
   const [page, setPage] = useState(
     searchParams.get("page") ? parseInt(searchParams.get("page") ?? "1") : 1
@@ -19,6 +20,7 @@ export default function CarsSection({ pageNumber }: { pageNumber: number }) {
   useEffect(() => {
     getCarsFromApi(page).then((res) => {
       setCars(res.data);
+     setPageNumber(res.count / 5 +1);
     });
   }, [page]);
 

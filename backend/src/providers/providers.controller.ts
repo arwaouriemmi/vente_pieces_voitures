@@ -3,16 +3,16 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
-  Patch,
   Post,
+  Query,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { CrudController } from 'src/generic/Crud.controller';
 import { Providers } from './entities/providers.entity';
 import { CreateprovidersDto } from './dto/create-providers.dto';
 import { UpdateprovidersDto } from './dto/update-providers.dto';
 import { ProvidersService } from './providers.service';
-import { MailingService } from 'src/mailing/mailing.service';
+import { CrudController } from 'src/generic/crud/Crud.controller';
 
 @Controller('providers')
 export class ProvidersController extends CrudController<
@@ -22,68 +22,44 @@ export class ProvidersController extends CrudController<
 > {
   constructor(
     private readonly providerService: ProvidersService,
-    private readonly mailingservice: MailingService,
   ) {
     super(providerService);
   }
 
   @Get('')
-  getProviders(
-    @Param('id') id: string,
-    @Param('active') name: string,
-    @Param('page') page: number,
-  ) {
-    return [
-      {
-        id: '1',
-        name: 'Provider 1',
-        address: 'Address 1',
-        city: 'City 1',
-        phone: 'Phone 1',
-        createdAt: '2021-01-01',
-        deletedAt: '2021-01-01',
-      },
-      {
-        id: '2',
-        name: 'Provider 2',
-        address: 'Address 2',
-        city: 'City 2',
-        phone: 'Phone 2',
-        createdAt: '2021-01-02',
-        deletedAt: undefined,
-      },
-    ];
-  }
-
-  @Get(':id')
-  getProvider(@Param('id') id: string) {
-    return {
-      id: '1',
-      name: 'Provider 1',
-      address: 'Address 1',
-      city: 'City 1',
-      phone: 'Phone 1',
-      createdAt: '2021-01-01',
-      deletedAt: '2021-01-01',
-    };
+  async getAllProviders(@Query('page') page, @Query('active') active): Promise<any> {
+    let p; 
+    let nb;   
+    if (active === 'bloques'){
+      p = await this.providerService.findAllWithQuery(page, 10, 'deletedAt IS NOT NULL', true);
+      nb = await this.providerService.getCountWithQuery('deletedAt IS NOT NULL', true);   
+    } else if (active === 'actifs'){
+      p = await this.providerService.findAll(page, 10);
+      nb = await this.providerService.getCount();
+    } else {
+      p = await this.providerService.getAllProviders(page, 10);
+      nb = await this.providerService.countAllProviders();
+    }
+    return {data: p, count: nb};
   }
 
   @Post('add')
-  createProvider(@Body() provider: any) {
-    console.log(provider);
-    this.mailingservice.sendUserConfirmation(provider, 'token');
-    return provider;
+  async addProvider(@Body() provider: CreateprovidersDto): Promise<Providers> {
+    return this.providerService.addProvider(provider);
   }
 
-  @Patch('edit/:id')
-  updateProvider(@Param('id') id: string, @Body() provider: any) {
-    console.log(id, provider);
-    return provider;
+  @Get('all/:id')
+  async getProvider(@Param('id',ParseIntPipe) id: number): Promise<Providers> {
+    return this.providerService.findOne(id, true);
   }
 
   @Delete('delete/:id')
-  deleteProvider(@Param('id') id: string) {
-    console.log(id);
-    return { id };
+  async deleteProvider(@Param('id',ParseIntPipe) id: number): Promise<{count: number}> {
+    return this.providerService.deleteProvider(id);
+  }
+
+  @Get('restore/:id')
+  async restoreProvider(@Param('id',ParseIntPipe) id: number): Promise<Providers> {
+    return this.providerService.restoreProvider(id);
   }
 }
