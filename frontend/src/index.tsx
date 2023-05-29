@@ -8,7 +8,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Routes from "./routes";
-import HeroSection from "./components/HeroSection";
 import NavbarSection from "./components/navbarSection/Navbar";
 
 const router = createBrowserRouter(createRoutesFromElements(Routes));
@@ -20,7 +19,6 @@ const root = ReactDOM.createRoot(
     <BrowserRouter>
       <NavbarSection isAuthentificated={true} id={"5"} role="provider" />
     </BrowserRouter>
-    <HeroSection />
     <RouterProvider router={router} />
   </React.StrictMode>
 );

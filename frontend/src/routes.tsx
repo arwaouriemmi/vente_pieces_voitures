@@ -16,12 +16,12 @@ const Routes = (
     <Route path="admin">
       <Route path="categories" element={<CategoriesSection />} />
       <Route path="providers">
-        <Route path="" element={<ProviderSection pageNumber={5} />} />
+        <Route path="" element={<ProviderSection />} />
         <Route path="add" element={<EditProvider newElement={true} />} />
         <Route path="edit/:id" element={<EditProvider newElement={false} />} />
       </Route>
       <Route path="cars">
-        <Route path="" element={<CarsSection pageNumber={5} />} />
+        <Route path="" element={<CarsSection />} />
         <Route path="add" element={<EditCar newElement={true} />} />
         <Route path="edit/:id" element={<EditCar newElement={false} />} />
       </Route>

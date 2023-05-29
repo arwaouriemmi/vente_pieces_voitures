@@ -6,8 +6,15 @@ export class CrudController<T ,createDto,UpdateDto>{
 	constructor(private readonly service: CrudService<T ,createDto,UpdateDto>) {}
   
   @Get('')
-  async findAll(@Query('page') page: number): Promise<T[]> {
-    return this.service.findAll(page, 5);
+  async findAll(@Query('page') page: number): Promise<any> {
+    const res =  this.service.findAll(page, 5);
+    const nb = this.service.getCount();
+    return Promise.all([res, nb]).then((values) => {
+      return {
+        data: values[0],
+        count: values[1],
+      };
+    });
   }
     @Get(':id')
     async findOne(@Param('id',ParseIntPipe) id: number): Promise<T> {
@@ -21,14 +28,13 @@ export class CrudController<T ,createDto,UpdateDto>{
   
     @Patch('edit/:id')
     async update(@Param('id',ParseIntPipe) id: number, @Body()  Dto:UpdateDto): Promise<T> {
-      //async update(@Param('id') id: string, @Body()  Dto:UpdateDto): Promise<T> {
-        console.log("done");
       return this.service.update(id, Dto);
     }
   
     @Delete('delete/:id')
-    async delete(@Param('id',ParseIntPipe) id: number){
-      return this.service.delete(id);
+    async delete(@Param('id',ParseIntPipe) id: number): Promise<{count: number}>{
+      await this.service.delete(id);
+      return {count : 1}
     }
     
   }

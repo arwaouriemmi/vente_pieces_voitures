@@ -19,25 +19,25 @@ export class CarsService extends CrudService<Cars,CreatecarsDto,UpdatecarsDto> {
 
     async getCarBrands(): Promise<String[]> {
         const queryBuilder = this.carRepository.createQueryBuilder('car');
-        queryBuilder.select('DISTINCT car.brand');
-        const cars = await queryBuilder.getMany();
+        queryBuilder.select('DISTINCT brand');
+        const cars = await queryBuilder.getRawMany();
         return cars.map((car) => car.brand);
       }
 
     async getCarModels(brand: String): Promise<String[]> {
         const queryBuilder = this.carRepository.createQueryBuilder('car');
-        queryBuilder.select('DISTINCT car.model');
+        queryBuilder.select('DISTINCT model');
         queryBuilder.where('car.brand = :brand', { brand });
-        const cars = await queryBuilder.getMany();
+        const cars = await queryBuilder.getRawMany();
         return cars.map((car) => car.model);
       }
 
     async getCarMotorizations(brand: String, model: String): Promise<String[]> {
         const queryBuilder = this.carRepository.createQueryBuilder('car');
-        queryBuilder.select('DISTINCT car.motorization');
+        queryBuilder.select('DISTINCT motorization');
         queryBuilder.where('car.brand = :brand', { brand });
         queryBuilder.andWhere('car.model = :model', { model });
-        const cars = await queryBuilder.getMany();
+        const cars = await queryBuilder.getRawMany();
         return cars.map((car) => car.motorization);
       }
 

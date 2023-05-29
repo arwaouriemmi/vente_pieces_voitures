@@ -35,6 +35,7 @@ const getCarBrands = async () => {
 const getCarModels = async (brand: string) => {
     try {
         let data = await getData("cars/models?brand=" + brand)
+        console.log(data);
         return data
     } catch (error) {
         console.log(error);
@@ -64,6 +65,7 @@ const patchCar = async (id: string, data: any) => {
 }
 
 const deleteCar = async (id: string) => {
+    console.log(id);
     deleteData("cars/delete/", id)
 }
 

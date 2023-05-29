@@ -11,7 +11,7 @@ export default function CarCard({
   motorization,
 }: CarProps) {
   const deleteCar = (id: string) => {
-    axios.delete("http://localhost:3001/admin/cars/delete/" + id.toString());
+    deleteCar(id);
   };
 
   return (

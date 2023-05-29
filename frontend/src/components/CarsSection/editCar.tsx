@@ -10,9 +10,8 @@ import {
 import CarProps from "../../types/carProps";
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
-import { getData, patchData, postData } from "../../apis/generic";
 import { ToastContainer } from "react-toastify";
-import { getCarBrands, getCarByIdFromApi, patchCar, postCar } from "../../apis/carApis";
+import { getCarBrands, getCarByIdFromApi, getCarModels, patchCar, postCar } from "../../apis/carApis";
 
 interface CarFormProps extends Partial<CarProps> { }
 
@@ -29,7 +28,7 @@ export default function EditCar({ newElement }: { newElement: boolean }) {
   useEffect(() => {
     if (!newElement && id) {
       getCarByIdFromApi(id).then((res) => {
-        setFormData(res.data);
+        setFormData(res);
       });
     }
   }, [id]);
@@ -42,6 +41,15 @@ export default function EditCar({ newElement }: { newElement: boolean }) {
     if (!values.model) {
       errors.model = "⚠ Veuillez remplir ce champ";
     }
+
+    if(newBrand && brands.includes(values.brand as string)){
+      errors.brand = "⚠ Cette marque existe déjà";
+    }
+
+    if(newModel && models.includes(values.model as string)){
+      errors.model = "⚠ Ce modéle existe déjà";
+    }
+
     if (!values.motorization) {
       errors.motorization = "⚠ Veuillez remplir ce champ";
     }
@@ -57,18 +65,18 @@ export default function EditCar({ newElement }: { newElement: boolean }) {
   useEffect(() => {
     console.log(formData);
     setErrors(validateForm(formData));
-  }, [formData]);
+  }, [formData, newBrand, newModel]);
 
   useEffect(() => {
     getCarBrands().then((res) => {
-      setBrands(res.data);
+      setBrands(res);
     });
   }, []);
 
   useEffect(() => {
     if (formData.brand !== "" && !newBrand) {
-      getData(`cars/models/${formData.brand}`).then((res) => {
-        setModels(res.data);
+      getCarModels(formData.brand as string).then((res) => {
+        setModels(res);
       });
     } else {
       setModels([]);
@@ -77,12 +85,12 @@ export default function EditCar({ newElement }: { newElement: boolean }) {
 
   const EditCar = async (formData: CarFormProps) => {
     patchCar(id ?? "", formData as CarProps);
-    setFormData({ brand: "", model: "", motorization: "" });
   };
 
   const AddCar = async (formData: CarFormProps) => {
     postCar(formData as CarProps);
     setFormData({ brand: "", model: "", motorization: "" });
+
   };
 
   const handleChange = (e: FormEvent<HTMLFormElement>) => {

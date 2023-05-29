@@ -57,7 +57,7 @@ export default function CategoriesSection() {
             <Slide
               autoplay={false}
               infinite={true}
-              slidesToShow={index==0? 3: 5}>
+              slidesToShow={index==0? 3: 7}>
               {Object.values(catList).map((cat) => {
                 return (
                   <div
