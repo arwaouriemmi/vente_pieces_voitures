@@ -13,6 +13,11 @@ import * as dotenv from 'dotenv';
 import { Cars } from './cars/entities/cars.entity';
 import { Piece } from './piece/entities/piece.entity';
 import { Providers } from './providers/entities/providers.entity';
+import { MulterModule } from '@nestjs/platform-express';
+import { PieceModule } from './piece/piece.module';
+import { Categories } from './categories/entities/categories.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 dotenv.config();
 
 @Module({
@@ -20,6 +25,7 @@ dotenv.config();
     CarsModule,
     ProvidersModule,
     CategoriesModule,
+    PieceModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -31,10 +37,15 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Cars, Piece, Providers],
+      entities: [User, Cars, Piece, Providers,Categories],
       synchronize: true,
     }),
     MailingModule,
+    MulterModule.register({dest:'./uploads'}),
+  /*  ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..','frontend' ,'public')
+    })*/
+   
   ],
   controllers: [AppController],
   providers: [AppService],
