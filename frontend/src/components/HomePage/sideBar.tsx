@@ -14,7 +14,8 @@ export default function SideBar({handleSearch}: { handleSearch: (products: Produ
         motorization: "",
     } as CarProps);
     const [sortBy, setSortBy] = useState<string>("");
-    const handleClick = () => {
+    const handleClick = (e:any) => {
+        e.preventDefault();
         searchPieces(formData, sortBy).then((res) => {
             handleSearch(res);
         });
@@ -52,7 +53,7 @@ export default function SideBar({handleSearch}: { handleSearch: (products: Produ
                                           onChange={() => setSortBy("AdditionDate")}/>
                     </Form.Check>
                 </div>
-                <Button variant="primary" type="submit" className="mt-3 p-2" onClick={(e) => handleClick()}>
+                <Button variant="primary" type="submit" className="mt-3 p-2" onClick={(e) =>handleClick(e)}>
                     Rechercher
                 </Button>
             </Form>

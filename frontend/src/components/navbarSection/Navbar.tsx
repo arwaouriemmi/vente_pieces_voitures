@@ -48,7 +48,7 @@ export default function NavbarSection() {
     <Navbar bg="primary" variant="dark" expand="lg">
       <Navbar.Brand as={Link} to="/">
         <img
-          src="../logo_app.jpg"
+          src="../logo_app.webp"
           width="45"
           height="40"
           className="d-inline-block align-top rounded-circle "

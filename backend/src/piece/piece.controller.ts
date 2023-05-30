@@ -6,6 +6,7 @@ import {
   Query,
   UploadedFile,
   UseInterceptors,
+  Param,
 } from '@nestjs/common';
 import { PieceService } from './piece.service';
 import { CreatePieceDto } from './dto/create-piece.dto';
@@ -41,7 +42,7 @@ export class PieceController extends CrudController<
     @UploadedFile() image: Express.Multer.File,
   ) {
     if (image) {
-    const imagePath =`uploads'/${image.filename}`;
+    const imagePath =`uploads/${image.filename}`;
     dto.image = imagePath;
     }
     return this.pieceService.add(dto);
@@ -53,13 +54,21 @@ export class PieceController extends CrudController<
     @Query('model') model: string,
     @Query('motorization') motorization: string,
     @Query('sortBy') sortBy: string,
-  ): Promise<Piece[]> {
+  ): Promise<{data:Piece[]}> {
     const results = await this.pieceService.searchPieces(
       brand,
       model,
       motorization,
       sortBy,
     );
-    return results;
+    return (results);
+  }
+  @Get('search/category/:id')
+  async searchPiecesByCategory(@Param('id') id:number):Promise<{data:Piece[]}>{
+    return await this.pieceService.searchPiecesByCategory(id);
+  }
+  @Get('search/subcategory/:id')
+  async searchPiecesBySubCategory(@Param('id') id:number):Promise<{data:Piece[]}>{
+    return await this.pieceService.searchPiecesBySubCategory(id);
   }
 }

@@ -32,7 +32,7 @@ export class PieceService extends CrudService<
       createPieceDto.motorization,
     );
 
-    const newPiece : any  = createPieceDto;
+    const newPiece: any = createPieceDto;
     newPiece.cars = cars;
     console.log(newPiece);
     return await this.piecesRepository.save(newPiece);
@@ -43,7 +43,7 @@ export class PieceService extends CrudService<
     model: string,
     motorization: string,
     sortBy: string,
-  ): Promise<Piece[]> {
+  ): Promise<{ data: Piece[]; }> {
     const query = this.piecesRepository
       .createQueryBuilder('pieces')
       .innerJoin('pieces.cars', 'cars');
@@ -76,6 +76,24 @@ export class PieceService extends CrudService<
     }
     const results = await query.getMany();
 
-    return results;
+    return ({ data: results });
+  }
+  async searchPiecesBySubCategory(id: number): Promise< {data:Piece[] }> {
+    const pieces = await this.piecesRepository
+      .createQueryBuilder('pieces')
+      .leftJoinAndSelect('pieces.subCategory', 'subCategory')
+      .where('subCategory.id = :subCategoryId', { subCategoryId: id })
+      .getMany();
+
+    return ({ data: pieces} );
+
+  }
+  async searchPiecesByCategory(id: number): Promise< {data:Piece[] }>{
+    const pieces = await this.piecesRepository
+      .createQueryBuilder('pieces')
+      .leftJoinAndSelect('pieces.category', 'category')
+      .where('category.id = :categoryId', { categoryId:id })
+      .getMany();
+    return ({data: pieces} );
   }
 }

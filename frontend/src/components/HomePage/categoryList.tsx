@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Slide } from "react-slideshow-image";
 import 'react-slideshow-image/dist/styles.css'
 import { getCategoriesFromApi } from "../../apis/categoryApis";
+import { searchPiecesByCategory, searchPiecesBySubCategory } from "../../apis/piecesApis"
 
 
 interface CategoryProps {
@@ -15,9 +16,16 @@ interface CategoryProps {
   image: string;
 }
 
-export default function CategoriesList() {
+interface CategoriesListProps {
+  onCategorySelect: (categoryId: number|undefined) => void;
+  onSubcategorySelect: (subcategoryId: number|undefined) => void;
+}
+export default function CategoriesList({ onCategorySelect, onSubcategorySelect }:CategoriesListProps) {
   const [categories, setCategories] = useState([] as CategoryProps[][]);
   const [selected, setSelected] = useState([] as number[]);
+  const [selectedCategory, setSelectedCategory] = useState<number | undefined>();
+  const [selectedSubcategory, setSelectedSubcategory] = useState<number | undefined>();
+
 
   const getCategories = async (id?: number, index?: number) => {
     let newCategories = [...categories];
@@ -39,48 +47,60 @@ export default function CategoriesList() {
     getCategories();
     console.log(categories);
   }, []);
-
   return (
     <div>
       {categories.length !== 0 &&
-        categories.map((catList, index) => (<Row>
-          <Slide
-          slidesToShow={catList.length < 4? catList.length : 5}>
-            {Object.values(catList).map((cat) => {
-              return (
-                <div
-                  key={cat.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundSize: 'cover',
-                    height: '100px'
-                  }}
-                  onClick={() => {
-                    let newSelected = [...selected];
-                    if (categories.length > index + 1) {
-                      newSelected.length = index + 1;
-                      categories.length = index + 1;
-                    }
-                    newSelected[index] = cat.id;
-                    setSelected(newSelected);
-                    setCategories(categories);
-                    if (newSelected.includes(cat.id))
-                      getCategories(cat.id, index);
-                  } }
-                >
-                  <Label
-                    key={cat.id}
-                    selected={selected.includes(cat.id)}
-                    {...cat} />
-                </div>
-              );
-            })}
-          
-          </Slide>
-        </Row>
-        ))}
+        categories.map((catList, index) =>
+          index < 2 && (
+            <Row>
+              <Slide slidesToShow={catList.length < 4 ? catList.length : 5}>
+                {Object.values(catList).map((cat) => {
+
+                  return (
+                    <div
+                      key={cat.id}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundSize: "cover",
+                        height: "100px",
+                      }}
+                      onClick={() => {
+                        let newSelected = [...selected];
+                        if (categories.length > index + 1) {
+                          newSelected.length = index + 1;
+                          categories.length = index + 1;
+                        }
+                        newSelected[index] = cat.id;
+                        setSelected(newSelected);
+                        setCategories(categories);
+                        if (newSelected.includes(cat.id)) {
+                          if (index === 0) {
+                            onCategorySelect(cat.id);
+                            setSelectedSubcategory(undefined);
+                          } else {
+                            onSubcategorySelect(cat.id);
+                          }
+                          getCategories(cat.id, index);
+                        } else {
+                          onCategorySelect(undefined);
+                          setSelectedSubcategory(undefined);
+                        }
+                      }}
+                    >
+                      <Label
+                        key={cat.id}
+                        selected={selected.includes(cat.id)}
+                        {...cat}
+                      />
+                    </div>
+                  );
+                })}
+              </Slide>
+            </Row>
+          )
+        )}
     </div>
   );
 }

@@ -37,6 +37,22 @@ const searchPieces = async (formData: any, sortBy: any) => {
     console.log(error);
   }
 }
+const searchPiecesByCategory=async (id:any)=>{
+  try{
+    let data=await getData("pieces/search/category/"+id);
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+const searchPiecesBySubCategory=async (id:any)=>{
+  try{
+    let data=await getData("pieces/search/subcategory/"+id);
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
 
 const postPiece = async (data: any) => {
   try {
@@ -44,6 +60,7 @@ const postPiece = async (data: any) => {
   } catch (err) {
     console.log(err);
   }
+  
 };  
 
-export { searchPieces, postPiece, getPieceByIdFromApi, getPiecesFromApi };
+export { searchPieces, postPiece, getPieceByIdFromApi, getPiecesFromApi,searchPiecesByCategory,searchPiecesBySubCategory };
