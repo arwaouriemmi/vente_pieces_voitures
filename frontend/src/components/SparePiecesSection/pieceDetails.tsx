@@ -79,7 +79,7 @@ export default function PieceDetails() {
               </li>
 
               <Link
-                to={"/providers/" + piece.provider}
+                to={"/providers/" + piece.provider.id}
                 style={{ textDecoration: "none" }}
               >
                 <button className="btn btn-primary">Voir Fournisseur</button>
@@ -87,7 +87,7 @@ export default function PieceDetails() {
             </ul>
           </div>
           </div>
-          {(getUserId() === piece.provider || role === "admin") && (
+          {(getUserId() === piece.provider.id || role === "admin") && (
             <div style={{display: "block"}}>
               <Link to={"/pieces/edit/" + piece.id}>
                 <button className="btn btn-primary">Modifier</button>

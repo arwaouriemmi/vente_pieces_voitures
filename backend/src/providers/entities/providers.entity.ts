@@ -29,7 +29,6 @@ export class Providers extends TimestampEntities {
     @OneToMany(() => Piece,
         (piece) => piece.provider, {
         nullable: true,
-        eager: true,
     })
     pieces: Piece[]
 }
