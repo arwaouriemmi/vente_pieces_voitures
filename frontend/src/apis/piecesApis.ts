@@ -21,21 +21,22 @@ const getPieceByIdFromApi = async (id: string) => {
 //Get all pieces if 
 const searchPieces = async (formData: any, sortBy: any) => {
   try {
-    let data = await getData(
-      "search?brand=" +
+  
+  let data = await getData(
+      "pieces/search?"+"brand=" +
         formData.brand +
         "&model=" +
         formData.model +
         "&motorization=" +
         formData.motorization +
-        "&sortby=" +
+        "&sortBy=" +
         sortBy
     );
     return data;
   } catch (error) {
     console.log(error);
   }
-};
+}
 
 const postPiece = async (data: any) => {
   try {

@@ -3,6 +3,7 @@ import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import {ProductProps} from "../../types/ProductProps";
+import { upload } from "@testing-library/user-event/dist/upload";
 
 export default function ProductCard({product}: {product: ProductProps}) {
   const [isClicked, setIsClicked] = useState(false);
@@ -20,8 +21,8 @@ export default function ProductCard({product}: {product: ProductProps}) {
         </Card.Title>
 
         <Card.Text>{product.price + " TND"}</Card.Text>
-        <Card.Text>{product.category.label} </Card.Text>
-        <Card.Text style={{fontWeight: "bold"}}>{product.cars.brand + " " + product.cars.model}
+        <Card.Text>{product.category ? product.category.label:"non disponible"} </Card.Text>
+        <Card.Text style={{fontWeight: "bold"}}>{product.cars ? (product.cars.brand + " " + product.cars.model):"non disponible"}
         </Card.Text>
 
       </Card.Body>

@@ -2,7 +2,7 @@ import { TimestampEntities } from "../../TimestampEntities";
 import { Cars } from "../../cars/entities/cars.entity";
 import { Categories } from "../../categories/entities/categories.entity";
 import { Providers  } from "../../providers/entities/providers.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity,ManyToOne,PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('piece')
 export class Piece extends  TimestampEntities{

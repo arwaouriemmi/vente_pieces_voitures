@@ -15,6 +15,7 @@ import { CrudController } from 'src/generic/crud/Crud.controller';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName } from 'src/editFileName';
+import path from 'path';
 
 @Controller('pieces')
 export class PieceController extends CrudController<
@@ -39,7 +40,10 @@ export class PieceController extends CrudController<
     @Body() dto: CreatePieceDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    if (image) dto.image = image.filename;
+    if (image) {
+    const imagePath =`uploads'/${image.filename}`;
+    dto.image = imagePath;
+    }
     return this.pieceService.add(dto);
   }
 

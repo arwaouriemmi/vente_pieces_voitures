@@ -34,7 +34,6 @@ export class PieceService extends CrudService<
 
     const newPiece : any  = createPieceDto;
     newPiece.cars = cars;
-
     console.log(newPiece);
     return await this.piecesRepository.save(newPiece);
   }

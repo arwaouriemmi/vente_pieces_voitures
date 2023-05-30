@@ -16,7 +16,7 @@ export default function SideBar({handleSearch}: { handleSearch: (products: Produ
     const [sortBy, setSortBy] = useState<string>("");
     const handleClick = () => {
         searchPieces(formData, sortBy).then((res) => {
-            handleSearch(res.data);
+            handleSearch(res);
         });
     }
 

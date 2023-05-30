@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import CategoriesSection from "./components/CategoriesSection";
 import ProviderSection from "./components/ProviderSection";
 import EditProvider from "./components/ProviderSection/editProvider";
@@ -11,8 +11,8 @@ import SignIn from "./components/ProviderSection/SignIn";
 import SignUp from "./components/ProviderSection/SignUp";
 import PieceDetails from "./components/SparePiecesSection/pieceDetails";
 
-const Routes = (
-  <Route>
+export default function RoutesComponent (){
+  return(<Routes>
     <Route path="/" element={<HomePage />} />
     <Route path="login" element={<SignIn />} />
     <Route path="register" element={<SignUp />} />
@@ -37,7 +37,7 @@ const Routes = (
       <Route path=":id" element={<PieceDetails/>} />
       <Route path="add" element={<EditPiece />} />
     </Route>
-  </Route>
-);
+  </Routes>)
+}
 
-export default Routes;
+
