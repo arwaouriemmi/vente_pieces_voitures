@@ -6,6 +6,7 @@ import {
   Query,
   UploadedFile,
   UseInterceptors,
+  Param,
 } from '@nestjs/common';
 import { PieceService } from './piece.service';
 import { CreatePieceDto } from './dto/create-piece.dto';
@@ -14,8 +15,7 @@ import { Piece } from './entities/piece.entity';
 import { CrudController } from 'src/generic/crud/Crud.controller';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName } from 'src/editFileName';
-import path from 'path';
+import { editFileName } from 'editFileName';
 
 @Controller('pieces')
 export class PieceController extends CrudController<
@@ -31,18 +31,18 @@ export class PieceController extends CrudController<
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: '../frontend/public',
         filename: editFileName,
       }),
     }),
   )
   async addPiece(
-    @Body() dto: CreatePieceDto,
     @UploadedFile() image: Express.Multer.File,
+    @Body() dto: CreatePieceDto,
   ) {
+    
     if (image) {
-    const imagePath =`uploads'/${image.filename}`;
-    dto.image = imagePath;
+    dto.image = image.filename;
     }
     return this.pieceService.add(dto);
   }

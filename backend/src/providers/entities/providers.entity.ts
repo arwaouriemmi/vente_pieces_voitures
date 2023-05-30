@@ -28,9 +28,8 @@ export class Providers extends TimestampEntities {
     observation: string;
     @OneToMany(() => Piece,
         (piece) => piece.provider, {
-         cascade: true,
         nullable: true,
-        eager: true
+        eager: true,
     })
     pieces: Piece[]
 }

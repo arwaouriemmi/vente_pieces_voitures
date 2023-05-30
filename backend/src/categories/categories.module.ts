@@ -3,7 +3,6 @@ import { CategoriesController } from './categories.controller';
 import { Categories } from './entities/categories.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesService } from './categories.service';
-import { FileUploadService } from 'src/generic/upload/FileUpload.service';
 
 
 @Module({
@@ -11,7 +10,7 @@ import { FileUploadService } from 'src/generic/upload/FileUpload.service';
     [Categories]
     )],
   controllers: [CategoriesController],
-  providers: [CategoriesService,FileUploadService],
+  providers: [CategoriesService],
   exports:[CategoriesService]
 })
 export class CategoriesModule {}

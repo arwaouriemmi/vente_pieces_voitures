@@ -2,7 +2,7 @@ export interface FormDataProps {
   category: string;
   subCategory: string;
   piece: string;
-  image?: string;
+  image?: File;
   price?: number;
   description?: string;
   constructorReference?: string;

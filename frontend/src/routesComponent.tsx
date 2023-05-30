@@ -10,9 +10,12 @@ import EditPiece from "./components/SparePiecesSection/editPiece";
 import SignIn from "./components/ProviderSection/SignIn";
 import SignUp from "./components/ProviderSection/SignUp";
 import PieceDetails from "./components/SparePiecesSection/pieceDetails";
+import ErrorPage from "./components/errorPage";
+import { Pieces } from "./components/SparePiecesSection/pieces";
 
 export default function RoutesComponent (){
   return(<Routes>
+    <Route path="error" element={<ErrorPage />} />
     <Route path="/" element={<HomePage />} />
     <Route path="login" element={<SignIn />} />
     <Route path="register" element={<SignUp />} />
@@ -31,11 +34,12 @@ export default function RoutesComponent (){
     </Route>
     <Route path="providers">
       <Route path=":id" element={<ProviderDetails />} />
-      <Route path=":id/pieces" element={<HomePage />} />
+      <Route path=":id/pieces" element={<Pieces />} />
     </Route>
     <Route path="pieces">
       <Route path=":id" element={<PieceDetails/>} />
-      <Route path="add" element={<EditPiece />} />
+      <Route path="add" element={<EditPiece newElement={true}/>} />
+      <Route path="edit/:id" element={<EditPiece newElement={false}/>} />
     </Route>
   </Routes>)
 }

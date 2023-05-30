@@ -1,5 +1,4 @@
 import { FormEvent, useEffect, useState } from "react";
-import ProviderProps from "../../types/ProviderProps";
 import { useParams } from "react-router-dom";
 import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
 import { cities } from "./cities";
@@ -9,10 +8,40 @@ import {
   postProvider,
 } from "../../apis/providerApis";
 import { ToastContainer } from "react-toastify";
+import { useUserRole } from "../../getRole";
 
-interface ProviderFormProps extends Partial<ProviderProps> {}
+interface ProviderFormProps {
+    name?: string;
+    logo?: File;
+    city?: string;
+    address?: string;
+    email?: string;
+    phone?: string;
+    whatsapp?: string;
+    facebook?: string;
+    messenger?: string;
+    observation?: string;
+}
+
+const setData = (formData: ProviderFormProps) => {
+  const data = new FormData();
+  if (formData.logo) {
+    data.append("image", formData.logo, formData.logo?.name as string);
+  }
+  data.append("name", formData.name ?? "");
+  data.append("address", formData.address ?? "");
+  data.append("phone", formData.phone ?? "");
+  data.append("city", formData.city ?? "");
+  data.append("facebook", formData.facebook ?? "");
+  data.append("whatsapp", formData.whatsapp ?? "");
+  data.append("messenger", formData.messenger ?? "");
+  data.append("email", formData.email ?? "");
+  data.append("observation", formData.observation ?? "");
+  return data;
+};
 
 export default function EditProvider({ newElement }: { newElement: boolean }) {
+  useUserRole(["admin", "provider"]);
   const { id } = useParams<{ id: string }>();
   const [formData, setFormData] = useState<ProviderFormProps>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -102,12 +131,13 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
   }, [formData]);
 
   const EditProvider = async (formData: ProviderFormProps) => {
-    console.log(formData);
-    patchProvider(id ?? "", formData);
+    const data = setData(formData);
+    patchProvider(id ?? "", data);
   };
 
   const AddProvider = async (formData: ProviderFormProps) => {
-    postProvider(formData).then(() => {
+    const data = setData(formData);
+    postProvider(data).then(() => {
       setFormData({
         name: "",
         address: "",
@@ -236,12 +266,11 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
           <FormLabel>Logo</FormLabel>
           <FormControl
             type={"file"}
-            value={formData.logo}
             name={"logo"}
             onChange={(e: any) => {
               setFormData({
                 ...formData,
-                logo: e.target.files ? e.target.files[0].name : undefined,
+                logo: e.target.files ? (e.target.files[0] as File) : undefined,
               });
             }}
           />

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { LoginProps } from "../../types/LoginProps";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import TokenSignUpProps from "../../types/tokenSignUP";
 import { getProviderByIdFromApi } from "../../apis/providerApis";
 
 export default function SignIn() {
+  const navigate = useNavigate();
   const [user, setUser] = useState<TokenSignUpProps>({
     id: "",
     email: "",
@@ -16,20 +16,24 @@ export default function SignIn() {
   });
 
   const [errorMessage] = useState<string>("");
-  let navigate = useNavigate();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const t = searchParams.get("token");
     if (t !== "") {
+      try {
       const u = jwt_decode<TokenSignUpProps>(t as string);
+
       getProviderByIdFromApi(u.id)
         .then((res) => {
           setUser(u);
         })
         .catch((err) => {
-          console.log(err);
+          navigate("/error");
         });
+      } catch (error) {
+        navigate("/error");
+      }
     }
   }, []);
 

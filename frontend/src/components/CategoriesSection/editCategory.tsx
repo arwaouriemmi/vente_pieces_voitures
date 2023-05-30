@@ -7,12 +7,26 @@ import "../../custom.css";
 import {handleChange} from "../../apis/generic";
 import { getCategoriesFromApi, patchCategory, postCategory } from "../../apis/categoryApis";
 
-interface CategoryFormProps extends Partial<CategoryProps> { }
+interface CategoryFormProps {
+  id?: number;
+  parent?: number;
+  label?: string;
+  image?: File;
+ }
 
 interface FormProps extends CategoryFormProps {
   isHidden: boolean;
   hide: () => void;
 }
+
+const setData = (data: CategoryFormProps) => {
+  let formData = new FormData();
+  if (data.image)
+    formData.append("image", data.image, data.image?.name ?? "");
+  formData.append("parent", data.parent?.toString() ?? "");
+  formData.append("label", data.label ?? "");
+  return formData;
+};
 
 export default function EditCategory({
   id,
@@ -64,14 +78,14 @@ export default function EditCategory({
   }, [formData]);
 
   const EditCategory = async () => {
-    console.log(formData);
-    patchCategory(id ?? 0, formData);
+    const data = setData(formData);
+    patchCategory(id ?? 0, data);
     setFormData({ label: "" });
   };
 
   const AddCategory = async () => {
-    console.log(formData);
-    postCategory(formData);
+    const data = setData(formData);
+    postCategory(data);
     setFormData({ label: "" });
   };
 
@@ -98,9 +112,8 @@ export default function EditCategory({
           <FormLabel>Image: </FormLabel>
           <FormControl
             type={"file"}
-            value={formData.image}
             name={"image"}
-            onChange={(e: any) => {handleChange(e, formData, setFormData)}}
+            onChange={(e: any) => setFormData({ ...formData, image: e.target.files[0] })}
           />
         </div>
       )}

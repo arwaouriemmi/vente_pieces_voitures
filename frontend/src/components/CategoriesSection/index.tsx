@@ -10,6 +10,7 @@ import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import { deleteCategory, getCategoriesFromApi } from "../../apis/categoryApis";
 import { getData } from "../../apis/generic";
+import { useUserRole } from "../../getRole";
 
 interface CategoryProps {
   parent?: number;
@@ -19,6 +20,7 @@ interface CategoryProps {
 }
 
 export default function CategoriesSection() {
+  useUserRole(["admin"]);
   const [categories, setCategories] = useState([] as CategoryProps[][]);
   const [selected, setSelected] = useState([] as number[]);
   const [data, setData] = useState({});

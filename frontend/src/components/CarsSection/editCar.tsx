@@ -12,10 +12,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { getCarBrands, getCarByIdFromApi, getCarModels, patchCar, postCar } from "../../apis/carApis";
+import { useUserRole } from "../../getRole";
 
 interface CarFormProps extends Partial<CarProps> { }
 
 export default function EditCar({ newElement }: { newElement: boolean }) {
+  useUserRole(["admin"])
   const { id } = useParams<{ id: string }>();
   const [formData, setFormData] = useState<CarFormProps>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});

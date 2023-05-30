@@ -26,6 +26,7 @@ export class PieceService extends CrudService<
   }
 
   async add(createPieceDto: CreatePieceDto): Promise<Piece> {
+    console.log(createPieceDto);
     const cars = await this.carService.getCarsByCriteria(
       createPieceDto.brand,
       createPieceDto.model,

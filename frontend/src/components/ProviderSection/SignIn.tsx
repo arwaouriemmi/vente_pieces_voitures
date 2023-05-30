@@ -4,8 +4,10 @@ import { LoginProps } from "../../types/LoginProps";
 import { useNavigate } from "react-router-dom";
 import { TokenPayloadProps } from "../../types/TokenPayloadProps";
 import jwt_decode from "jwt-decode";
+import { useUserRole } from "../../getRole";
 
 export default function SignIn() {
+  useUserRole(["provider", "admin", ""]);
   const [user, setUser] = useState<LoginProps>({
     login: "",
     password: "",

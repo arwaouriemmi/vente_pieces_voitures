@@ -27,6 +27,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
       return this.repository.find({
         skip: ((page - 1) * take) as number,
         take: take,
+        loadRelationIds:true
       });
     } catch (error) {
       throw new BadGatewayException(error);
@@ -47,6 +48,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
       query.where(cond);
       query.skip((page - 1) * take);
       query.take(take);
+      console.log(query.getSql());
       return await query.getMany();
     } catch (error) {
       throw new BadGatewayException(error);
@@ -60,7 +62,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
   async findOne(id: number, deleted?: boolean){
     try {
       if (deleted) {
-        return await this.repository.findOne({ where: {id : id}, withDeleted: true });
+        return await this.repository.findOne({ where: {id : id}, withDeleted: true, loadRelationIds:true });
       }
       return await this.repository.findOne({ where: {id : id}});
     } catch (error) {

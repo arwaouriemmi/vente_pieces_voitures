@@ -7,8 +7,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
 import { getProvidersFromApi } from "../../apis/providerApis";
 import Paginate from "../pagination";
+import { useUserRole } from "../../getRole";
 
 export default function ProviderSection() {
+  useUserRole(["admin"])
   const [searchParams] = useSearchParams();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [providers, setProviders] = useState<ProviderProps[]>([]);

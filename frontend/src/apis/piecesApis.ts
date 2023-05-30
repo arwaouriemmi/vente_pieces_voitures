@@ -1,8 +1,17 @@
-import { getData, postData } from "./generic";
+import { deleteData, getData, patchData, postData } from "./generic";
 
 const getPiecesFromApi = async (page?: number) => {
   try {
     let data = await getData("pieces?page=" + page);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getPiecesByProvider = async (id: string) => {
+  try {
+    let data = await getData("pieces/provider/" + id);
     return data;
   } catch (error) {
     console.log(error);
@@ -23,7 +32,7 @@ const searchPieces = async (formData: any, sortBy: any) => {
   try {
   
   let data = await getData(
-      "pieces/search?"+"brand=" +
+      "pieces/search?brand=" +
         formData.brand +
         "&model=" +
         formData.model +
@@ -46,4 +55,20 @@ const postPiece = async (data: any) => {
   }
 };  
 
-export { searchPieces, postPiece, getPieceByIdFromApi, getPiecesFromApi };
+const patchPiece = async (id: string, data: any) => {
+  try {
+    patchData("pieces/update/" + id, data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deletePiece = async (id: string) => {
+  try {
+    deleteData("pieces/delete/" , id);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { searchPieces, patchPiece, getPiecesByProvider, deletePiece, postPiece, getPieceByIdFromApi, getPiecesFromApi };

@@ -8,8 +8,10 @@ import CarProps from "../../types/carProps";
 import CarCard from "./carCard";
 import { getCarsFromApi } from "../../apis/carApis";
 import Paginate from "../pagination";
+import { useUserRole } from "../../getRole";
 
 export default function CarsSection() {
+  useUserRole(["admin"])
   const [searchParams] = useSearchParams();
   const [pageNumber, setPageNumber] = useState(0);
   const [cars, setCars] = useState<CarProps[]>([]);

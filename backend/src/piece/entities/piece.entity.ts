@@ -2,7 +2,7 @@ import { TimestampEntities } from "../../TimestampEntities";
 import { Cars } from "../../cars/entities/cars.entity";
 import { Categories } from "../../categories/entities/categories.entity";
 import { Providers  } from "../../providers/entities/providers.entity";
-import { Column, Entity,ManyToOne,PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity,JoinColumn,ManyToOne,PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('piece')
 export class Piece extends  TimestampEntities{
@@ -20,7 +20,8 @@ export class Piece extends  TimestampEntities{
     constructorReference: string;
     @Column({nullable:true})
     comments: string; 
-    @ManyToOne(() => Providers , (provider) => provider.pieces)
+    @ManyToOne(() => Providers , (provider) => provider.pieces, { cascade: true})
+    @JoinColumn()
     provider: Providers ;
     @ManyToOne(() => Cars, (cars) => cars.pieces, { cascade: true, eager: true })
     cars: Cars;

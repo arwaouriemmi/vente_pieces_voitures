@@ -9,9 +9,11 @@ import { ProductProps } from "../../types/ProductProps";
 import { useSearchParams } from "react-router-dom";
 import { getPiecesFromApi } from "../../apis/piecesApis";
 import Paginate from "../pagination";
+import { useUserRole } from "../../getRole";
 
 
 export function HomePage() {
+  useUserRole(["", "admin", "provider"])
   const [searchParams] = useSearchParams();
   const [pageNumber, setPageNumber] = useState(0);
   const [page, setPage] = useState(
@@ -22,7 +24,9 @@ export function HomePage() {
   useEffect(() => {
     getPiecesFromApi(page).then((res) => {
       setProducts(res.data);
-      setPageNumber(res.count / 5 + 1);
+      if (res.count)
+        setPageNumber(res.count / 5 + 1);
+      else setPageNumber(0)
     });
   }, [page]);
 
@@ -51,7 +55,7 @@ export function HomePage() {
               <ProductCard key={i} product={product} />
             ))}
           </Row>
-          <Paginate page={page} setPage={setPage} pageNumber={pageNumber} />
+          {pageNumber!== 0 && <Paginate page={page} setPage={setPage} pageNumber={pageNumber} />}
         </div>
 
       </div>

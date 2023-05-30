@@ -1,11 +1,20 @@
-import { Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { Categories } from './entities/categories.entity';
 import { CreateCategoriesDto } from './dto/create-categories.dto';
 import { UpdateCategoriesDto } from './dto/update-categories.dto';
 import { CrudController } from 'src/generic/crud/Crud.controller';
 import { CategoriesService } from './categories.service';
-import { FileUploadService } from 'src/generic/upload/FileUpload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { editFileName } from 'editFileName';
+import { diskStorage } from 'multer';
 
 @Controller('categories')
 export class CategoriesController extends CrudController<
@@ -13,7 +22,7 @@ export class CategoriesController extends CrudController<
   CreateCategoriesDto,
   UpdateCategoriesDto
 > {
-  constructor(private readonly categoriesService: CategoriesService,private readonly fileUplaodService:FileUploadService) {
+  constructor(private readonly categoriesService: CategoriesService) {
     super(categoriesService);
   }
 
@@ -27,14 +36,48 @@ export class CategoriesController extends CrudController<
   }
 
   @Get(':label')
-  async getCategoryByLabel(@Param('label')label:string):Promise<Categories>{
+  async getCategoryByLabel(@Param('label') label: string): Promise<Categories> {
     return this.categoriesService.getCategoryByLabel(label);
   }
 
   @Post('add')
-  @UseInterceptors(FileInterceptor('image'))
-  async add(@Body() createCategoryDto:CreateCategoriesDto,@UploadedFile()image:Express.Multer.File):Promise<Categories>{
-    await this.fileUplaodService.uploadFile(image);
-    return this.categoriesService.create(createCategoryDto);  
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: '../frontend/public',
+        filename: editFileName,
+      }),
+    }),
+  )
+  async add(
+    @UploadedFile() image: Express.Multer.File,
+    @Body() dto: CreateCategoriesDto,
+  ): Promise<Categories> {
+    if (image) {
+      console.log(image.filename);
+      dto.image = image.filename;
+    }
+    return this.categoriesService.create(dto);
   }
+
+  @Post('update/:id')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: '../frontend/public',
+        filename: editFileName,
+      }),
+    }),
+  )
+  async updateCategory(
+    @Param('id') id: number,
+    @UploadedFile() image: Express.Multer.File,
+    @Body() dto: UpdateCategoriesDto,
+  ): Promise<Categories> {
+    if (image) {
+      dto.image = image.filename;
+    }
+    return this.categoriesService.update(id, dto);
+  }
+
 }

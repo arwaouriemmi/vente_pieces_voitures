@@ -10,7 +10,7 @@ export interface ProductProps{
     description: string;
     constructorReference: string;
     comments: string; 
-    provider: ProviderProps ;
+    provider: string ;
     cars: CarProps;
     category: CategoryProps;
     subCategory: CategoryProps;

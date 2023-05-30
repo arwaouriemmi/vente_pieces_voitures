@@ -1,12 +1,15 @@
-
-function ErrorPage({
-  message
-} : {
-  message: string
-}) {
+function ErrorPage({ message }: any) {
   return (
-    <div style={{marginTop: 100, color: "red"}}>
-      <h3>{ message }</h3>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: "20%",
+        color: "red",
+      }}
+    >
+      <h3> {message ?? "403-Forbidden"} </h3>
     </div>
   );
 }

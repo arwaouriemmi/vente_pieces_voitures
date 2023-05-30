@@ -42,14 +42,12 @@ dotenv.config();
     }),
     MailingModule,
     MulterModule.register({
-      dest: './uploads',
+      dest: '../frontend/public',
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..','uploads')
-    })
+      rootPath: join(__dirname, '..','frontend','public')
+    }),
    
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
