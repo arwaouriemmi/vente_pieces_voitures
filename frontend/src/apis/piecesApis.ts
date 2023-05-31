@@ -92,7 +92,6 @@ const postPiece = async (data: any) => {
 
 const patchPiece = async (id: string, data: any) => {
   try {
-    console.log("hi!!")
     patchData("pieces/update/" + id, data);
   } catch (err) {
     console.log(err);

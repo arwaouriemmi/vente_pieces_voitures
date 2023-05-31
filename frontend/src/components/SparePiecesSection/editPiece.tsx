@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FormDataProps } from "../../types/FormDataProps";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
 import { handleChange } from "../../apis/generic";
 import CarsSearchForm from "../SearchForm/carsSearchForm";
@@ -15,8 +15,11 @@ import { useUserRole } from "../../getRole";
 export default function EditPiece({ newElement }: { newElement: boolean }) {
   useUserRole(["admin", "provider"]);
   const [formData, setFormData] = useState<FormDataProps>({
-    provider: getUserId(),
+    motorization: "",
+    brand: "",
+    model: "",
   } as FormDataProps);
+  const navigate = useNavigate();
   const [categories, setCategories] = useState<CategoryProps[]>([]);
   const [subCategories, setSubCategories] = useState<CategoryProps[]>([]);
   const { id } = useParams<{ id: string }>();
@@ -27,6 +30,9 @@ export default function EditPiece({ newElement }: { newElement: boolean }) {
     if (!newElement && id) {
       getPieceByIdFromApi(id).then((res) => {
         setFormData(res);
+        if (res.provider.id !== getUserId()) {
+          navigate("/error")
+        }
       });
     }
   }, [id]);
@@ -99,7 +105,7 @@ export default function EditPiece({ newElement }: { newElement: boolean }) {
     data.append("description", formData.description ?? "");
     data.append("comments", formData.comments ?? "");
     data.append("price", formData.price ? formData.price.toString() : "");
-    data.append("provider", formData.provider ?? "");
+    data.append("provider", getUserId() ?? "");
     data.append(
       "constructorReference",
       formData.constructorReference ?? ""
@@ -108,7 +114,7 @@ export default function EditPiece({ newElement }: { newElement: boolean }) {
     if (newElement) {
       postPiece(data);
     } else {
-      patchPiece(`pieces/${id}`, data);
+      patchPiece(id?? "", data);
     }
   };
 

@@ -1,3 +1,5 @@
+import ProviderProps from "./ProviderProps";
+
 export interface FormDataProps {
   category: string;
   subCategory: string;
@@ -10,5 +12,5 @@ export interface FormDataProps {
   brand: string;
   model: string;
   motorization: string;
-  provider: string;
+  provider: ProviderProps;
 }

@@ -70,6 +70,11 @@ export function HomePage() {
         setPageNumber(res.count / 6 + 1);
       });
     }
+    setFormData({
+      brand: "",
+      model: "",
+      motorization: "",
+    } as SearchPieceProps); 
   };
 
   return (

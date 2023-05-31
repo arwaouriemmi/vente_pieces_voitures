@@ -54,6 +54,7 @@ export class PieceController extends CrudController<
     }
     
     const c =  await this.pieceService.update(id, dto);
+    console.log("piece" , c);
     return c;
   }
 

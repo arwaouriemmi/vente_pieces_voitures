@@ -80,7 +80,7 @@ export default function PieceDetails() {
               </li>
 
               <Link
-                to={"/providers/" + piece.provider.id}
+                to={`/providers/${piece.provider && piece.provider.id}` }
                 style={{ textDecoration: "none" }}
               >
                 <button className="btn btn-primary">Voir Fournisseur</button>
