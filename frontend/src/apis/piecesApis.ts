@@ -1,3 +1,4 @@
+import SearchPieceProps from "../types/searchPieceProps";
 import { deleteData, getData, patchData, postData } from "./generic";
 
 const getPiecesFromApi = async (page?: number) => {
@@ -28,21 +29,34 @@ const getPieceByIdFromApi = async (id: string) => {
 }
 
 //Get all pieces if 
-const searchPieces = async (formData: any, sortBy: any) => {
+const searchPieces = async (formData: SearchPieceProps, page: number) => {
   try {
   
   let data = await getData(
-      "pieces/search?brand=" +
+      "pieces/search?page="+page+"&brand=" +
         formData.brand +
         "&model=" +
         formData.model +
         "&motorization=" +
         formData.motorization +
         "&sortBy=" +
-        sortBy
+        formData.sortBy
     );
     return data;
   } catch (error) {
+    console.log(error);
+  }
+}
+const searchPiecesByCategory = async (id:any, formData: SearchPieceProps, page: number)=>{
+  try{
+    let data = await getData("pieces/search/"+id + `?page=${page}&
+    ?${formData.brand ? "brand=" + formData.brand +"&" : ""}
+    ${formData.model ? "model=" + formData.model +"&" : ""}
+    ${formData.motorization ? "motorization=" + formData.motorization +"&" : ""}
+    ${formData.sortBy ? "sortBy=" + formData.sortBy : ""}`);
+    return data;
+  }
+  catch (error) {
     console.log(error);
   }
 }
@@ -53,6 +67,7 @@ const postPiece = async (data: any) => {
   } catch (err) {
     console.log(err);
   }
+  
 };  
 
 const patchPiece = async (id: string, data: any) => {
@@ -71,4 +86,5 @@ const deletePiece = async (id: string) => {
   }
 };
 
-export { searchPieces, patchPiece, getPiecesByProvider, deletePiece, postPiece, getPieceByIdFromApi, getPiecesFromApi };
+export { searchPieces, patchPiece, getPiecesByProvider, deletePiece,
+  searchPiecesByCategory, postPiece, getPieceByIdFromApi, getPiecesFromApi };

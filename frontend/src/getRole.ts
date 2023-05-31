@@ -3,14 +3,6 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TokenProps from "./types/tokenProps";
 
-export const getUserId = ()  => {
-    const token = localStorage.getItem("token");
-    if (token) {
-        const user = jwt_decode<TokenProps>(token);
-        return user.id;
-    }
-}
-
 export const getRole = () => {
     const token = localStorage.getItem("token");
     
@@ -19,7 +11,7 @@ export const getRole = () => {
         return user.role;
     }
     else {
-        return "none";
+        return "";
     }
 };
 
@@ -28,8 +20,8 @@ export const useUserRole = (allowedRoles : string[]) => {
     const navigate = useNavigate();
     useEffect(() => {
       if (!allowedRoles.includes(role)) {
-        if (role === "none") {
-        navigate("/")
+        if (role === "") {
+        navigate("/login")
         }
         else {
             navigate("/error" , {state : {message : "403 - Forbidden"}})

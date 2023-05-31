@@ -36,7 +36,7 @@ const postProvider = async (data: any) => {
 };
 
 const patchProvider = async (id: string, data: any) => {
-  patchData("providers/edit/" + id, data);
+  patchData("providers/update/" + id, data);
 };
 
 const deleteProvider = async (id: string) => {

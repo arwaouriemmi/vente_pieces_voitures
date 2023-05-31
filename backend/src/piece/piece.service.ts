@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { CreatePieceDto } from './dto/create-piece.dto';
 import { UpdatePieceDto } from './dto/update-piece.dto';
-import { CarsService } from 'src/cars/cars.service';
+import { CarsService } from '../cars/cars.service';
 import { Piece } from './entities/piece.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CrudService } from 'src/generic/crud/Crud.Service';
-import { CategoriesService } from 'src/categories/categories.service';
-import { ProvidersService } from 'src/providers/providers.service';
+import { DeepPartial, Repository, SelectQueryBuilder } from 'typeorm';
+import { CrudService } from '../generic/crud.Service';
+import SearchDto from './dto/search.dto';
+import PaginateDto from 'src/generic/crud/dto/paginate.dto';
 
 @Injectable()
 export class PieceService extends CrudService<
@@ -19,8 +19,6 @@ export class PieceService extends CrudService<
     @InjectRepository(Piece)
     private piecesRepository: Repository<Piece>,
     private readonly carService: CarsService,
-    private readonly categoryService: CategoriesService,
-    private readonly providerService: ProvidersService,
   ) {
     super(piecesRepository);
   }
@@ -33,21 +31,17 @@ export class PieceService extends CrudService<
       createPieceDto.motorization,
     );
 
-    const newPiece : any  = createPieceDto;
+    const newPiece: any = createPieceDto;
     newPiece.cars = cars;
     console.log(newPiece);
     return await this.piecesRepository.save(newPiece);
   }
 
-  async searchPieces(
-    brand: string,
-    model: string,
-    motorization: string,
-    sortBy: string,
-  ): Promise<Piece[]> {
-    const query = this.piecesRepository
-      .createQueryBuilder('pieces')
-      .innerJoin('pieces.cars', 'cars');
+  async getByCriteriaQuery(
+    data: SearchDto,
+    query: SelectQueryBuilder<Piece>,
+  ): Promise<SelectQueryBuilder<Piece>> {
+    const { brand, model, motorization, sortBy } = data;
 
     if (brand) {
       query.andWhere('cars.brand = :brand', { brand: brand });
@@ -75,8 +69,39 @@ export class PieceService extends CrudService<
       default:
         break;
     }
-    const results = await query.getMany();
+    return query;
+  }
 
-    return results;
+  async searchPieces(data: SearchDto): Promise<Piece[]> {
+    let query = this.piecesRepository
+      .createQueryBuilder('pieces')
+      .leftJoinAndSelect('pieces.cars', 'cars');
+
+    query = await this.getByCriteriaQuery(data, query);
+
+    return this.paginate(query, data);
+  }
+
+  async getByCategoryQuery(id: number): Promise<SelectQueryBuilder<Piece>> {
+    const query = await this.piecesRepository
+      .createQueryBuilder('pieces')
+      .leftJoinAndSelect('pieces.subCategory', 'subCategory')
+      .leftJoinAndSelect('pieces.category', 'category')
+      .leftJoinAndSelect('pieces.cars', 'cars')
+      .where('subCategory.id = :subCategoryId', { subCategoryId: id })
+      .orWhere('category.id = :categoryId', { categoryId: id });
+    return query;
+  }
+
+  async searchPiecesByCategory(
+    id: number,
+    dto: PaginateDto | SearchDto,
+  ): Promise<Piece[]> {
+    let query = await this.getByCategoryQuery(id);
+
+    if (dto instanceof SearchDto) {
+      query = await this.getByCriteriaQuery(dto, query);
+    }
+    return this.paginate(query, dto);
   }
 }

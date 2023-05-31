@@ -12,10 +12,12 @@ import { PieceService } from './piece.service';
 import { CreatePieceDto } from './dto/create-piece.dto';
 import { UpdatePieceDto } from './dto/update-piece.dto';
 import { Piece } from './entities/piece.entity';
-import { CrudController } from 'src/generic/crud/Crud.controller';
+import { CrudController } from '../generic/crud.controller';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName } from 'editFileName';
+import { editFileName } from '../editFileName';
+import SearchDto from './dto/search.dto';
+import PaginateDto from '../generic/crud/dto/paginate.dto';
 
 @Controller('pieces')
 export class PieceController extends CrudController<
@@ -40,26 +42,32 @@ export class PieceController extends CrudController<
     @UploadedFile() image: Express.Multer.File,
     @Body() dto: CreatePieceDto,
   ) {
-    
     if (image) {
-    dto.image = image.filename;
+      dto.image = image.filename;
     }
     return this.pieceService.add(dto);
   }
 
   @Get('search')
-  async searchPieces(
-    @Query('brand') brand: string,
-    @Query('model') model: string,
-    @Query('motorization') motorization: string,
-    @Query('sortBy') sortBy: string,
-  ): Promise<Piece[]> {
-    const results = await this.pieceService.searchPieces(
-      brand,
-      model,
-      motorization,
-      sortBy,
-    );
-    return results;
+  async searchPieces(@Query() query: SearchDto): Promise<{ data: Piece[],
+  count : number }> {
+    const res = await this.pieceService.searchPieces(query);
+    return {
+      data: res,
+      count: res.length,
+    };
+  }
+
+  @Get('search/:id')
+  async searchPiecesByCategory(
+    @Param('id') id: number,
+    @Query() query: PaginateDto | SearchDto,
+  ): Promise<{ data: Piece[],
+  count: number }> {
+    const res = await this.pieceService.searchPiecesByCategory(id, query);
+    return {
+      data: res,
+      count: res.length,
+    };
   }
 }

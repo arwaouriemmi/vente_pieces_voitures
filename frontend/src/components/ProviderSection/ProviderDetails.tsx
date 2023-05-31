@@ -28,7 +28,9 @@ export default function ProviderDetails() {
   useEffect(() => {
     getProviderDeleted(id ?? "-1").then((res) => {
       setProvider(res);
+      console.log(res.logo);
     });
+    
   }, []);
 
   return (
@@ -146,7 +148,7 @@ export default function ProviderDetails() {
               </ul>
               {provider.id === getUserId() && (
             <div> 
-              <Link to={"admin/providers/edit/" + provider.id}>
+              <Link to={"/admin/providers/edit/" + provider.id}>
                 <button className="btn btn-primary">Modifier</button>
               </Link>
             </div>

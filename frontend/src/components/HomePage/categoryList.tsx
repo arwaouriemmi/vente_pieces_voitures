@@ -12,11 +12,12 @@ interface CategoryProps {
   id: number;
   label: string;
   image: string;
+
 }
 
-export default function CategoriesList() {
+export default function CategoriesList({  selected,
+  setSelected} : {selected: number[], setSelected: Function}) {
   const [categories, setCategories] = useState([] as CategoryProps[][]);
-  const [selected, setSelected] = useState([] as number[]);
 
   const getCategories = async (id?: number, index?: number) => {
     let newCategories = [...categories];

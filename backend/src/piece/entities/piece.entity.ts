@@ -1,4 +1,4 @@
-import { TimestampEntities } from "../../TimestampEntities";
+import { TimestampEntities } from "../../generic/entities/TimestampEntities";
 import { Cars } from "../../cars/entities/cars.entity";
 import { Categories } from "../../categories/entities/categories.entity";
 import { Providers  } from "../../providers/entities/providers.entity";

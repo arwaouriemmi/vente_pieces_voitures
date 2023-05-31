@@ -1,16 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import {ProductProps} from "../../types/ProductProps";
-import { upload } from "@testing-library/user-event/dist/upload";
 
 export default function ProductCard({product}: {product: ProductProps}) {
   const [isClicked, setIsClicked] = useState(false);
-
-  useEffect(() => {
-    console.log(product);
-  }, [product]);
 
   return (
     <div className="product-card">

@@ -106,7 +106,6 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
     ) {
       errors.messenger = "⚠ Le lien doit être sous la forme https://m.me/...";
     }
-    console.log(errors);
     if (
       errors.name ||
       errors.address ||
@@ -116,11 +115,9 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
       errors.whatsapp ||
       errors.messenger
     ) {
-      console.log("invalid form");
       setIsValidate(false);
     } else {
       setIsValidate(true);
-      console.log("valid form");
     }
     return errors;
   };

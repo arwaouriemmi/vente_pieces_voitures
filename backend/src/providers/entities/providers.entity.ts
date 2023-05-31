@@ -1,5 +1,5 @@
-import { TimestampEntities } from "src/TimestampEntities";
-import { Piece } from "src/piece/entities/piece.entity";
+import { TimestampEntities } from "../../generic/entities/TimestampEntities";
+import { Piece } from "../../piece/entities/piece.entity";
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -12,11 +12,11 @@ export class Providers extends TimestampEntities {
     logo: string;
     @Column()
     city: string;
-    @Column()
+    @Column({ })
     email: string;
     @Column()
     address: string;
-    @Column({unique:true})
+    @Column()
     phone: string;
     @Column({nullable: true})
     whatsapp: string;

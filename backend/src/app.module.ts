@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { CarsModule } from './cars/cars.module';
 import { ProvidersModule } from './providers/providers.module';
 import { CategoriesModule } from './categories/categories.module';
@@ -16,8 +14,7 @@ import { Providers } from './providers/entities/providers.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { PieceModule } from './piece/piece.module';
 import { Categories } from './categories/entities/categories.entity';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+
 dotenv.config();
 
 @Module({
@@ -44,10 +41,6 @@ dotenv.config();
     MulterModule.register({
       dest: '../frontend/public',
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..','frontend','public')
-    }),
-   
   ],
 })
 export class AppModule {}

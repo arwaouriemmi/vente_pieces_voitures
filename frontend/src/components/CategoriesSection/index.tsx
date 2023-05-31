@@ -47,6 +47,7 @@ export default function CategoriesSection() {
     getCategories();
   }, []);
 
+
   return (
     <>
       <div className="custom-container" style={{ position: "relative" }}>

@@ -25,7 +25,7 @@ export default function SignIn() {
         const decodedToken = jwt_decode<TokenPayloadProps>(response.data.token);
         const { user } = decodedToken;
         if (user.role === "admin") {
-          navigate("/admin/home");
+          navigate("/");
         } else if (user.role === "provider") {
           navigate("/");
         }

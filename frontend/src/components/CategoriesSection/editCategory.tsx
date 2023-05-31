@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { GrClose } from "react-icons/gr";
 import "../../custom.css";
 import {handleChange} from "../../apis/generic";
-import { getCategoriesFromApi, patchCategory, postCategory } from "../../apis/categoryApis";
+import { getCategoriesFromApi, getCategoryFromApi, patchCategory, postCategory } from "../../apis/categoryApis";
 
 interface CategoryFormProps {
   id?: number;
@@ -39,8 +39,9 @@ export default function EditCategory({
   const [isValidate, setIsValidate] = useState(false);
 
   const getFormData = async ()=>{
-    if (id !== -1 ) {
-      const data = await getCategoriesFromApi(id);
+    console.log("id", id)
+    if (id && id !== -1 ) {
+      const data = await getCategoryFromApi(id);
       setFormData(data);
     } else {
       const newFormData: CategoryFormProps = {
@@ -49,13 +50,12 @@ export default function EditCategory({
       };
       setFormData(newFormData);
     }
-    console.log(formData);
   }
   
 
   useEffect(() => {
     getFormData();
-  }, [id]);
+  }, [id, parent]);
 
   const validateForm = (values: CategoryFormProps) => {
     const errors: { [key: string]: string } = {};
@@ -73,17 +73,23 @@ export default function EditCategory({
   };
 
   useEffect(() => {
-    console.log(formData);
     setErrors(validateForm(formData));
+    console.log(formData);
   }, [formData]);
 
   const EditCategory = async () => {
+    console.log("id", id)
+    console.log("parent", parent)
+    console.log("formData", formData)
     const data = setData(formData);
-    patchCategory(id ?? 0, data);
+    patchCategory(id ?? -1, data);
     setFormData({ label: "" });
   };
 
   const AddCategory = async () => {
+    console.log("id", id)
+    console.log("parent", parent)
+    console.log("formData", formData)
     const data = setData(formData);
     postCategory(data);
     setFormData({ label: "" });

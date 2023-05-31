@@ -4,11 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DeepPartial, Repository } from 'typeorm';
+import PaginateDto from './crud/dto/paginate.dto';
 
 @Injectable()
 export abstract class CrudService<T, createDto, UpdateDto> {
   constructor(private readonly repository: Repository<T>) {}
-
+    
   async getCount(): Promise<number> {
     return await this.repository.count();
   }
@@ -22,21 +23,33 @@ export abstract class CrudService<T, createDto, UpdateDto> {
     return await query.getCount();
   }
 
-  async findAll(page: number = 1, take: number): Promise<T[]> {
+  async findAll(dto : PaginateDto): Promise<T[]> {
+    const { page, take } = dto;
     try {
       return this.repository.find({
         skip: ((page - 1) * take) as number,
         take: take,
-        loadRelationIds:true
       });
     } catch (error) {
       throw new BadGatewayException(error);
     }
   }
 
+  async paginate(query, dto: PaginateDto): Promise<T[]> {
+    let { page, take } = dto;
+    page = page ?? 1;
+    take = take ?? 5;
+    try {
+      query.skip((page - 1) * take);
+      query.take(take);
+      return await query.getMany();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async findAllWithQuery(
-    page: number,
-    take: number,
+    dto : PaginateDto,
     cond: string,
     deleted?: boolean,
   ): Promise<T[]> {
@@ -46,10 +59,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
         query.withDeleted();
       }
       query.where(cond);
-      query.skip((page - 1) * take);
-      query.take(take);
-      console.log(query.getSql());
-      return await query.getMany();
+      return this.paginate(query, dto);
     } catch (error) {
       throw new BadGatewayException(error);
     }
@@ -57,6 +67,10 @@ export abstract class CrudService<T, createDto, UpdateDto> {
 
   async create(Dto: createDto): Promise<T> {
     return await this.repository.save(Dto as DeepPartial<T>);
+  }
+
+  async addEntity(entity: T): Promise<T> {
+    return await this.repository.save(entity as DeepPartial<T>);
   }
 
   async findOne(id: number, deleted?: boolean){
@@ -71,10 +85,10 @@ export abstract class CrudService<T, createDto, UpdateDto> {
   }
 
   async update(id: number, updateDto: UpdateDto): Promise<T> {
-    const entity = await this.repository.preload({
-      id,
-      ...(updateDto as DeepPartial<T>),
-    });
+    let entity = await this.repository.findOne(id);
+    if (!entity) throw new NotFoundException();
+    entity = {...entity, ...updateDto};
+    console.log(entity);
     return await this.repository.save(entity as DeepPartial<T>);
   }
 

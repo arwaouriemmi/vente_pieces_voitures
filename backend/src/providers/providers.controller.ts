@@ -15,11 +15,12 @@ import { Providers } from './entities/providers.entity';
 import { CreateprovidersDto } from './dto/create-providers.dto';
 import { UpdateprovidersDto } from './dto/update-providers.dto';
 import { ProvidersService } from './providers.service';
-import { CrudController } from 'src/generic/crud/Crud.controller';
+import { CrudController } from '../generic/crud.controller';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { editFileName } from 'editFileName';
+import { editFileName } from '../editFileName';
 import { diskStorage } from 'multer';
-import { Piece } from 'src/piece/entities/piece.entity';
+import { Piece } from '../piece/entities/piece.entity';
+import SearchDto from './dto/providerSearch.dto';
 
 @Controller('providers')
 export class ProvidersController extends CrudController<
@@ -39,15 +40,14 @@ export class ProvidersController extends CrudController<
 
   @Get('')
   async getAllProviders(
-    @Query('page') page,
-    @Query('active') active,
+    @Query() query: SearchDto,
   ): Promise<any> {
+    const { active } = query;
     let p;
     let nb;
     if (active === 'bloques') {
       p = await this.providerService.findAllWithQuery(
-        page,
-        10,
+        query,
         'deletedAt IS NOT NULL',
         true,
       );
@@ -56,10 +56,10 @@ export class ProvidersController extends CrudController<
         true,
       );
     } else if (active === 'actifs') {
-      p = await this.providerService.findAll(page, 10);
+      p = await this.providerService.findAll(query);
       nb = await this.providerService.getCount();
     } else {
-      p = await this.providerService.getAllProviders(page, 10);
+      p = await this.providerService.getAllProviders(query);
       nb = await this.providerService.countAllProviders();
     }
     return { data: p, count: nb };

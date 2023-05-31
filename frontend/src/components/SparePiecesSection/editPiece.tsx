@@ -90,19 +90,19 @@ export default function EditPiece({ newElement }: { newElement: boolean }) {
     if (formData.image && formData.image.name) {
       data.append("image", formData.image, formData.image.name);
     }
-    data.append("brand", formData.brand as string);
-    data.append("model", formData.model as string);
-    data.append("motorization", formData.motorization as string);
-    data.append("category", formData.category as string);
-    data.append("subCategory", formData.subCategory as string);
-    data.append("piece", formData.piece as string);
-    data.append("description", formData.description as string);
-    data.append("comments", formData.comments as string);
-    data.append("price", (formData.price as unknown) as string);
-    data.append("provider", formData.provider as string);
+    data.append("brand", formData.brand ?? "");
+    data.append("model", formData.model ?? "");
+    data.append("motorization", formData.motorization ?? "");
+    data.append("category", formData.category ?? "");
+    data.append("subCategory", formData.subCategory ?? "");
+    data.append("piece", formData.piece ?? "");
+    data.append("description", formData.description ?? "");
+    data.append("comments", formData.comments ?? "");
+    data.append("price", formData.price ? formData.price.toString() : "");
+    data.append("provider", formData.provider ?? "");
     data.append(
       "constructorReference",
-      formData.constructorReference as string
+      formData.constructorReference ?? ""
     );
 
     if (newElement) {

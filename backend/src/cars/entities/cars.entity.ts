@@ -1,6 +1,6 @@
 
-import { TimestampEntities } from "src/TimestampEntities";
-import { Piece } from "src/piece/entities/piece.entity";
+import { TimestampEntities } from "../../generic/entities/TimestampEntities";
+import { Piece } from "../../piece/entities/piece.entity";
 import { BaseEntity, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm"
 //@Entity('Cars')
 @Entity()
