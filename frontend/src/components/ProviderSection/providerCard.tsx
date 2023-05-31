@@ -1,6 +1,7 @@
-import { Card, Col, Row } from "react-bootstrap";
+import { Card, Col, Row, ToastContainer } from "react-bootstrap";
 import ProviderProps from "../../types/ProviderProps";
 import { Link } from "react-router-dom";
+import { deleteProvider, restoreProvider } from "../../apis/providerApis";
 
 export default function ProviderCard({
   id,
@@ -11,13 +12,6 @@ export default function ProviderCard({
   deletedAt,
   createdAt,
 }: ProviderProps) {
-  const deleteProvider = (id: string) => {
-    deleteProvider(id);
-  };
-
-  const restoreProvider = (id: string) => {
-    restoreProvider(id);
-  };
 
   return (
     <Col sm={6}>
@@ -77,5 +71,6 @@ export default function ProviderCard({
         </div>
       </Card>
     </Col>
+    
   );
 }

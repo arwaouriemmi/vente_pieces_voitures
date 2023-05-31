@@ -8,6 +8,7 @@ import { GrAddCircle } from "react-icons/gr";
 import { getProvidersFromApi } from "../../apis/providerApis";
 import Paginate from "../pagination";
 import { useUserRole } from "../../getRole";
+import { ToastContainer } from "react-toastify";
 
 export default function ProviderSection() {
   useUserRole(["admin"])
@@ -72,6 +73,7 @@ export default function ProviderSection() {
           <Paginate page={page} setPage={setPage} pageNumber={pageNumber} />
         </Card.Footer>
       </Card>
+      <ToastContainer position="bottom-right" />
     </div>
   </>
   );
