@@ -1,7 +1,7 @@
 import { Card, Col, Row } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import CarProps from "./carProps";
+import CarProps from "../../types/carProps";
 
 export default function CarCard({
   id,
@@ -9,9 +9,10 @@ export default function CarCard({
   model,
   createdAt,
   motorization,
+  edit = true,
 }: CarProps) {
   const deleteCar = (id: string) => {
-    axios.delete("http://localhost:3001/admin/cars/delete/" + id.toString());
+    deleteCar(id);
   };
 
   return (
@@ -28,7 +29,7 @@ export default function CarCard({
           <Card.Text className="text-muted" style={{ fontSize: 12 }}>
             Ajouté le {createdAt.slice(0, 10)} à {createdAt.slice(11, 16)}
           </Card.Text>
-          <Row>
+          {edit && (<Row>
             <Link
               to={"/admin/cars/edit/" + id}
               className="btn btn-primary col-sm"
@@ -43,7 +44,7 @@ export default function CarCard({
             >
                 Supprimer
             </Card.Link>
-          </Row>
+          </Row>)}
         </Card.Body>
       </Card>
     </Col>

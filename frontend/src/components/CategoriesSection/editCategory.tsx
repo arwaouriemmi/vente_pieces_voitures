@@ -1,17 +1,32 @@
 import { useEffect, useState } from "react";
 import { Button, FormControl, FormLabel } from "react-bootstrap";
-import { CategoryProps } from "./categoryProps";
+import { CategoryProps } from "../../types/categoryProps";
 import "react-toastify/dist/ReactToastify.css";
 import { GrClose } from "react-icons/gr";
 import "../../custom.css";
-import { getData, handleChange, patchData, postData } from "../../utils";
+import {handleChange} from "../../apis/generic";
+import { getCategoriesFromApi, getCategoryFromApi, patchCategory, postCategory } from "../../apis/categoryApis";
 
-interface CategoryFormProps extends Partial<CategoryProps> {}
+interface CategoryFormProps {
+  id?: number;
+  parent?: number;
+  label?: string;
+  image?: File;
+ }
 
 interface FormProps extends CategoryFormProps {
   isHidden: boolean;
   hide: () => void;
 }
+
+const setData = (data: CategoryFormProps) => {
+  let formData = new FormData();
+  if (data.image)
+    formData.append("image", data.image, data.image?.name ?? "");
+  formData.append("parent", data.parent?.toString() ?? "");
+  formData.append("label", data.label ?? "");
+  return formData;
+};
 
 export default function EditCategory({
   id,
@@ -23,17 +38,24 @@ export default function EditCategory({
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isValidate, setIsValidate] = useState(false);
 
-  useEffect(() => {
-    if (id !== -1 && id !== undefined) {
-      getData("categories/" + id, setFormData);
+  const getFormData = async ()=>{
+    console.log("id", id)
+    if (id && id !== -1 ) {
+      const data = await getCategoryFromApi(id);
+      setFormData(data);
     } else {
       const newFormData: CategoryFormProps = {
-        id: id !== -1 ? id : undefined,
-        parent: parent !== -1 ? parent : undefined,
+        id: id,
+        parent: parent ?? -1,
       };
       setFormData(newFormData);
     }
-  }, [id]);
+  }
+  
+
+  useEffect(() => {
+    getFormData();
+  }, [id, parent]);
 
   const validateForm = (values: CategoryFormProps) => {
     const errors: { [key: string]: string } = {};
@@ -42,7 +64,6 @@ export default function EditCategory({
     } else if (values.label.length < 2) {
       errors.label = "⚠ Veuillez entrer au moins 2 caractères";
     }
-    console.log(errors);
     if (errors.label) {
       setIsValidate(false);
     } else {
@@ -52,19 +73,25 @@ export default function EditCategory({
   };
 
   useEffect(() => {
-    console.log(formData);
     setErrors(validateForm(formData));
+    console.log(formData);
   }, [formData]);
 
-  const EditCategory = async (formData: CategoryFormProps) => {
-    console.log(formData);
-    patchData("categories/edit/" + id, formData);
+  const EditCategory = async () => {
+    console.log("id", id)
+    console.log("parent", parent)
+    console.log("formData", formData)
+    const data = setData(formData);
+    patchCategory(id ?? -1, data);
     setFormData({ label: "" });
   };
 
-  const AddCategory = async (formData: CategoryFormProps) => {
-    console.log(formData);
-    postData("categories/add", formData);
+  const AddCategory = async () => {
+    console.log("id", id)
+    console.log("parent", parent)
+    console.log("formData", formData)
+    const data = setData(formData);
+    postCategory(data);
     setFormData({ label: "" });
   };
 
@@ -86,19 +113,13 @@ export default function EditCategory({
         />
         <p className="text-danger">{!isValidate && errors.label}</p>
       </div>
-      {parent === -1 && (
+      {formData.parent === -1 && (
         <div className="mb-3">
           <FormLabel>Image: </FormLabel>
           <FormControl
             type={"file"}
-            value={formData.image}
             name={"image"}
-            onChange={(e: any) => {
-              setFormData({
-                ...formData,
-                image: e.target.files ? e.target.files[0].name : undefined,
-              });
-            }}
+            onChange={(e: any) => setFormData({ ...formData, image: e.target.files[0] })}
           />
         </div>
       )}
@@ -109,11 +130,12 @@ export default function EditCategory({
         disabled={!isValidate}
         className="m-3"
         onClick={() => {
-          id === -1 ? AddCategory(formData) : EditCategory(formData);
+          id === -1 ? AddCategory() : EditCategory();
         }}
       >
         Enregistrer
       </Button>
     </div>
+
   );
 }

@@ -4,22 +4,29 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
-import CarProps from "./carProps";
+import CarProps from "../../types/carProps";
 import CarCard from "./carCard";
-import { getData } from "../../utils";
+import { getCarsFromApi } from "../../apis/carApis";
+import Paginate from "../pagination";
+import { useUserRole } from "../../getRole";
 
-export default function CarsSection({ pageNumber }: { pageNumber: number }) {
+export default function CarsSection() {
+  useUserRole(["admin"])
   const [searchParams] = useSearchParams();
+  const [pageNumber, setPageNumber] = useState(0);
   const [cars, setCars] = useState<CarProps[]>([]);
   const [page, setPage] = useState(
     searchParams.get("page") ? parseInt(searchParams.get("page") ?? "1") : 1
   );
 
   useEffect(() => {
-    getData("cars?page=" + page, setCars);
+    getCarsFromApi(page).then((res) => {
+      setCars(res.data);
+     setPageNumber(res.count / 5 +1);
+    });
   }, [page]);
 
-  return (
+  return (<>
     <div className="custom-container">
       <h1>
         Voitures
@@ -36,33 +43,8 @@ export default function CarsSection({ pageNumber }: { pageNumber: number }) {
         })}
       </Row>
 
-      <Nav>
-        <Pagination style={{ margin: "auto" }}>
-          <Pagination.Prev
-            disabled={page === 1}
-            onClick={() => {
-              setPage(page - 1);
-            }}
-          />
-          {Array.from({ length: pageNumber }, (_, i) => (
-            <Pagination.Item
-              key={i}
-              active={i + 1 === page}
-              onClick={() => {
-                setPage(i + 1);
-              }}
-            >
-              {i + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next
-            disabled={page === pageNumber}
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          />
-        </Pagination>
-      </Nav>
+      <Paginate page={page} setPage={setPage} pageNumber={pageNumber} />
     </div>
+  </>
   );
 }

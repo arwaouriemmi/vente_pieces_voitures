@@ -1,69 +1,82 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { Categories } from './entities/categories.entity';
+import { CreateCategoriesDto } from './dto/create-categories.dto';
+import { UpdateCategoriesDto } from './dto/update-categories.dto';
+import { CrudController } from '../generic/crud.controller';
+import { CategoriesService } from './categories.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { editFileName } from '../editFileName';
+import { diskStorage } from 'multer';
 
-@Controller()
-export class CategoriesController {
-  @Get('categories')
-  getAllCategories() {
-    return [
-      {
-        label: 'test 1',
-        id: Math.floor(Math.random() * 100),
-        image: undefined,
-        parent: undefined,
-      },
-      {
-        label: 'test 2',
-        id: Math.floor(Math.random() * 10),
-        image: undefined,
-        parent: undefined,
-      },
-    ];
+@Controller('categories')
+export class CategoriesController extends CrudController<
+  Categories,
+  CreateCategoriesDto,
+  UpdateCategoriesDto
+> {
+  constructor(private readonly categoriesService: CategoriesService) {
+    super(categoriesService);
   }
-  
+
+  @Get()
+  async getAllCategories() {
+    return this.categoriesService.getAllCategories();
+  }
   @Get('subcategories/:id')
-  getSubCategories(@Param('id') id: number) {
-    console.log(id);
-    return [
-      {
-        label: 'test 1',
-        id: Math.floor(Math.random() * 100),
-        parent: 110,
-        image: undefined,
-      },
-      {
-        label: 'test 2',
-        id: Math.floor(Math.random() * 10),
-        parent: 110,
-        image: undefined,
-      },
-    ];
+  async getSubCategories(@Param('id') id: number) {
+    return this.categoriesService.getSubCategories(id);
   }
 
-  @Get('categories/:id?')
-  getCategories(@Param('id') id?: number) {
-    if (id !== undefined) {
-      const result = {
-        label: 'test 1',
-        id: Math.floor(Math.random() * 100),
-        image: undefined,
-        parent: 110,
-      };
-      return result;
+  @Post('add')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: '../frontend/public',
+        filename: editFileName,
+      }),
+    }),
+  )
+  async add(
+    @UploadedFile() image: Express.Multer.File,
+    @Body() dto: CreateCategoriesDto,
+  ): Promise<Categories> {
+    if (image) {
+      console.log(image.filename);
+      dto.image = image.filename;
     }
-
-    return [
-      {
-        label: 'test 1',
-        id: 110,
-        image: undefined,
-        parent: undefined,
-      },
-      {
-        label: 'test 2',
-        id: 200,
-        image: undefined,
-        parent: undefined,
-      },
-    ];
+    return this.categoriesService.create(dto);
   }
+
+  @Patch('update/:id')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: '../frontend/public',
+        filename: editFileName,
+      }),
+    }),
+  )
+  async updateCategory(
+    @Param('id') id: number,
+    @Body() dto: UpdateCategoriesDto,
+    @UploadedFile() image?: Express.Multer.File,
+  ): Promise<Categories> {
+    if (image) {
+      dto.image = image.filename;
+    }
+    
+    const c =  await this.categoriesService.update(id, dto);
+    console.log(c);
+    return c;
+  }
+
 }

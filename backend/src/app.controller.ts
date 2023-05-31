@@ -1,35 +1,23 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { AppService } from './app.service';
+import { MailingService } from './mailing/mailing.service';
+import { Providers } from './providers/entities/providers.entity';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: MailingService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getHello(): Promise<any> {
+    return this.appService.sendUserConfirmation({
+      id: "1",
+      name: 'test',
+      email: 'onsouahchi@gmail.com',
+      phone: 'test',
+      address: 'test',
+      city: 'test',
+      
+    } as Providers);
   }
-
-  @Get("admin/cars")
-  getCars() {
-    return [
-      {
-        id: Math.floor(Math.random() * 100),
-        brand: "test 1",
-        model: "test 1",
-        motorization: "test 1",
-        createdAt: "test 1",
-      },
-      {
-        id: Math.floor(Math.random() * 100),
-        brand: "test 2",
-        model: "test 2",
-        motorization: "test 2",
-        createdAt: "test 2",
-      },
-    ]
-  }
-
-
 }
 

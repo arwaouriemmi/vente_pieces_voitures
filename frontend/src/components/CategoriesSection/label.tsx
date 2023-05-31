@@ -1,5 +1,5 @@
 import "./categories.css"
-import { CategoryProps } from "./categoryProps";
+import { CategoryProps } from "../../types/categoryProps";
 
 
 interface LabelProps extends CategoryProps {
@@ -7,10 +7,9 @@ interface LabelProps extends CategoryProps {
 }
 
 export default function Label({ label, image, parent, selected }: LabelProps) {
-    
     return(
         <div className={`label-container ${selected && "label-selected"}`} >
-        {parent !== undefined && 
+        {parent === -1 && 
         <img
           src={image? image : "https://via.placeholder.com/150"}
           alt={label}

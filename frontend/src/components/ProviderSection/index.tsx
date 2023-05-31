@@ -1,19 +1,18 @@
 import { Nav, Card, Row, Pagination } from "react-bootstrap";
-import ProviderProps from "./ProviderProps";
+import ProviderProps from "../../types/ProviderProps";
 import ProviderCard from "./providerCard";
 import { useState } from "react";
-import axios from "axios";
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
-import { getData } from "../../utils";
+import { getProvidersFromApi } from "../../apis/providerApis";
+import Paginate from "../pagination";
+import { useUserRole } from "../../getRole";
 
-export default function ProviderSection({
-  pageNumber,
-}: {
-  pageNumber: number;
-}) {
+export default function ProviderSection() {
+  useUserRole(["admin"])
   const [searchParams] = useSearchParams();
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const [providers, setProviders] = useState<ProviderProps[]>([]);
   const [active, setActive] = useState(searchParams.get("active") ?? "all");
   const [page, setPage] = useState(
@@ -21,10 +20,13 @@ export default function ProviderSection({
   );
 
   useEffect(() => {
-    getData("providers?active=" + active + "&page=" + page, setProviders);
+    getProvidersFromApi(active, page).then((res) => {
+      setProviders(res.data);
+      setPageNumber(res.count)
+    });
   }, [active, page]);
 
-  return (
+  return (<>
     <div className="custom-container">
       <h1>Fournisseurs</h1>
       <Card>
@@ -51,7 +53,7 @@ export default function ProviderSection({
             >
               <Nav.Link active={active === "bloques"}>Bloqués</Nav.Link>
             </Nav.Item>
-            <Link to="/admin/providers/add" 
+            <Link to="/admin/providers/add"
               style={{ marginLeft: "auto", cursor: "pointer" }}
             >
               <GrAddCircle size={30} />
@@ -67,35 +69,10 @@ export default function ProviderSection({
         </Card.Body>
 
         <Card.Footer>
-        <Nav style={{marginLeft: "30%"}}>
-        <Pagination>
-          <Pagination.Prev
-            disabled={page === 1}
-            onClick={() => {
-              setPage(page - 1);
-            }}
-          />
-          {Array.from({ length: pageNumber }, (_, i) => (
-            <Pagination.Item
-              key={i}
-              active={i + 1 === page}
-              onClick={() => {
-                setPage(i + 1);
-              }}
-            >
-              {i + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next
-            disabled={page === pageNumber}
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          />
-        </Pagination>
-      </Nav>
+          <Paginate page={page} setPage={setPage} pageNumber={pageNumber} />
         </Card.Footer>
       </Card>
     </div>
+  </>
   );
 }
