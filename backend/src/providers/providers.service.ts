@@ -34,6 +34,7 @@ export class ProvidersService extends CrudService<
 
   async deleteProvider(id: number): Promise<{count: number}> {
     const provider = await this.ProviderRepository.findOne({where: {id: id}});
+    await this.AuthService.delete(id);
     this.Mailingservice.sendUserDeactivation(provider);
     await this.ProviderRepository.softDelete(id);
     return {count : 1}

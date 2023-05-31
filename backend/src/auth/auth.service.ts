@@ -11,14 +11,20 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { UserRoleEnum } from './enums/user-role.enum';
+import { CrudService } from 'src/generic/crud/crud.Service';
+import CreateUserDto from './dtos/create-user.dto';
+import UpdateUserDto from './dtos/update-user.dto';
 
 @Injectable()
-export class AuthService {
+export class AuthService extends CrudService<User, CreateUserDto, UpdateUserDto>{
+  
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
-  ) {}
+  ) {
+    super(userRepository);
+  }
 
   async register(credentials: Partial<User>) {
     const user = await this.userRepository.create({
@@ -76,7 +82,6 @@ export class AuthService {
       salt: "",
       role: UserRoleEnum.PROVIDER,
     });
-    console.log(user);
     const t = await this.jwtService.sign(JSON.parse(JSON.stringify(user)));
     await this.userRepository.save(user);
     return t;

@@ -32,6 +32,7 @@ export class ProvidersController extends CrudController<
     super(providerService);
   }
 
+
   @Get('')
   async getAllProviders(
     @Query() query: SearchDto,
@@ -56,7 +57,6 @@ export class ProvidersController extends CrudController<
       p = await this.providerService.getAllProviders(query);
       nb = await this.providerService.countAllProviders();
     }
-    console.log(nb);
     return { data: p, count: nb };
   }
 
