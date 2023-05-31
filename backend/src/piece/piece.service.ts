@@ -114,4 +114,10 @@ export class PieceService extends CrudService<
     const count = await query.getCount();
     return { data: res, count: count };
   }
+  async deleteByProviderId(providerId: string): Promise<void> {
+     await this.piecesRepository.createQueryBuilder()
+      .delete()
+      .where("providerId = :providerId", { providerId })
+      .execute();
+  }
 }

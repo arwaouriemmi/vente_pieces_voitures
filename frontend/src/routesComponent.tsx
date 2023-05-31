@@ -12,11 +12,13 @@ import SignUp from "./components/ProviderSection/SignUp";
 import PieceDetails from "./components/SparePiecesSection/pieceDetails";
 import ErrorPage from "./components/errorPage";
 import { Pieces } from "./components/SparePiecesSection/pieces";
+import AboutUsPage from "./components/aboutUsPage";
 
 export default function RoutesComponent (){
   return(<Routes>
     <Route path="error" element={<ErrorPage />} />
     <Route path="/" element={<HomePage />} />
+    <Route path="/about" element={<AboutUsPage />} />
     <Route path="login" element={<SignIn />} />
     <Route path="register" element={<SignUp />} />
     <Route path="admin">

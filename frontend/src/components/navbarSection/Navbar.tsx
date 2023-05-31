@@ -48,13 +48,14 @@ export default function NavbarSection() {
     <Navbar bg="primary" variant="dark" expand="lg">
       <Navbar.Brand as={Link} to="/">
         <img
-          src="../logo_app.webp"
+          src="../logo_app.png"
           width="45"
           height="40"
           className="d-inline-block align-top rounded-circle "
           alt="mon logo"
           style={{ marginLeft: "20px" }}
         />
+        <span style={{ fontSize: "12px", marginLeft: "5px",fontFamily:"Anton" }}>SoukPiecesCasse</span>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
@@ -83,13 +84,13 @@ export default function NavbarSection() {
             <Nav.Link as={Link} to="/" style={linkStyle}>
               Acceuil
             </Nav.Link>
-            <Nav.Link
+           {/* <Nav.Link
               as={Link}
               to={`/providers/${provider.id}/pieces`}
               style={linkStyle}
             >
               Pièces
-            </Nav.Link>
+            </Nav.Link>*/}
             <Nav.Link
               as={Link}
               to={`/pieces/provider/${provider.id}`}
@@ -129,7 +130,7 @@ export default function NavbarSection() {
             <Nav.Link as={Link} to="/" style={linkStyle}>
               Acceuil
             </Nav.Link>
-            <Nav.Link as={Link} to="#" style={linkStyle}>
+            <Nav.Link as={Link} to="/about" style={linkStyle}>
               À propos
             </Nav.Link>
             <Nav.Link as={Link} to="/login" style={linkStyle}>

@@ -43,7 +43,7 @@ const setData = (formData: ProviderFormProps) => {
 
 export default function EditProvider({ newElement }: { newElement: boolean }) {
   const navigate = useNavigate();
-  useUserRole(["admin", "provider"]);
+ // useUserRole(["admin", "provider"]);
   const { id } = useParams<{ id: string }>();
   const [formData, setFormData] = useState<ProviderFormProps>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});

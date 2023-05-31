@@ -11,7 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { UserRoleEnum } from './enums/user-role.enum';
-import { CrudService } from 'src/generic/crud/crud.Service';
+import { CrudService } from '../generic/crud/crud.Service';
 import CreateUserDto from './dtos/create-user.dto';
 import UpdateUserDto from './dtos/update-user.dto';
 
