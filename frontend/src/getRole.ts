@@ -2,6 +2,7 @@ import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TokenProps from "./types/tokenProps";
+import { getUserId } from "./getUserId";
 
 export const getRole = () => {
     const token = localStorage.getItem("token");
@@ -30,3 +31,4 @@ export const useUserRole = (allowedRoles : string[]) => {
     }, [allowedRoles , role])
     return true
 }
+

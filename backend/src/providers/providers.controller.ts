@@ -15,7 +15,7 @@ import { Providers } from './entities/providers.entity';
 import { CreateprovidersDto } from './dto/create-providers.dto';
 import { UpdateprovidersDto } from './dto/update-providers.dto';
 import { ProvidersService } from './providers.service';
-import { CrudController } from '../generic/crud.controller';
+import { CrudController } from '../generic/crud/crud.controller';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { editFileName } from '../editFileName';
 import { diskStorage } from 'multer';
@@ -32,11 +32,6 @@ export class ProvidersController extends CrudController<
     super(providerService);
   }
 
-  @Get("providers/pieces/:id")
-  async getPiecesByProviderId(@Param("id") id: number): Promise<Piece[]> {
-    const p = await this.providerService.findOne(id);
-    return p.pieces;
-  }
 
   @Get('')
   async getAllProviders(

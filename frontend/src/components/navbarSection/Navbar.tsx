@@ -90,6 +90,13 @@ export default function NavbarSection() {
             >
               Pièces
             </Nav.Link>
+            <Nav.Link
+              as={Link}
+              to={`/pieces/provider/${provider.id}`}
+              style={linkStyle}
+            >
+              Voir les pièces
+            </Nav.Link>
             <Nav.Link as={Link} to="/pieces/add" style={linkStyle}>
               Ajouter une pièce
             </Nav.Link>

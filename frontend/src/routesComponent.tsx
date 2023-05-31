@@ -40,6 +40,7 @@ export default function RoutesComponent (){
       <Route path=":id" element={<PieceDetails/>} />
       <Route path="add" element={<EditPiece newElement={true}/>} />
       <Route path="edit/:id" element={<EditPiece newElement={false}/>} />
+      <Route path="provider/:id" element={<Pieces />} />
     </Route>
   </Routes>)
 }

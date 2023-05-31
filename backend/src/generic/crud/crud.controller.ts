@@ -1,11 +1,12 @@
 import { Body, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from "@nestjs/common";
 import { CrudService } from "./crud.Service";
-import PaginateDto from "./crud/dto/paginate.dto";
+import PaginateDto from "./dto/paginate.dto";
 
 export class CrudController<T ,createDto,UpdateDto>{
 
 	constructor(private readonly service: CrudService<T ,createDto,UpdateDto>) {}
-  
+
+
   @Get('')
   async findAll(@Query() dto: PaginateDto): Promise<any> {
     const res =  this.service.findAll(dto);

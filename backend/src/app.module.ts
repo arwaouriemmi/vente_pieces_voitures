@@ -14,6 +14,8 @@ import { Providers } from './providers/entities/providers.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { PieceModule } from './piece/piece.module';
 import { Categories } from './categories/entities/categories.entity';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 dotenv.config();
 
@@ -41,6 +43,12 @@ dotenv.config();
     MulterModule.register({
       dest: '../frontend/public',
     }),
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
   ],
 })
 export class AppModule {}

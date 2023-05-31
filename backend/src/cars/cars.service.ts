@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CrudService } from '../generic/crud.Service';
+import { CrudService } from '../generic/crud/crud.Service';
 import { Repository } from 'typeorm';
 import { Cars } from './entities/cars.entity';
 import { CreatecarsDto } from './dto/create-cars.dto';

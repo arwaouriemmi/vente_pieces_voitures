@@ -2,7 +2,7 @@ import axios from "axios";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
 
-const toastOptions = {
+export const toastOptions = {
   autoClose: 5000,
   hideProgressBar: false,
   newestOnTop: false,

@@ -1,4 +1,5 @@
-import { deleteData, getData, patchData, postData } from "./generic";
+import { toast } from "react-toastify";
+import { deleteData, getData, patchData, postData, toastOptions } from "./generic";
 
 const getProvidersFromApi = async (active: string, page?: number) => {
   try {
@@ -44,7 +45,23 @@ const deleteProvider = async (id: string) => {
 };
 
 const restoreProvider = async (id: string) => {
-  getData("providers/restore/" + id);
+  const toastId = toast.loading("Votre message est en cours d'envoi!");;
+  try {
+    await getData("providers/restore/" + id);
+    toast.update(toastId, {
+      ...toastOptions,
+      render: "La donnée a été modifiée avec succées!",
+      type: "success",
+      isLoading: false,
+    });
+  } catch (error) {
+    toast.update(toastId, {
+      ...toastOptions,
+      render: 'Une erreur est survenue, veuillez réesséyer',
+      type: "error",
+      isLoading: false,
+    });
+  }
 };
 
 export {

@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
 import { cities } from "./cities";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../../apis/providerApis";
 import { ToastContainer } from "react-toastify";
 import { useUserRole } from "../../getRole";
+import { getUserId } from "../../getUserId";
 
 interface ProviderFormProps {
     name?: string;
@@ -25,7 +26,7 @@ interface ProviderFormProps {
 
 const setData = (formData: ProviderFormProps) => {
   const data = new FormData();
-  if (formData.logo) {
+  if (formData.logo && formData.logo?.name) {
     data.append("image", formData.logo, formData.logo?.name as string);
   }
   data.append("name", formData.name ?? "");
@@ -41,6 +42,7 @@ const setData = (formData: ProviderFormProps) => {
 };
 
 export default function EditProvider({ newElement }: { newElement: boolean }) {
+  const navigate = useNavigate();
   useUserRole(["admin", "provider"]);
   const { id } = useParams<{ id: string }>();
   const [formData, setFormData] = useState<ProviderFormProps>({});
@@ -51,6 +53,13 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
     if (!newElement && id) {
       getProviderDeleted(id).then((res) => {
         setFormData(res);
+      console.log(getUserId())
+      console.log(res.id)
+
+      if (res.id !== getUserId()) {
+
+        navigate('/error')
+      }
       });
     }
   }, [id]);
@@ -128,6 +137,7 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
   }, [formData]);
 
   const EditProvider = async (formData: ProviderFormProps) => {
+    console.log("edit")
     const data = setData(formData);
     patchProvider(id ?? "", data);
   };
