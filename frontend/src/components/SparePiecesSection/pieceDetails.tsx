@@ -8,9 +8,10 @@ import { IoConstructSharp } from "react-icons/io5";
 import { MdDescription, MdComment } from "react-icons/md";
 import { AiFillCar } from "react-icons/ai";
 import ErrorPage from "../errorPage";
-import { Button } from "react-bootstrap";
+import { Button, Toast } from "react-bootstrap";
 import { getRole, useUserRole } from "../../getRole";
 import { getUserId } from "../../getUserId";
+import { ToastContainer } from "react-toastify";
 
 export default function PieceDetails() {
   useUserRole(["admin", "", "provider"]);
@@ -101,6 +102,7 @@ export default function PieceDetails() {
               </Button>
             </div>
           )}
+          <ToastContainer position="bottom-right" />
         </div>
       )) || <ErrorPage message="404 - Pièce introuvable" />}
     </div>

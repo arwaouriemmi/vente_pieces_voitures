@@ -22,7 +22,7 @@ export default function ProviderSection() {
   useEffect(() => {
     getProvidersFromApi(active, page).then((res) => {
       setProviders(res.data);
-      setPageNumber(res.count)
+      setPageNumber(res.count / 6 + 1)
     });
   }, [active, page]);
 

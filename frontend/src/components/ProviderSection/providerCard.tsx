@@ -67,7 +67,7 @@ export default function ProviderCard({
               <Card.Link
                 className="btn btn-info col-sm"
                 onClick={() => {
-                  deletedAt ? restoreProvider(id) : deleteProvider(id);
+                  deletedAt !== null ? restoreProvider(id) : deleteProvider(id);
                 }}
               >
                 {deletedAt ? "Activer" : "Bloquer"}

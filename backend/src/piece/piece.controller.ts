@@ -7,17 +7,18 @@ import {
   UploadedFile,
   UseInterceptors,
   Param,
+  Patch,
 } from '@nestjs/common';
 import { PieceService } from './piece.service';
 import { CreatePieceDto } from './dto/create-piece.dto';
 import { UpdatePieceDto } from './dto/update-piece.dto';
 import { Piece } from './entities/piece.entity';
-import { CrudController } from '../generic/crud.controller';
+import { CrudController } from '../generic/crud/crud.controller';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName } from '../editFileName';
 import SearchDto from './dto/search.dto';
-import PaginateDto from '../generic/crud/dto/paginate.dto';
+import { returnData } from './dto/return.dto';
 
 @Controller('pieces')
 export class PieceController extends CrudController<
@@ -27,6 +28,33 @@ export class PieceController extends CrudController<
 > {
   constructor(private readonly pieceService: PieceService) {
     super(pieceService);
+  }
+
+  @Get("provider/:id")
+  async getPiecesByProvider(@Param('id') id: number): Promise<Piece[]> {
+    return await this.pieceService.getByProviderId(id);
+  }
+  
+  @Patch('update/:id')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: '../frontend/public',
+        filename: editFileName,
+      }),
+    }),
+  )
+  async updatePiece(
+    @Param('id') id: number,
+    @Body() dto: UpdatePieceDto,
+    @UploadedFile() image?: Express.Multer.File,
+  ): Promise<Piece> {
+    if (image) {
+      dto.image = image.filename;
+    }
+    
+    const c =  await this.pieceService.update(id, dto);
+    return c;
   }
 
   @Post('add')
@@ -49,25 +77,16 @@ export class PieceController extends CrudController<
   }
 
   @Get('search')
-  async searchPieces(@Query() query: SearchDto): Promise<{ data: Piece[],
-  count : number }> {
-    const res = await this.pieceService.searchPieces(query);
-    return {
-      data: res,
-      count: res.length,
-    };
+  async searchPieces(@Query() query: SearchDto): Promise<returnData> {
+    return await this.pieceService.searchPieces(query);
+
   }
 
   @Get('search/:id')
   async searchPiecesByCategory(
     @Param('id') id: number,
-    @Query() query: PaginateDto | SearchDto,
-  ): Promise<{ data: Piece[],
-  count: number }> {
-    const res = await this.pieceService.searchPiecesByCategory(id, query);
-    return {
-      data: res,
-      count: res.length,
-    };
+    @Query() query: SearchDto,
+  ): Promise<returnData> {
+    return await this.pieceService.searchPiecesByCategory(id, query);
   }
 }

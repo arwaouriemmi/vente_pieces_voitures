@@ -5,6 +5,7 @@ import { getProviderDeleted } from "../../apis/providerApis";
 import ErrorPage from "../errorPage";
 import { getRole, useUserRole } from "../../getRole";
 import { getUserId } from "../../getUserId";
+import { Button } from "react-bootstrap";
 
 export default function ProviderDetails() {
   useUserRole(["admin", "provider", ""]);
@@ -140,10 +141,14 @@ export default function ProviderDetails() {
                 </li>
                 <li>
                   <Link
-                    to="/providers/1/pieces"
+                    to={"/pieces/provider/" + provider.id}
                     className="focus-visible:outline-none"
                   >
+                    <Button variant="primary" className="focus-visible:outline-none">
+                    Voir les pièces
+                  </Button>
                   </Link>
+                  
                 </li>
               </ul>
               {provider.id === getUserId() && (

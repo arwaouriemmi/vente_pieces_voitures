@@ -1,10 +1,11 @@
 import {
   BadGatewayException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { DeepPartial, Repository } from 'typeorm';
-import PaginateDto from './crud/dto/paginate.dto';
+import PaginateDto from './dto/paginate.dto';
 
 @Injectable()
 export abstract class CrudService<T, createDto, UpdateDto> {
@@ -24,7 +25,9 @@ export abstract class CrudService<T, createDto, UpdateDto> {
   }
 
   async findAll(dto : PaginateDto): Promise<T[]> {
-    const { page, take } = dto;
+    let { page, take } = dto;
+    page = page ?? 1;
+    take = take ?? 6; 
     try {
       return this.repository.find({
         skip: ((page - 1) * take) as number,
@@ -38,7 +41,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
   async paginate(query, dto: PaginateDto): Promise<T[]> {
     let { page, take } = dto;
     page = page ?? 1;
-    take = take ?? 5;
+    take = take ?? 6;
     try {
       query.skip((page - 1) * take);
       query.take(take);
@@ -59,6 +62,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
         query.withDeleted();
       }
       query.where(cond);
+      console.log(this.paginate(query, dto)) 
       return this.paginate(query, dto);
     } catch (error) {
       throw new BadGatewayException(error);
@@ -96,7 +100,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
     try {
       this.repository.delete(id);
     } catch (error) {
-      throw new BadGatewayException(error);
+      throw new InternalServerErrorException(error);
     }
   }
   async softDelete(id: number) {

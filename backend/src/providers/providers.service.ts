@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CrudService } from '../generic/crud.Service';
+import { CrudService } from '../generic/crud/crud.Service';
 import { Providers } from './entities/providers.entity';
 import { UpdateprovidersDto } from './dto/update-providers.dto';
 import { CreateprovidersDto } from './dto/create-providers.dto';
@@ -52,7 +52,9 @@ export class ProvidersService extends CrudService<
   }
 
   async getAllProviders(query : PaginateDto): Promise<Providers[]> {
-    const { page, take } = query;
+    let { page, take } = query;
+    page = page ? page : 1;
+    take = take ? take : 6;
     const skip: number = ((page - 1) * take) as number;
     return await this.ProviderRepository.find({
       withDeleted: true,

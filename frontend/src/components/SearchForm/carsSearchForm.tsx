@@ -29,6 +29,7 @@ export default function CarsSearchForm({
   }, []);
 
   useEffect(() => {
+    formData.model = "";
     if (formData.brand !== "" && formData.brand !== undefined) {
       getCarModels(formData.brand).then((res) => {
         setModels(res);
@@ -40,6 +41,7 @@ export default function CarsSearchForm({
   }, [formData.brand]);
 
   useEffect(() => {
+    formData.motorization = "";
     if (formData.model !== "" && formData.brand !== "" && formData.model !== undefined && formData.brand !== undefined) {
       getCarMotorization(formData.brand, formData.model).then((res) => {
         setMotorizations(res);

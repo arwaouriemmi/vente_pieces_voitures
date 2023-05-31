@@ -198,7 +198,7 @@ export default function EditPiece({ newElement }: { newElement: boolean }) {
             <FormLabel>Piéce</FormLabel>
             <FormControl
               type={"text"}
-              value={formData.price}
+              value={formData.piece}
               name={"piece"}
               onChange={(e: any) => handleChange(e, formData, setFormData)}
             />

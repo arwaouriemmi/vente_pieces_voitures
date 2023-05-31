@@ -11,7 +11,7 @@ import {
 import { Categories } from './entities/categories.entity';
 import { CreateCategoriesDto } from './dto/create-categories.dto';
 import { UpdateCategoriesDto } from './dto/update-categories.dto';
-import { CrudController } from '../generic/crud.controller';
+import { CrudController } from '../generic/crud/crud.controller';
 import { CategoriesService } from './categories.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { editFileName } from '../editFileName';
@@ -75,7 +75,6 @@ export class CategoriesController extends CrudController<
     }
     
     const c =  await this.categoriesService.update(id, dto);
-    console.log(c);
     return c;
   }
 

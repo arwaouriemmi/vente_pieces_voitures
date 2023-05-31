@@ -3,9 +3,7 @@ import { ChangeEvent, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import CarsSearchForm from "../SearchForm/carsSearchForm";
 import CarProps from "../../types/carProps";
-import { ProductProps } from "../../types/ProductProps";
 import SearchPieceProps from "../../types/searchPieceProps";
-import { handleChange } from "../../apis/generic";
 
 export default function SideBar({
   handleSearch,

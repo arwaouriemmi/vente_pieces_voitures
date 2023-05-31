@@ -3,7 +3,7 @@ import {
   Get,
   Query,
 } from '@nestjs/common';
-import { CrudController } from '../generic/crud.controller';
+import { CrudController } from '../generic/crud/crud.controller';
 import { Cars } from './entities/cars.entity';
 import { CreatecarsDto } from './dto/create-cars.dto';
 import { UpdatecarsDto } from './dto/update-cars.dto';

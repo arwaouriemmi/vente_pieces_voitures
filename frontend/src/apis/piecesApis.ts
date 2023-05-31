@@ -26,14 +26,15 @@ const getPieceByIdFromApi = async (id: string) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-//Get all pieces if 
+//Get all pieces if
 const searchPieces = async (formData: SearchPieceProps, page: number) => {
   try {
-  
-  let data = await getData(
-      "pieces/search?page="+page+"&brand=" +
+    let data = await getData(
+      "pieces/search?page=" +
+        page +
+        "&brand=" +
         formData.brand +
         "&model=" +
         formData.model +
@@ -46,20 +47,40 @@ const searchPieces = async (formData: SearchPieceProps, page: number) => {
   } catch (error) {
     console.log(error);
   }
-}
-const searchPiecesByCategory = async (id:any, formData: SearchPieceProps, page: number)=>{
-  try{
-    let data = await getData("pieces/search/"+id + `?page=${page}&
-    ?${formData.brand ? "brand=" + formData.brand +"&" : ""}
-    ${formData.model ? "model=" + formData.model +"&" : ""}
-    ${formData.motorization ? "motorization=" + formData.motorization +"&" : ""}
-    ${formData.sortBy ? "sortBy=" + formData.sortBy : ""}`);
+};
+const searchPiecesByCategory = async (
+  id: any,
+  formData: SearchPieceProps,
+  page: number
+) => {
+  console.log("pieces/search/" +id +"?page=" +
+  page +
+  "&brand=" +
+  formData.brand +
+  "&model=" +
+  formData.model +
+  "&motorization=" +
+  formData.motorization +
+  "&sortBy=" +
+  formData.sortBy)
+  try {
+    let data = await getData(
+      "pieces/search/" +id +"?page=" +
+        page +
+        "&brand=" +
+        formData.brand +
+        "&model=" +
+        formData.model +
+        "&motorization=" +
+        formData.motorization +
+        "&sortBy=" +
+        formData.sortBy
+    );
     return data;
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error);
   }
-}
+};
 
 const postPiece = async (data: any) => {
   try {
@@ -67,11 +88,11 @@ const postPiece = async (data: any) => {
   } catch (err) {
     console.log(err);
   }
-  
-};  
+};
 
 const patchPiece = async (id: string, data: any) => {
   try {
+    console.log("hi!!")
     patchData("pieces/update/" + id, data);
   } catch (err) {
     console.log(err);
@@ -80,11 +101,19 @@ const patchPiece = async (id: string, data: any) => {
 
 const deletePiece = async (id: string) => {
   try {
-    deleteData("pieces/delete/" , id);
+    deleteData("pieces/delete/", id);
   } catch (err) {
     console.log(err);
   }
 };
 
-export { searchPieces, patchPiece, getPiecesByProvider, deletePiece,
-  searchPiecesByCategory, postPiece, getPieceByIdFromApi, getPiecesFromApi };
+export {
+  searchPieces,
+  patchPiece,
+  getPiecesByProvider,
+  deletePiece,
+  searchPiecesByCategory,
+  postPiece,
+  getPieceByIdFromApi,
+  getPiecesFromApi,
+};
