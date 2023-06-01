@@ -62,7 +62,7 @@ export function HomePage() {
     if (selected.length > 0) {
       searchPiecesByCategory(selected[selected.length - 1], formData, page).then((res) => {
         setProducts(res.data);
-        setPageNumber(res.count / 6 + 1);
+        setPageNumber(res.count / 6+ 1);
       });
     } else {
       searchPieces(formData, page).then((res) => {
@@ -80,8 +80,8 @@ export function HomePage() {
   return (
     <>
       <div className="custom-container">
-        <h4>Catégories</h4>
-        <CategoriesList selected={selected} setSelected={setSelected} />
+        <h4 >Catégories</h4>
+           <CategoriesList selected={selected} setSelected={setSelected} />
       </div>
       <div className="d-flex flex-row justify-items-between">
         <SideBar
@@ -96,8 +96,7 @@ export function HomePage() {
             marginLeft: "50px",
           }}
         >
-          <h4 style={{ paddingTop: 90 }}>Résulats de la recherche pour :</h4>
-          <Row style={{ gap: 30 }}>
+          <Row style={{ gap: 30 ,paddingTop: 90}}>
             {Object.values(products).map((product, i) => {
               return <ProductCard key={i} product={product} />;
             })}

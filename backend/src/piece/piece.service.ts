@@ -83,7 +83,8 @@ export class PieceService extends CrudService<
   async searchPieces(data: SearchDto): Promise<returnData> {
     let query = this.piecesRepository
       .createQueryBuilder('pieces')
-      .leftJoinAndSelect('pieces.cars', 'cars');
+      .leftJoinAndSelect('pieces.cars', 'cars')
+      .leftJoinAndSelect('pieces.category', 'category')
 
     query = await this.getByCriteriaQuery(data, query);
     const res = await this.paginate(query, data);
@@ -97,7 +98,7 @@ export class PieceService extends CrudService<
       .leftJoinAndSelect('pieces.subCategory', 'subCategory')
       .leftJoinAndSelect('pieces.category', 'category')
       .leftJoinAndSelect('pieces.cars', 'cars')
-      .where('subCategory.id = :categoryId OR category.id = :categoryId', { categoryId: id })
+      .where('(subCategory.id = :categoryId OR category.id = :categoryId)', { categoryId: id })
     return query;
   }
 

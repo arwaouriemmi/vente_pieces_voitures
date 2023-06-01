@@ -41,7 +41,7 @@ export default function CategoriesList({  selected,
   }, []);
 
   return (
-    <div>
+    <div style={{marginTop:"10px"}}>
       {categories.length !== 0 &&
         categories.map((catList, index) => 
           index < 2 && (
@@ -57,6 +57,7 @@ export default function CategoriesList({  selected,
                         justifyContent: "center",
                         backgroundSize: "cover",
                         height: "100px",
+                      
                       }}
                       onClick={() => {
                         let newSelected = [...selected];

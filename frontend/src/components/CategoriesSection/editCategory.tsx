@@ -113,7 +113,7 @@ export default function EditCategory({
         />
         <p className="text-danger">{!isValidate && errors.label}</p>
       </div>
-      {formData.parent === -1 && (
+      {/*formData.parent === -1 &&*/ (
         <div className="mb-3">
           <FormLabel>Image: </FormLabel>
           <FormControl

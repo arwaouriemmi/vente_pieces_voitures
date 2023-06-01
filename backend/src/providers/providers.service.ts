@@ -8,8 +8,7 @@ import { Repository } from 'typeorm';
 import { MailingService } from '../mailing/mailing.service';
 import { AuthService } from '../auth/auth.service';
 import PaginateDto from '../generic/crud/dto/paginate.dto';
-import { PieceService } from 'src/piece/piece.service';
-import { Piece } from 'src/piece/entities/piece.entity';
+import { Piece } from '../piece/entities/piece.entity';
 
 @Injectable()
 export class ProvidersService extends CrudService<

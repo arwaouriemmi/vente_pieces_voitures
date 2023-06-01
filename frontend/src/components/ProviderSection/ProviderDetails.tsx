@@ -144,7 +144,7 @@ export default function ProviderDetails() {
                     to={"/pieces/provider/" + provider.id}
                     className="focus-visible:outline-none"
                   >
-                    <Button variant="primary" className="focus-visible:outline-none">
+                    <Button variant="primary" className="focus-visible:outline-none" style={{width:"200px"}}>
                     Voir les pièces
                   </Button>
                   </Link>

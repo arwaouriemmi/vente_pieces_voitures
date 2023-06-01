@@ -29,7 +29,7 @@ export default function ProviderSection() {
 
   return (<>
     <div className="custom-container">
-      <h1>Fournisseurs</h1>
+     
       <Card>
         <Card.Header>
           <Nav variant="tabs">

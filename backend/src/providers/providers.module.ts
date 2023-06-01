@@ -5,8 +5,7 @@ import { Providers } from './entities/providers.entity';
 import { ProvidersService } from './providers.service';
 import { MailingModule } from '../mailing/mailing.module';
 import { AuthModule } from '../auth/auth.module';
-import { PieceModule } from '../piece/piece.module';
-import { Piece } from 'src/piece/entities/piece.entity';
+import { Piece } from '../piece/entities/piece.entity';
 
 @Module({
   imports:[TypeOrmModule.forFeature(

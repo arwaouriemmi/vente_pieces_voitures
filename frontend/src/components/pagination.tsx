@@ -13,7 +13,7 @@ export default function Paginate({
     }: PaginationProps) {
     return (
         <Nav>
-        <Pagination style={{ margin: "auto" }}>
+        <Pagination style={{ margin: "auto",paddingTop:"8px" }}>
           <Pagination.Prev
             disabled={page === 1}
             onClick={() => {

@@ -27,7 +27,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
   async findAll(dto : PaginateDto): Promise<T[]> {
     let { page, take } = dto;
     page = page ?? 1;
-    take = take ?? 6; 
+    take = take ?? 4; 
     try {
       return this.repository.find({
         skip: ((page - 1) * take) as number,
@@ -41,7 +41,7 @@ export abstract class CrudService<T, createDto, UpdateDto> {
   async paginate(query, dto: PaginateDto): Promise<T[]> {
     let { page, take } = dto;
     page = page ?? 1;
-    take = take ?? 6;
+    take = take ?? 4;
     try {
       query.skip((page - 1) * take);
       query.take(take);

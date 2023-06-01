@@ -14,6 +14,8 @@ export default function NavbarSection() {
     margin: "0 40px",
   };
 
+  
+
   const [role, setRole] = useState<string>("");
   const [provider, setProvider] = useState<ProviderProps>({
     id: "",
@@ -45,7 +47,7 @@ export default function NavbarSection() {
   }, []);
 
   return (
-    <Navbar bg="primary" variant="dark" expand="lg">
+    <Navbar bg="primary" variant="dark"  expand="lg" >
       <Navbar.Brand as={Link} to="/">
         <img
           src="../logo_app.png"
@@ -55,7 +57,7 @@ export default function NavbarSection() {
           alt="mon logo"
           style={{ marginLeft: "20px" }}
         />
-        <span style={{ fontSize: "12px", marginLeft: "5px",fontFamily:"Anton" }}>SoukPiecesCasse</span>
+        <span style={{ fontSize: "12px", marginLeft: "5px",fontFamily:"Lilita One" }}>SoukPiecesCasse</span>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">

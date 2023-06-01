@@ -51,7 +51,7 @@ export default function CarsSearchForm({
 
   return (
     <>
-      <legend style={{ fontSize: "20px", paddingBottom: "20px" }}>
+     <legend style={{ fontSize: "20px", paddingBottom: "20px" }}>
         Choisir une voiture
       </legend>
       <div className="mb-3">

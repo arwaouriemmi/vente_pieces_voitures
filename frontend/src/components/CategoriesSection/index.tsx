@@ -105,7 +105,7 @@ export default function CategoriesSection() {
                   setData({ id: -1, parent: selected[index - 1] });
                 }}
               >
-                <GrAddCircle size={index === 0 ? 60 : 30} />
+                <GrAddCircle size={index === 0 ?60 : 30} />
               </Col>
             </Row>
           ))}
