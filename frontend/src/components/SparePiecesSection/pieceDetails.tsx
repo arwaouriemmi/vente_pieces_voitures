@@ -27,7 +27,7 @@ export default function PieceDetails() {
       });
   }, [id]);
 
-  return (
+  /*return (
     <div className="container">
       {(piece && (
         <div>
@@ -78,33 +78,132 @@ export default function PieceDetails() {
                 <AiFillCar size={30} /> Voiture
                 {piece.cars && <CarCard {...piece.cars} edit={false} />}
               </li>
-
+              <div style={{ display: "flex", flexDirection: "row" ,marginLeft:"650px"}}> 
               <Link
                 to={`/providers/${piece.provider && piece.provider.id}` }
                 style={{ textDecoration: "none" }}
               >
-                <button className="btn btn-primary">Voir Fournisseur</button>
+                              
+                <button className="btn btn-primary" style={{width:"300px"}}>Voir Fournisseur</button>
               </Link>
             </ul>
           </div>
+        
           </div>
           {(getUserId() === piece.provider.id || role === "admin") && (
-            <div style={{display: "block"}}>
+           
+                <div style={{ display: "block"}}>
               <Link to={"/pieces/edit/" + piece.id}>
-                <button className="btn btn-primary">Modifier</button>
+                <button className="btn btn-success" >Modifier</button>
               </Link>
               <Button variant="danger" 
               onClick={() => {
                 deletePiece(piece.id);
               }}
-              style={{ marginLeft: "10px" }}>
+          >
                 Supprimer
               </Button>
+              
             </div>
+            
           )}
+    
           <ToastContainer position="bottom-right" />
         </div>
-      )) || <ErrorPage message="404 - Pièce introuvable" />}
+    
+        
+        )) || <ErrorPage message="404 - Pièce introuvable" />}
+  
+    </div>
+    
+  );*/
+  return (
+    <div className="container">
+      {piece ? (
+        <div>
+          <div
+            style={{ display: "flex", flexDirection: "row", paddingTop: "50px" }}
+          >
+            <div className="image-profile" style={{ flex: 1 }}>
+              <img
+                src={piece.image ?? "https://via.placeholder.com/150"}
+                style={{ width: "300px" }}
+                alt=""
+              />
+            </div>
+            <div className="credentials" style={{ paddingLeft: "20px" }}>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Button variant="outline-primary" style={{ marginRight: "10px" }}>
+                  {piece.category.label}
+                </Button>
+                {piece.subCategory && (
+                  <Button variant="outline-danger">
+                    {piece.subCategory.label}
+                  </Button>
+                )}
+              </div>
+  
+              <ul style={{ listStyle: "none", paddingTop: "10px" }}>
+                <li style={{ paddingBottom: "30px" }}>
+                  <h1 className="text-4xl font-bold">{piece.piece} </h1>
+                </li>
+                <li style={{ paddingBottom: "30px" }}>
+                  <CiMoneyBill size={30} />
+                  {piece.price} DT
+                </li>
+                <li style={{ paddingBottom: "30px" }}>
+                  <IoConstructSharp size={30} />
+                  {piece.constructorReference}
+                </li>
+                <li style={{ paddingBottom: "30px" }}>
+                  <MdDescription size={30} />
+                  {piece.description ?? "Pas de description"}
+                </li>
+                <li style={{ paddingBottom: "30px" }}>
+                  <MdComment size={30} />
+                  {piece.comments ?? "Pas de commentaires"}
+                </li>
+  
+                <li style={{ paddingBottom: "30px", width: 800 }}>
+                  <AiFillCar size={30} /> Voiture
+                  {piece.cars && <CarCard {...piece.cars} edit={false} />}
+                </li>
+              </ul>
+              <div
+                style={{ display: "flex", flexDirection: "row",gap:"60px",marginBottom:"10px" }}
+              >
+                <Link
+                  to={`/providers/${piece.provider && piece.provider.id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <button className="btn btn-primary" style={{ width: "150px" }}>
+                    Voir Fournisseur
+                  </button>
+                </Link>
+                {(getUserId() === piece.provider.id || role === "admin") && (
+                  <div >
+                    <Link to={"/pieces/edit/" + piece.id}>
+                      <button className="btn btn-primary " style={{marginRight:"60px"}}>Modifier</button>
+                    </Link>
+                    <Button
+                      variant="danger"
+                      onClick={() => {
+                        deletePiece(piece.id);
+                      }}
+                    >
+                      Supprimer 
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <ToastContainer position="bottom-right" />
+        </div>
+      ) : (
+        <ErrorPage message="404 - Pièce introuvable" />
+      )}
     </div>
   );
+  
 }

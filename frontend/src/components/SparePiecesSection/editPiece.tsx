@@ -13,7 +13,7 @@ import { getPieceByIdFromApi } from "../../apis/piecesApis";
 import { useUserRole } from "../../getRole";
 
 export default function EditPiece({ newElement }: { newElement: boolean }) {
-  useUserRole(["admin", "provider"]);
+ useUserRole(["admin", "provider"]);
   const [formData, setFormData] = useState<FormDataProps>({
     motorization: "",
     brand: "",

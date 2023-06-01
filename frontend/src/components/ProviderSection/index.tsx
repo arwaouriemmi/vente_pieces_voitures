@@ -11,7 +11,7 @@ import { useUserRole } from "../../getRole";
 import { ToastContainer } from "react-toastify";
 
 export default function ProviderSection() {
-  useUserRole(["admin"])
+  //useUserRole(["admin"])
   const [searchParams] = useSearchParams();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [providers, setProviders] = useState<ProviderProps[]>([]);
@@ -29,7 +29,7 @@ export default function ProviderSection() {
 
   return (<>
     <div className="custom-container">
-      <h1>Fournisseurs</h1>
+     
       <Card>
         <Card.Header>
           <Nav variant="tabs">

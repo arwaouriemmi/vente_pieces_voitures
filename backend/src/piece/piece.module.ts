@@ -17,6 +17,6 @@ import { ProvidersModule } from '../providers/providers.module';
     ProvidersModule,
   ],
   controllers: [PieceController],
-  providers: [PieceService],
+  providers: [PieceService]
 })
 export class PieceModule {}

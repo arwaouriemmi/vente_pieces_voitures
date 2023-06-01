@@ -16,53 +16,40 @@ export default function SideBar({
 }) {
   return (
     <div
-      className="p-2"
+      className="p-5"
       style={{
         backgroundColor: "aliceblue",
-        marginTop: "50px",
+        marginTop: "0px",
         justifyItems: "center",
       }}
     >
-      <h4>Filtres</h4>
+      <h4 style={{paddingBottom:"20px",color:"#4169E1"}}>Filtres</h4>
       <CarsSearchForm
         formData={formData as CarProps}
         setFormData={setFormData}
       />
       <Form>
-        <div className="mb-3 p-2">
-          <h6>Trier Par: </h6>
-          <Form.Check>
-            <Form.Check.Label htmlFor="IncreasingPrice">
-              Prix croissant
-            </Form.Check.Label>
-            <Form.Check.Input
-              type="radio"
-              name="sortby"
-              id="IncreasingPrice"
-              onChange={(e: any) =>setFormData({...formData, sortBy: "IncreasingPrice"})}
-            />
-            <Form.Check.Label htmlFor="sort2">
-              Prix décroissant
-            </Form.Check.Label>
-            <Form.Check.Input
-              type="radio"
-              name="sortby"
-              id="DecreasingPrice"
-              onChange={(e: any) =>setFormData({...formData, sortBy: "DecreasingPrice"})}
-            />
-            <Form.Check.Label htmlFor="sort3">Date d'ajout</Form.Check.Label>
-            <Form.Check.Input
-              type="radio"
-              name="sortby"
-              id="AdditionDate"
-              onChange={(e: any) =>setFormData({...formData, sortBy: "AdditionDate"})}
-            />
-          </Form.Check>
-        </div>
+  <Form.Group className="mb-3 p-2">
+  <Form.Label>Trier Par:</Form.Label>
+  <Form.Select
+    name="sortby"
+    value={formData.sortBy}
+    onChange={(e) => setFormData({ ...formData, sortBy: e.target.value })}
+  >
+    <option value="">Choisir le mode de tri</option>
+    <option value="IncreasingPrice">Prix croissant</option>
+    <option value="DecreasingPrice">Prix décroissant</option>
+    <option value="AdditionDate">Date d'ajout</option>
+  </Form.Select>
+</Form.Group>
+  
+
+
+
         <Button
           variant="primary"
           type="submit"
-          className="mt-3 p-2"
+          className="mt-0 p-2"
           onClick={(e) => {
             e.preventDefault();
             handleSearch();
