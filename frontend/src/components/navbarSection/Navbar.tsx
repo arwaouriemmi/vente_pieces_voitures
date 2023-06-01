@@ -14,8 +14,6 @@ export default function NavbarSection() {
     margin: "0 40px",
   };
 
-  
-
   const [role, setRole] = useState<string>("");
   const [provider, setProvider] = useState<ProviderProps>({
     id: "",
@@ -86,13 +84,6 @@ export default function NavbarSection() {
             <Nav.Link as={Link} to="/" style={linkStyle}>
               Acceuil
             </Nav.Link>
-           {/* <Nav.Link
-              as={Link}
-              to={`/providers/${provider.id}/pieces`}
-              style={linkStyle}
-            >
-              Pièces
-            </Nav.Link>*/}
             <Nav.Link
               as={Link}
               to={`/pieces/provider/${provider.id}`}

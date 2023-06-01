@@ -113,7 +113,7 @@ export default function EditCategory({
         />
         <p className="text-danger">{!isValidate && errors.label}</p>
       </div>
-      {/*formData.parent === -1 &&*/ (
+      { (
         <div className="mb-3">
           <FormLabel>Image: </FormLabel>
           <FormControl
@@ -131,6 +131,8 @@ export default function EditCategory({
         className="m-3"
         onClick={() => {
           id === -1 ? AddCategory() : EditCategory();
+          hide();
+          window.location.reload();
         }}
       >
         Enregistrer

@@ -25,13 +25,7 @@ export default function SignIn() {
       .then((response) => {
         console.log(response);
         localStorage.setItem("token", response.data.token);
-        const decodedToken = jwt_decode<TokenPayloadProps>(response.data.token);
-        const { user } = decodedToken;
-        if (user.role === "admin") {
-          navigate("/");
-        } else if (user.role === "provider") {
-          navigate("/");
-        }
+        navigate("/");
       })
       .catch((error) => {
         setErrorMessage(error.response.data.message);

@@ -38,7 +38,7 @@ export function HomePage() {
       ? handleSearch(page)
       : getPiecesFromApi(page).then((res) => {
           setProducts(res.data);
-          setPageNumber(res.count / 6 + 1);
+          setPageNumber(res.count /4  + 1);
         });
   }, [page]);
 
@@ -62,12 +62,12 @@ export function HomePage() {
     if (selected.length > 0) {
       searchPiecesByCategory(selected[selected.length - 1], formData, page).then((res) => {
         setProducts(res.data);
-        setPageNumber(res.count / 6+ 1);
+        setPageNumber(res.count / 4+ 1);
       });
     } else {
       searchPieces(formData, page).then((res) => {
         setProducts(res.data);
-        setPageNumber(res.count / 6 + 1);
+        setPageNumber(res.count / 4 + 1);
       });
     }
     setFormData({

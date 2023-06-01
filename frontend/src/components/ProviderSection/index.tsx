@@ -11,7 +11,7 @@ import { useUserRole } from "../../getRole";
 import { ToastContainer } from "react-toastify";
 
 export default function ProviderSection() {
-  //useUserRole(["admin"])
+  useUserRole(["admin"])
   const [searchParams] = useSearchParams();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [providers, setProviders] = useState<ProviderProps[]>([]);
@@ -23,7 +23,7 @@ export default function ProviderSection() {
   useEffect(() => {
     getProvidersFromApi(active, page).then((res) => {
       setProviders(res.data);
-      setPageNumber(res.count / 6 + 1)
+      setPageNumber(res.count / 4 + 1)
     });
   }, [active, page]);
 

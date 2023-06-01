@@ -1,6 +1,6 @@
 import { IsEmail } from 'class-validator';
 import { UserRoleEnum } from '../enums/user-role.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
@@ -25,4 +25,7 @@ export class User {
     default: UserRoleEnum.PROVIDER,
   })
   role: string;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

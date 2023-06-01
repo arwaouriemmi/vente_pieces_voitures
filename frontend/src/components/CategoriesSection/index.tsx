@@ -116,7 +116,7 @@ export default function CategoriesSection() {
             disabled={selected.length === 0}
             onClick={() => {
               setIsHidden(false);
-              setData({ id: selected[selected.length - 1] });
+              setData({ id: selected[selected.length - 1], parent: selected[selected.length - 2] ?? -1 });
             }}
           >
             Modifier

@@ -37,14 +37,6 @@ export class ProvidersService extends CrudService<
     return pro;
   }
 
-  /*async deleteProvider(id: number): Promise<{count: number}> {
-    const provider = await this.ProviderRepository.findOne({where: {id: id}});
-    await this.AuthService.delete(id);
-    this.Mailingservice.sendUserDeactivation(provider);
-    await this.ProviderRepository.softDelete(id);
-    await this.piecesService.deleteByProviderId(provider.id);
-    return {count : 1}
-  }*/
   async deleteProvider(id: number): Promise<{ count: number }> {
     const provider = await this.ProviderRepository.findOne({
       where: { id: id },
@@ -57,6 +49,8 @@ if (!provider) {
     for (const piece of provider.pieces) {
       await this.pieceRepository.softDelete(piece.id);
     }
+    const x = await this.AuthService.softDelete(id);
+    console.log(x);
     await this.ProviderRepository.softDelete(id);
    
 // Send user deactivation email
@@ -64,13 +58,6 @@ if (!provider) {
     return { count: 1 };
   }
 
-  /*async restoreProvider(id: number): Promise<Providers> {
-      const i = id as unknown as string;
-      const provider = await this.ProviderRepository.findOne({where: {id: i}, withDeleted: true});
-      await this.ProviderRepository.restore(id);
-      this.Mailingservice.sendUserConfirmation(provider);
-      return provider;
-  }*/
   async restoreProvider(id: number): Promise<Providers> {
     const provider = await this.ProviderRepository.findOne({
       where: { id: id },
@@ -84,11 +71,11 @@ if (!provider) {
   
     // Restaurer le fournisseur
     await this.ProviderRepository.restore(id);
+    await this.AuthService.restore(id);
   // Restaurer les pièces associées
     for (const piece of provider.pieces) {
       await this.pieceRepository.restore(piece.id);
     }
-  
     // Envoyer l'e-mail de confirmation à l'utilisateur
     this.Mailingservice.sendUserConfirmation(provider);
   
@@ -102,7 +89,7 @@ if (!provider) {
   async getAllProviders(query : PaginateDto): Promise<Providers[]> {
     let { page, take } = query;
     page = page ? page : 1;
-    take = take ? take : 6;
+    take = take ? take : 4;
     const skip: number = ((page - 1) * take) as number;
     return await this.ProviderRepository.find({
       withDeleted: true,

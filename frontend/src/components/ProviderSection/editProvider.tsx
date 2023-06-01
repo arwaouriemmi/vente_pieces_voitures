@@ -10,6 +10,7 @@ import {
 import { ToastContainer } from "react-toastify";
 import { useUserRole } from "../../getRole";
 import { getUserId } from "../../getUserId";
+import { getRole } from "../../getRole";
 
 interface ProviderFormProps {
     name?: string;
@@ -43,7 +44,7 @@ const setData = (formData: ProviderFormProps) => {
 
 export default function EditProvider({ newElement }: { newElement: boolean }) {
   const navigate = useNavigate();
- // useUserRole(["admin", "provider"]);
+  useUserRole(["admin", "provider"]);
   const { id } = useParams<{ id: string }>();
   const [formData, setFormData] = useState<ProviderFormProps>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -56,7 +57,7 @@ export default function EditProvider({ newElement }: { newElement: boolean }) {
       console.log(getUserId())
       console.log(res.id)
 
-      if (res.id !== getUserId()) {
+      if (getRole()!=="admin" && res.id !== getUserId()) {
 
         navigate('/error')
       }
