@@ -9,8 +9,8 @@ export class Categories {
   label: string;
   @Column({nullable:true})
   image: string;
-  @Column({default:-1})
+  @Column({nullable:true})
+  @ManyToOne(() => Categories, {cascade: true, onDelete:"CASCADE"})
+  @JoinColumn({name:"parent"})
   parent: number;
-
-  
 }

@@ -20,13 +20,13 @@ export class Piece extends  TimestampEntities{
     constructorReference: string;
     @Column({nullable:true})
     comments: string; 
-    @ManyToOne(() => Providers , (provider) => provider.pieces, { cascade: true, eager: true})
+    @ManyToOne(() => Providers , (provider) => provider.pieces, { onDelete: 'CASCADE', cascade: true, eager: true})
     @JoinColumn()
     provider: Providers ;
     @ManyToOne(() => Cars, (cars) => cars.pieces, { cascade: true, eager: true })
     cars: Cars;
-    @ManyToOne(() => Categories, { eager: true })
+    @ManyToOne(() => Categories, { eager: true, onDelete: "RESTRICT" })
     category: Categories;
-    @ManyToOne(() => Categories, { eager: true })
+    @ManyToOne(() => Categories, { eager: true, onDelete: "RESTRICT" })
     subCategory:Categories;
 }

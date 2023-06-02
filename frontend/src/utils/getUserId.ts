@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-import TokenProps from "./types/tokenProps";
+import TokenProps from "../types/tokenProps";
 
 
 export const getUserId = ()  => {

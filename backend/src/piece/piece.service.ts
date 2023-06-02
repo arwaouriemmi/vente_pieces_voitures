@@ -38,6 +38,21 @@ export class PieceService extends CrudService<
     return await this.piecesRepository.save(newPiece);
   }
 
+  async updatePiece(id: number, dto: UpdatePieceDto): Promise<Piece> {
+    const piece = await this.piecesRepository.findOne(id);
+    if (!piece) {
+      throw new BadGatewayException('piece not found');
+    }
+    const cars = await this.carService.getCarsByCriteria(
+      dto.brand,
+      dto.model,
+      dto.motorization,
+    );
+
+    piece.cars = cars;
+    return await this.piecesRepository.save(piece);
+  }
+
   async getByProviderId(id: number): Promise<Piece[]> {
     return await this.piecesRepository.find({
       where: { provider: { id: id } },

@@ -9,8 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import { deleteCategory, getCategoriesFromApi } from "../../apis/categoryApis";
-import { getData } from "../../apis/generic";
-import { useUserRole } from "../../getRole";
+import { useUserRole } from "../../utils/getRole";
+import { useDispatch, useSelector } from "react-redux";
+import { update } from "../../store";
 
 interface CategoryProps {
   parent?: number;
@@ -20,6 +21,8 @@ interface CategoryProps {
 }
 
 export default function CategoriesSection() {
+  const updateData = useSelector((state: any) => state.update);
+  const dispatch = useDispatch();
   useUserRole(["admin"]);
   const [categories, setCategories] = useState([] as CategoryProps[][]);
   const [selected, setSelected] = useState([] as number[]);
@@ -44,8 +47,9 @@ export default function CategoriesSection() {
   };
 
   useEffect(() => {
+    console.log("update", updateData);
     getCategories();
-  }, []);
+  }, [updateData]);
 
 
   return (
@@ -116,7 +120,7 @@ export default function CategoriesSection() {
             disabled={selected.length === 0}
             onClick={() => {
               setIsHidden(false);
-              setData({ id: selected[selected.length - 1] });
+              setData({ id: selected[selected.length - 1], parent: selected[selected.length - 2] });
             }}
           >
             Modifier
@@ -126,7 +130,8 @@ export default function CategoriesSection() {
             variant="primary"
             disabled={selected.length === 0}
             onClick={async () => {
-              deleteCategory(selected[selected.length - 1]);
+              await deleteCategory(selected[selected.length - 1]);
+              dispatch(update());
             }}
           >
             Supprimer

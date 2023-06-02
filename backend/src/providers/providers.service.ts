@@ -16,93 +16,79 @@ export class ProvidersService extends CrudService<
   CreateprovidersDto,
   UpdateprovidersDto
 > {
- 
-  
   constructor(
     @InjectRepository(Providers)
     private ProviderRepository: Repository<Providers>,
     @InjectRepository(Piece)
     private readonly pieceRepository: Repository<Piece>,
     private Mailingservice: MailingService,
-    private AuthService: AuthService
-   
+    private AuthService: AuthService,
   ) {
     super(ProviderRepository);
   }
 
   async addProvider(provider: CreateprovidersDto): Promise<Providers> {
     const pro: Providers = await this.ProviderRepository.save(provider);
-    const token = await this.AuthService.createUser(pro.id as unknown as number, pro.email)
+    const token = await this.AuthService.createUser(
+      pro.id as unknown as number,
+      pro.email,
+    );
     this.Mailingservice.sendUserConfirmation(pro, token);
     return pro;
   }
 
-  /*async deleteProvider(id: number): Promise<{count: number}> {
-    const provider = await this.ProviderRepository.findOne({where: {id: id}});
-    await this.AuthService.delete(id);
-    this.Mailingservice.sendUserDeactivation(provider);
-    await this.ProviderRepository.softDelete(id);
-    await this.piecesService.deleteByProviderId(provider.id);
-    return {count : 1}
-  }*/
   async deleteProvider(id: number): Promise<{ count: number }> {
     const provider = await this.ProviderRepository.findOne({
       where: { id: id },
-      relations: ['pieces'], 
-      
+      relations: ['pieces'],
     });
-if (!provider) {
-      return { count: 0 };
+    if (!provider) {
+      throw new NotFoundException();
     }
     for (const piece of provider.pieces) {
       await this.pieceRepository.softDelete(piece.id);
     }
+    const x = await this.AuthService.softDelete(id);
+    console.log(x);
     await this.ProviderRepository.softDelete(id);
-   
-// Send user deactivation email
+
+    // Send user deactivation email
     this.Mailingservice.sendUserDeactivation(provider);
     return { count: 1 };
   }
 
-  /*async restoreProvider(id: number): Promise<Providers> {
-      const i = id as unknown as string;
-      const provider = await this.ProviderRepository.findOne({where: {id: i}, withDeleted: true});
-      await this.ProviderRepository.restore(id);
-      this.Mailingservice.sendUserConfirmation(provider);
-      return provider;
-  }*/
   async restoreProvider(id: number): Promise<Providers> {
     const provider = await this.ProviderRepository.findOne({
       where: { id: id },
       withDeleted: true, // Inclure les fournisseurs supprimés
       relations: ['pieces'], // Inclure la relation "pieces"
     });
-  if (!provider) {
+    if (!provider) {
       // Fournisseur non trouvé
       throw new NotFoundException('Fournisseur introuvable');
     }
-  
+
     // Restaurer le fournisseur
     await this.ProviderRepository.restore(id);
-  // Restaurer les pièces associées
+    await this.AuthService.restore(id);
+    // Restaurer les pièces associées
     for (const piece of provider.pieces) {
       await this.pieceRepository.restore(piece.id);
     }
-  
     // Envoyer l'e-mail de confirmation à l'utilisateur
     this.Mailingservice.sendUserConfirmation(provider);
-  
+
     return provider;
   }
 
   async countAllProviders(): Promise<number> {
-    return await this.ProviderRepository.count({withDeleted: true});
+    return await this.ProviderRepository.count({ withDeleted: true });
   }
 
-  async getAllProviders(query : PaginateDto): Promise<Providers[]> {
+  async getAllProviders(query: PaginateDto): Promise<Providers[]> {
     let { page, take } = query;
     page = page ? page : 1;
-    take = take ? take : 6;
+    take = take ? take : 4;
     const skip: number = ((page - 1) * take) as number;
     return await this.ProviderRepository.find({
       withDeleted: true,

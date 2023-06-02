@@ -21,8 +21,8 @@ import {
         const payload = await this.jwtService.verifyAsync(
           token,
         );
-       
         request['user'] = payload;
+        request.headers['role'] = payload.role;
       } catch {
         throw new UnauthorizedException();
       }

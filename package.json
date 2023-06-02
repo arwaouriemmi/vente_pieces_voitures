@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "faker": "^6.6.6",
-    "lorem-picsum": "^1.0.0"
-  }
-}

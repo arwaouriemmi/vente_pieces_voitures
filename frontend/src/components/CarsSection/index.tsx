@@ -8,7 +8,8 @@ import CarProps from "../../types/carProps";
 import CarCard from "./carCard";
 import { getCarsFromApi } from "../../apis/carApis";
 import Paginate from "../pagination";
-import { useUserRole } from "../../getRole";
+import { useUserRole } from "../../utils/getRole";
+import { ToastContainer } from "react-toastify";
 
 export default function CarsSection() {
   useUserRole(["admin"])
@@ -22,7 +23,7 @@ export default function CarsSection() {
   useEffect(() => {
     getCarsFromApi(page).then((res) => {
       setCars(res.data);
-     setPageNumber(res.count / 5 +1);
+     setPageNumber(res.count / 4 +1);
     });
   }, [page]);
 
@@ -44,6 +45,7 @@ export default function CarsSection() {
       </Row>
 
       <Paginate page={page} setPage={setPage} pageNumber={pageNumber} />
+      <ToastContainer position="bottom-right" />
     </div>
   </>
   );

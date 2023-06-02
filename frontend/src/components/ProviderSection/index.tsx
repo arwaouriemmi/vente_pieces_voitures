@@ -7,11 +7,13 @@ import { Link, useSearchParams } from "react-router-dom";
 import { GrAddCircle } from "react-icons/gr";
 import { getProvidersFromApi } from "../../apis/providerApis";
 import Paginate from "../pagination";
-import { useUserRole } from "../../getRole";
+import { useUserRole } from "../../utils/getRole";
 import { ToastContainer } from "react-toastify";
+import { useSelector } from "react-redux";
 
 export default function ProviderSection() {
-  //useUserRole(["admin"])
+  useUserRole(["admin"])
+  const updateData = useSelector((state: any) => state.update);
   const [searchParams] = useSearchParams();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [providers, setProviders] = useState<ProviderProps[]>([]);
@@ -23,9 +25,9 @@ export default function ProviderSection() {
   useEffect(() => {
     getProvidersFromApi(active, page).then((res) => {
       setProviders(res.data);
-      setPageNumber(res.count / 6 + 1)
+      setPageNumber(res.count / 5 + 1)
     });
-  }, [active, page]);
+  }, [active, page, updateData]);
 
   return (<>
     <div className="custom-container">

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
+import store from "../store";
 
 export const toastOptions = {
   autoClose: 5000,
@@ -16,10 +17,13 @@ const getData = async (
   uri: string,
   setData?: React.Dispatch<React.SetStateAction<any>>
 ) => {
+  const config = {
+    headers: { Authorization: `Bearer ${store.getState().token.value}` }
+  };
   const link = "http://localhost:3001/" + uri;
   try {
     let response = await axios
-      .get(link)
+      .get(link, config)
       .then((res) => res)
       .catch((err) => {
         throw Error(err);
@@ -32,10 +36,15 @@ const getData = async (
 };
 
 const postData = async (uri: string, data: any) => {
+  console.log(store.getState());
+
+  const config = {
+    headers: { Authorization: `Bearer ${store.getState().token.value}` }
+  };
   const toastId = toast.loading("Votre message est en cours d'envoi!");
   const link = "http://localhost:3001/" + uri;
   try {
-    await axios.post(link, data);
+    await axios.post(link, data, config);
     console.log(toastId)
     toast.update(toastId, {
       ...toastOptions,
@@ -54,10 +63,13 @@ const postData = async (uri: string, data: any) => {
 };
 
 const patchData = async (uri: string, data: any) => {
+  const config = {
+    headers: { Authorization: `Bearer ${store.getState().token.value}` }
+  };
   const toastId = toast.loading("Votre message est en cours d'envoi!");
   const link = "http://localhost:3001/" + uri;
   try {
-    await axios.patch(link, data);
+    await axios.patch(link, data, config);
     toast.update(toastId, {
       ...toastOptions,
       render: "La donnée a été modifiée avec succées!",
@@ -75,10 +87,13 @@ const patchData = async (uri: string, data: any) => {
 };
 
 const deleteData = async (uri: string, id: string | Number) => {
+  const config = {
+    headers: { Authorization: `Bearer ${store.getState().token.value}` }
+  };
   const toastId = toast.loading("Votre message est en cours d'envoi!");
   const link = "http://localhost:3001/" + uri + id .toString();
   try {
-    await axios.delete(link);
+    await axios.delete(link, config);
     toast.update(toastId, {
       ...toastOptions,
       render: "La donnée a été supprimée avec succées!",
@@ -88,7 +103,7 @@ const deleteData = async (uri: string, id: string | Number) => {
   } catch (error : any ) {
     toast.update(toastId, {
       ...toastOptions,
-      render: error,
+      render: 'Une erreur est survenue, veuillez réessayer',
       type: "error",
       isLoading: false,
     });

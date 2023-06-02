@@ -43,18 +43,18 @@ export class AuthService extends CrudService<User, CreateUserDto, UpdateUserDto>
 
   async login(credentials: LoginCredentialsDto) {
     const { login, password } = credentials;
-    console.log(login);
     const user = await this.userRepository
       .createQueryBuilder('user')
       .where('user.username= :login or user.email= :login', { login })
       .getOne();
 
+    console.log(user);
     if (!user) {
       throw new NotFoundException('Le login ou le mot de passe est incorrect.');
     }
-
+    
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
+    console.log(isPasswordCorrect);
     if (isPasswordCorrect) {
       const payload = {
         id: user.id,
@@ -73,17 +73,15 @@ export class AuthService extends CrudService<User, CreateUserDto, UpdateUserDto>
   }
 
   async createUser(id: number, email: string) : Promise<string> {
-
-    const user = this.userRepository.create({
+    const user = {
       id: id,
       email: email,
       username: "user" + Math.floor(Math.random() * 1000000),
       password: "",
       salt: "",
       role: UserRoleEnum.PROVIDER,
-    });
+    } as User;
     const t = await this.jwtService.sign(JSON.parse(JSON.stringify(user)));
-    await this.userRepository.save(user);
     return t;
   }
 

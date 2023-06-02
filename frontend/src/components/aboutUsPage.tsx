@@ -16,7 +16,7 @@ export default function AboutUsPage() {
         </div>
         <div className="col-md-6 text-md-end">
 
-          <img src="logo_app.png" alt="logo" style={{height:"650px"}} />
+          <img src="/logo_app.png" alt="logo" style={{height:"650px"}}/>
         </div>
       </div>
     </div>

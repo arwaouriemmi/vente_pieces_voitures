@@ -13,7 +13,7 @@ import {
   searchPiecesByCategory,
 } from "../../apis/piecesApis";
 import Paginate from "../pagination";
-import { useUserRole } from "../../getRole";
+import { useUserRole } from "../../utils/getRole";
 import SearchPieceProps from "../../types/searchPieceProps";
 
 export function HomePage() {
@@ -38,7 +38,7 @@ export function HomePage() {
       ? handleSearch(page)
       : getPiecesFromApi(page).then((res) => {
           setProducts(res.data);
-          setPageNumber(res.count / 6 + 1);
+          setPageNumber(res.count /4  + 1);
         });
   }, [page]);
 
@@ -62,12 +62,12 @@ export function HomePage() {
     if (selected.length > 0) {
       searchPiecesByCategory(selected[selected.length - 1], formData, page).then((res) => {
         setProducts(res.data);
-        setPageNumber(res.count / 6+ 1);
+        setPageNumber(res.count / 4+ 1);
       });
     } else {
       searchPieces(formData, page).then((res) => {
         setProducts(res.data);
-        setPageNumber(res.count / 6 + 1);
+        setPageNumber(res.count / 4+ 1);
       });
     }
     setFormData({

@@ -1,3 +1,4 @@
+import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 export const editFileName = (req, file, cb) => {
 const randomName = uuidv4()
@@ -6,3 +7,10 @@ const randomName = uuidv4()
 
 cb(null, randomName);
 };
+
+export const fileUploadOptions = {
+    storage: diskStorage({
+      destination: '../frontend/public',
+      filename: editFileName,
+    }),
+    };

@@ -1,7 +1,7 @@
 import { Card, Col, Row } from "react-bootstrap";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import CarProps from "../../types/carProps";
+import { deleteCar } from "../../apis/carApis";
 
 export default function CarCard({
   id,
@@ -11,9 +11,6 @@ export default function CarCard({
   motorization,
   edit = true,
 }: CarProps) {
-  const deleteCar = (id: string) => {
-    deleteCar(id);
-  };
 
   return (
     <Col sm={4}>

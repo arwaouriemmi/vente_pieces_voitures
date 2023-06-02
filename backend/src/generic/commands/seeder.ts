@@ -57,7 +57,6 @@ async function bootstrap() {
 
     category.label = carParts[i].category.name;
     category.image = carParts[i].category.image;
-    category.parent = -1;
     category = await categoryService.addEntity(category);
     for (let j = 0; j < carParts[i].subcategories.length; j++) {
       let subCategory = new Categories();
