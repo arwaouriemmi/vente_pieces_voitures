@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { Providers } from './entities/providers.entity';
 import { CreateprovidersDto } from './dto/create-providers.dto';
@@ -21,6 +22,10 @@ import { editFileName, fileUploadOptions } from '../editFileName';
 import { diskStorage } from 'multer';
 import { Piece } from '../piece/entities/piece.entity';
 import SearchDto from './dto/providerSearch.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { UserRoleEnum } from 'src/auth/enums/user-role.enum';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('providers')
 export class ProvidersController extends CrudController<
@@ -33,6 +38,8 @@ export class ProvidersController extends CrudController<
   }
 
 
+  @Roles(UserRoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('')
   async getAllProviders(
     @Query() query: SearchDto,
@@ -60,6 +67,8 @@ export class ProvidersController extends CrudController<
     return { data: p, count: nb };
   }
 
+  @Roles(UserRoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('add')
   @UseInterceptors(
     FileInterceptor('image', {
@@ -77,6 +86,8 @@ export class ProvidersController extends CrudController<
       return this.providerService.addProvider(provider);
   }
 
+  @Roles(UserRoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch('update/:id')
   @UseInterceptors(
     FileInterceptor('image', fileUploadOptions))
@@ -96,6 +107,8 @@ export class ProvidersController extends CrudController<
     return this.providerService.findOne(id, true);
   }
 
+  @Roles(UserRoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete('delete/:id')
   async deleteProvider(
     @Param('id', ParseIntPipe) id: number,
@@ -103,6 +116,8 @@ export class ProvidersController extends CrudController<
     return this.providerService.deleteProvider(id);
   }
 
+  @Roles(UserRoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('restore/:id')
   async restoreProvider(
     @Param('id', ParseIntPipe) id: number,

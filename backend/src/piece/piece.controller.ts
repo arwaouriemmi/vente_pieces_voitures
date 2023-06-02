@@ -8,6 +8,7 @@ import {
   UseInterceptors,
   Param,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { PieceService } from './piece.service';
 import { CreatePieceDto } from './dto/create-piece.dto';
@@ -19,6 +20,10 @@ import { diskStorage } from 'multer';
 import { editFileName, fileUploadOptions } from '../editFileName';
 import SearchDto from './dto/search.dto';
 import { returnData } from './dto/return.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { UserRoleEnum } from 'src/auth/enums/user-role.enum';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('pieces')
 export class PieceController extends CrudController<
@@ -35,6 +40,8 @@ export class PieceController extends CrudController<
     return await this.pieceService.getByProviderId(id);
   }
   
+  @Roles(UserRoleEnum.PROVIDER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch('update/:id')
   @UseInterceptors(
     FileInterceptor('image', fileUploadOptions),
@@ -53,6 +60,8 @@ export class PieceController extends CrudController<
     return c;
   }
 
+  @Roles(UserRoleEnum.PROVIDER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('add')
   @UseInterceptors(
     FileInterceptor('image', {

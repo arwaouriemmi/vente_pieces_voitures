@@ -33,8 +33,6 @@ export class CategoriesController extends CrudController<
     super(categoriesService);
   }
 
-  @Roles(UserRoleEnum.PROVIDER)
-  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   async getAllCategories() {
     return this.categoriesService.getAllCategories();
@@ -44,6 +42,8 @@ export class CategoriesController extends CrudController<
     return this.categoriesService.getSubCategories(id);
   }
 
+  @Roles(UserRoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('add')
   @UseInterceptors(
     FileInterceptor('image', fileUploadOptions),
@@ -59,6 +59,8 @@ export class CategoriesController extends CrudController<
     return this.categoriesService.create(dto);
   }
 
+  @Roles(UserRoleEnum.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch('update/:id')
   @UseInterceptors(
     FileInterceptor('image', {
