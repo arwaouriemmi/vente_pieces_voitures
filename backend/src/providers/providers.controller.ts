@@ -20,12 +20,11 @@ import { CrudController } from '../generic/crud/crud.controller';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { editFileName, fileUploadOptions } from '../editFileName';
 import { diskStorage } from 'multer';
-import { Piece } from '../piece/entities/piece.entity';
 import SearchDto from './dto/providerSearch.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { UserRoleEnum } from 'src/auth/enums/user-role.enum';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { UserRoleEnum } from '../auth/enums/user-role.enum';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('providers')
 export class ProvidersController extends CrudController<

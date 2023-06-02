@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FormDataProps } from "../../types/FormDataProps";
-import { getData, handleChange } from "../../apis/generic";
+import { handleChange } from "../../apis/generic";
 import { FormLabel, Form } from "react-bootstrap";
 import CarProps from "../../types/carProps";
 import { getCarBrands, getCarModels, getCarMotorization } from "../../apis/carApis";

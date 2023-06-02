@@ -20,10 +20,10 @@ import { diskStorage } from 'multer';
 import { editFileName, fileUploadOptions } from '../editFileName';
 import SearchDto from './dto/search.dto';
 import { returnData } from './dto/return.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { UserRoleEnum } from 'src/auth/enums/user-role.enum';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { UserRoleEnum } from '../auth/enums/user-role.enum';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('pieces')
 export class PieceController extends CrudController<
@@ -55,7 +55,7 @@ export class PieceController extends CrudController<
       dto.image = image.filename;
     }
     
-    const c =  await this.pieceService.update(id, dto);
+    const c =  await this.pieceService.updatePiece(id, dto);
     console.log("piece" , c);
     return c;
   }
@@ -64,12 +64,7 @@ export class PieceController extends CrudController<
   @UseGuards(AuthGuard, RolesGuard)
   @Post('add')
   @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: '../frontend/public',
-        filename: editFileName,
-      }),
-    }),
+    FileInterceptor('image', fileUploadOptions),
   )
   async addPiece(
     @UploadedFile() image: Express.Multer.File,

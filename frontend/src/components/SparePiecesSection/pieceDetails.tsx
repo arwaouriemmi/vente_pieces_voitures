@@ -23,8 +23,8 @@ export default function PieceDetails() {
   useEffect(() => {
     id &&
       getPieceByIdFromApi(id).then((data) => {
-        setPiece(data);
         console.log(data);
+        setPiece(data);
       });
   }, [id]);
   return (
@@ -90,9 +90,9 @@ export default function PieceDetails() {
                     Voir Fournisseur
                   </button>
                 </Link>
-                {(getUserId() === piece.provider.id || role === "admin") && (
+                {(getUserId() === piece.provider.id) && (
                   <div >
-                    <Link to={"/pieces/edit/" + piece.id}>
+                    <Link to={"/pieces/edit/" + id}> 
                       <button className="btn btn-primary " style={{marginRight:"60px"}}>Modifier</button>
                     </Link>
                     <Button

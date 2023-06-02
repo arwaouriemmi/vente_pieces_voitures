@@ -39,6 +39,7 @@ export default function NavbarSection() {
   useEffect(() => {
     if (token) {
       const user = jwt_decode<TokenProps>(token);
+      console.log(user);
       setRole(user.role);
       if (user.id && user.role === "provider") {
         getProviderByIdFromApi(user.id).then((res) => {
