@@ -2,9 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { LoginProps } from "../../types/LoginProps";
 import { useNavigate } from "react-router-dom";
-import { TokenPayloadProps } from "../../types/TokenPayloadProps";
-import jwt_decode from "jwt-decode";
-import { useUserRole } from "../../getRole";
+import { useUserRole } from "../../utils/getRole";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../store";
 
 
 export default function SignIn() {
@@ -14,7 +14,7 @@ export default function SignIn() {
     password: "",
   });
 
-
+  const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState<string>("");
   let navigate = useNavigate();
 
@@ -24,7 +24,9 @@ export default function SignIn() {
       .post("http://localhost:3001/auth/login", user)
       .then((response) => {
         console.log(response);
-        localStorage.setItem("token", response.data.token);
+        const t = response.data.token;
+        localStorage.setItem("token", t);
+        dispatch(setToken(t))
         navigate("/");
       })
       .catch((error) => {

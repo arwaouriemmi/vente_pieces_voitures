@@ -6,11 +6,11 @@ import { handleChange } from "../../apis/generic";
 import CarsSearchForm from "../SearchForm/carsSearchForm";
 import { CategoryProps } from "../../types/categoryProps";
 import { getCategoriesFromApi } from "../../apis/categoryApis";
-import { getUserId } from "../../getUserId";
+import { getUserId } from "../../utils/getUserId";
 import { ToastContainer } from "react-toastify";
 import { postPiece, patchPiece } from "../../apis/piecesApis";
 import { getPieceByIdFromApi } from "../../apis/piecesApis";
-import { useUserRole } from "../../getRole";
+import { useUserRole } from "../../utils/getRole";
 
 export default function EditPiece({ newElement }: { newElement: boolean }) {
  useUserRole(["admin", "provider"]);

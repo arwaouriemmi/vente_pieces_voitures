@@ -16,7 +16,7 @@ export class CategoriesService extends CrudService<Categories, CreateCategoriesD
     async getAllCategories() {
         const categories = await this.categoriesRepository
             .createQueryBuilder('categories')
-            .where('categories.parent = :parentValue', { parentValue: -1 })
+            .where('categories.parent IS NULL')
             .getMany();
         return categories;
     }

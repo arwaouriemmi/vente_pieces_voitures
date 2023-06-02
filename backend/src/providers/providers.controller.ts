@@ -17,7 +17,7 @@ import { UpdateprovidersDto } from './dto/update-providers.dto';
 import { ProvidersService } from './providers.service';
 import { CrudController } from '../generic/crud/crud.controller';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { editFileName } from '../editFileName';
+import { editFileName, fileUploadOptions } from '../editFileName';
 import { diskStorage } from 'multer';
 import { Piece } from '../piece/entities/piece.entity';
 import SearchDto from './dto/providerSearch.dto';
@@ -79,12 +79,7 @@ export class ProvidersController extends CrudController<
 
   @Patch('update/:id')
   @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: '../frontend/public',
-        filename: editFileName,
-      }),
-    }),)
+    FileInterceptor('image', fileUploadOptions))
   async updateProvider(
     @UploadedFile() image: Express.Multer.File,
     @Param('id', ParseIntPipe) id: number,

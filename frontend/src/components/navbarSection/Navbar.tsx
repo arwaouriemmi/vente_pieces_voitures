@@ -6,8 +6,13 @@ import "./Navbar.css";
 import { getProviderByIdFromApi } from "../../apis/providerApis";
 import jwt_decode from "jwt-decode";
 import TokenProps from "../../types/tokenProps";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken } from "../../store";
+import { getImagePath } from "../../utils/getImagePath";
 
 export default function NavbarSection() {
+  const token = useSelector((state: any) => state.token.value);
+  const dispatch = useDispatch();
   const linkStyle = {
     color: "white",
     opacity: 0.9,
@@ -32,7 +37,6 @@ export default function NavbarSection() {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
       const user = jwt_decode<TokenProps>(token);
       setRole(user.role);
@@ -41,21 +45,31 @@ export default function NavbarSection() {
           setProvider(res);
         });
       }
+    } else {
+      setRole("");
     }
-  }, []);
+  }, [token]);
 
   return (
-    <Navbar bg="primary" variant="dark"  expand="lg" >
+    <Navbar bg="primary" variant="dark" expand="lg">
       <Navbar.Brand as={Link} to="/">
         <img
-          src="../logo_app.png"
+          src="/logo_app.png"
           width="45"
           height="40"
           className="d-inline-block align-top rounded-circle "
           alt="mon logo"
           style={{ marginLeft: "20px" }}
         />
-        <span style={{ fontSize: "12px", marginLeft: "5px",fontFamily:"Lilita One" }}>SoukPiecesCasse</span>
+        <span
+          style={{
+            fontSize: "12px",
+            marginLeft: "5px",
+            fontFamily: "Lilita One",
+          }}
+        >
+          SoukPiecesCasse
+        </span>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
@@ -74,7 +88,8 @@ export default function NavbarSection() {
               as={Link}
               to="/login"
               style={linkStyle}
-              onClick={() => localStorage.removeItem("token")}
+              onClick={() => {localStorage.removeItem("token")
+            dispatch(setToken(undefined))}}
             >
               Se déconnecter
             </Nav.Link>
@@ -97,7 +112,7 @@ export default function NavbarSection() {
             <NavDropdown
               title={
                 <img
-                  src={provider.logo ?? "../placeholder.jpg"}
+                  src={provider.logo? getImagePath(provider.logo) : "https://via.placeholder.com/150"}
                   className="rounded-circle d-inline-block align-top"
                   width="32"
                   height="32"
@@ -112,7 +127,10 @@ export default function NavbarSection() {
               <NavDropdown.Item
                 as={Link}
                 to="/login"
-                onClick={() => localStorage.removeItem("token")}
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  dispatch(setToken(undefined));
+                }}
               >
                 Se déconnecter
               </NavDropdown.Item>

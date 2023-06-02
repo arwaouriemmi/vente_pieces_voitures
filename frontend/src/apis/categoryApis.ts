@@ -24,18 +24,18 @@ const getCategoryFromApi = async (id: number) => {
 
 const postCategory = async (data: any) => {
     try {
-        postData("categories/add", data);
+        await postData("categories/add", data);
     } catch (error) {
         console.log(error);
     }
 };
 
 const patchCategory = async (id:number, data: any) => {
-    patchData("categories/update/" + id, data);
+    await patchData("categories/update/" + id, data);
 }
 
 const deleteCategory = async (id: number) => {
-    deleteData("categories/delete/", id)
+    await deleteData("categories/delete/", id)
 }
 
 export { getCategoriesFromApi, getCategoryFromApi, postCategory, patchCategory, deleteCategory };

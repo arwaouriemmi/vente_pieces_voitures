@@ -2,6 +2,9 @@ import { Card, Col, Row, ToastContainer } from "react-bootstrap";
 import ProviderProps from "../../types/ProviderProps";
 import { Link } from "react-router-dom";
 import { deleteProvider, restoreProvider } from "../../apis/providerApis";
+import { useDispatch, useSelector } from "react-redux";
+import { update } from "../../store";
+import { getImagePath } from "../../utils/getImagePath";
 
 export default function ProviderCard({
   id,
@@ -13,6 +16,8 @@ export default function ProviderCard({
   createdAt,
 }: ProviderProps) {
 
+  const dispatch = useDispatch();
+
   return (
     <Col sm={6}>
       <Card>
@@ -20,7 +25,7 @@ export default function ProviderCard({
           <div style={{ margin: "auto" }}>
             <Card.Img
               variant="left"
-              src={logo ?? "https://via.placeholder.com/150"}
+              src={logo ? getImagePath(logo) : "https://via.placeholder.com/150"}
               style={{ borderRadius: 9999, height: 110 }}
             />
           </div>
@@ -61,7 +66,10 @@ export default function ProviderCard({
               <Card.Link
                 className="btn btn-info col-sm"
                 onClick={() => {
-                  deletedAt !== null ? restoreProvider(id) : deleteProvider(id);
+                  const f = (deletedAt !== null) ? restoreProvider : deleteProvider;
+                  f(id).then(() => {
+                    dispatch(update())
+                  });
                 }}
               >
                 {deletedAt ? "Activer" : "Bloquer"}

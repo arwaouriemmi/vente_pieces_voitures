@@ -6,6 +6,7 @@ import {
   Patch,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { Categories } from './entities/categories.entity';
@@ -14,8 +15,13 @@ import { UpdateCategoriesDto } from './dto/update-categories.dto';
 import { CrudController } from '../generic/crud/crud.controller';
 import { CategoriesService } from './categories.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { editFileName } from '../editFileName';
+import { editFileName, fileUploadOptions } from '../editFileName';
 import { diskStorage } from 'multer';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { UserRoleEnum } from '../auth/enums/user-role.enum';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+
 
 @Controller('categories')
 export class CategoriesController extends CrudController<
@@ -27,6 +33,8 @@ export class CategoriesController extends CrudController<
     super(categoriesService);
   }
 
+  @Roles(UserRoleEnum.PROVIDER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   async getAllCategories() {
     return this.categoriesService.getAllCategories();
@@ -38,12 +46,7 @@ export class CategoriesController extends CrudController<
 
   @Post('add')
   @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: '../frontend/public',
-        filename: editFileName,
-      }),
-    }),
+    FileInterceptor('image', fileUploadOptions),
   )
   async add(
     @UploadedFile() image: Express.Multer.File,

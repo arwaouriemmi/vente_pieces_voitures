@@ -98,13 +98,19 @@ export abstract class CrudService<T, createDto, UpdateDto> {
 
   async delete(id: number): Promise<void> {
     try {
-      this.repository.delete(id);
+      await this.repository.delete(id);
     } catch (error) {
-      throw new InternalServerErrorException(error);
+      console.log(error);
+      throw new InternalServerErrorException();
     }
   }
   async softDelete(id: number) {
-    return await this.repository.softDelete(id);
+    try {
+     await this.repository.softDelete(id);
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
   }
   async restore(id: number) {
     return await this.repository.restore(id);

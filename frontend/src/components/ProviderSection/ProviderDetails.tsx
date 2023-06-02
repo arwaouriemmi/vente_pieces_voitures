@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import ProviderProps from "../../types/ProviderProps";
 import { getProviderDeleted } from "../../apis/providerApis";
 import ErrorPage from "../errorPage";
-import { getRole, useUserRole } from "../../getRole";
-import { getUserId } from "../../getUserId";
+import { getRole, useUserRole } from "../../utils/getRole";
+import { getUserId } from "../../utils/getUserId";
 import { Button } from "react-bootstrap";
+import { getImagePath } from "../../utils/getImagePath";
 
 export default function ProviderDetails() {
   useUserRole(["admin", "provider", ""]);
@@ -48,7 +49,7 @@ export default function ProviderDetails() {
           >
             <div className="image-profile" style={{ flex: 1 }}>
               <img
-                src={provider.logo ?? "https://via.placeholder.com/150"}
+                src={provider.logo? getImagePath(provider.logo) : "https://via.placeholder.com/150"}
                 className="img-fluid rounded-circle "
                 style={{ width: "300px" }}
                 alt=""

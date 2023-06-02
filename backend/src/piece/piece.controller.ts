@@ -16,7 +16,7 @@ import { Piece } from './entities/piece.entity';
 import { CrudController } from '../generic/crud/crud.controller';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { editFileName } from '../editFileName';
+import { editFileName, fileUploadOptions } from '../editFileName';
 import SearchDto from './dto/search.dto';
 import { returnData } from './dto/return.dto';
 
@@ -37,12 +37,7 @@ export class PieceController extends CrudController<
   
   @Patch('update/:id')
   @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: '../frontend/public',
-        filename: editFileName,
-      }),
-    }),
+    FileInterceptor('image', fileUploadOptions),
   )
   async updatePiece(
     @Param('id') id: number,

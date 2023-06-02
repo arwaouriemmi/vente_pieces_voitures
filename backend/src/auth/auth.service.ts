@@ -73,17 +73,15 @@ export class AuthService extends CrudService<User, CreateUserDto, UpdateUserDto>
   }
 
   async createUser(id: number, email: string) : Promise<string> {
-
-    const user = this.userRepository.create({
+    const user = {
       id: id,
       email: email,
       username: "user" + Math.floor(Math.random() * 1000000),
       password: "",
       salt: "",
       role: UserRoleEnum.PROVIDER,
-    });
+    } as User;
     const t = await this.jwtService.sign(JSON.parse(JSON.stringify(user)));
-    await this.userRepository.save(user);
     return t;
   }
 

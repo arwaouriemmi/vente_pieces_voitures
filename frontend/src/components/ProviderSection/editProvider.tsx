@@ -8,9 +8,9 @@ import {
   postProvider,
 } from "../../apis/providerApis";
 import { ToastContainer } from "react-toastify";
-import { useUserRole } from "../../getRole";
-import { getUserId } from "../../getUserId";
-import { getRole } from "../../getRole";
+import { useUserRole } from "../../utils/getRole";
+import { getUserId } from "../../utils/getUserId";
+import { getRole } from "../../utils/getRole";
 
 interface ProviderFormProps {
     name?: string;

@@ -88,7 +88,7 @@ const deleteData = async (uri: string, id: string | Number) => {
   } catch (error : any ) {
     toast.update(toastId, {
       ...toastOptions,
-      render: error,
+      render: 'Une erreur est survenue, veuillez réesséyer',
       type: "error",
       isLoading: false,
     });

@@ -12,7 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { getCarBrands, getCarByIdFromApi, getCarModels, patchCar, postCar } from "../../apis/carApis";
-import { useUserRole } from "../../getRole";
+import { useUserRole } from "../../utils/getRole";
 
 interface CarFormProps extends Partial<CarProps> { }
 

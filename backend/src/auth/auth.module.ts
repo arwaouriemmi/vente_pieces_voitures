@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { JwtStrategy } from './strategy/jwt.strategy';
 dotenv.config()
+
+@Global()
 @Module({
     imports: [
         TypeOrmModule.forFeature([User]),
@@ -24,7 +26,7 @@ dotenv.config()
     ],
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy],
-    exports: [AuthService],
+    exports: [AuthService, JwtModule],
 })
 export class AuthModule {
 
